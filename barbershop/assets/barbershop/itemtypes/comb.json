@@ -2,7 +2,7 @@
   "code": "comb",
   "class": "ItemComb",
   "creativeinventory": {
-    "tools": [ "*" ] 
+    "tools": [ "*" ]
   },
   "shape": { "base": "game:item/tool/pickaxe" },
   "textures": {
