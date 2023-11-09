@@ -56,14 +56,14 @@ namespace Barbershop
             if (targetEntity != null && targetEntity is EntityPlayer)
             {
                 handHandling = EnumHandHandling.Handled;
-                handling = EnumHandling.PreventDefault;
+                handling = EnumHandling.Handled;
 
                 if (api.Side == EnumAppSide.Server)
                 {
                     var plr = targetEntity as EntityPlayer;
+                    // never hit
                     foreach (var style in barberProperties.transforms)
                         BarbershopModSystem?.TransformPart(plr.PlayerUID, style.part, style.from, style.to);
-                    // BarbershopModSystem?.NextStyleForPart(plr.PlayerUID, type);
                 }
             }
             else
@@ -71,21 +71,5 @@ namespace Barbershop
                 base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
             }
         }
-        /*
-        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling)
-        {
-            var ent = entitySel?.Entity ?? byEntity;
-
-            if (ent != null && ent is EntityPlayer && api.Side == EnumAppSide.Server)
-            {
-                var plr = ent as EntityPlayer;
-                var type = BarbershopModSystem.HairBase; // TODO: select which one gets changed
-                BarbershopModSystem?.NextStyleForPart(plr.PlayerUID, type);
-            }
-
-            handling = EnumHandling.PreventSubsequent;
-            return true;
-        }
-        */
     }
 }
