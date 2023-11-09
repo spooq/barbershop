@@ -89,7 +89,7 @@ namespace Barbershop
                         if (variants[i] == currentVariant)
                         {
                             int nxt = i + 1;
-                            if (i + 1 > variants.Length)
+                            if (nxt == variants.Length)
                                 nxt = 0;
 
                             bh.selectSkinPart(asp.Code, variants[nxt]);
