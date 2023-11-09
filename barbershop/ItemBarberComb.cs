@@ -3,7 +3,7 @@ using Vintagestory.API.MathTools;
 
 namespace Barbershop
 {
-    public class Comb : Item
+    public class ItemBarberComb : Item
     {
         public BarbershopModSystem BarbershopModSystem;
 
@@ -28,6 +28,7 @@ namespace Barbershop
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
+        /*
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             var ent = entitySel?.Entity ?? byEntity;
@@ -40,10 +41,7 @@ namespace Barbershop
         public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             var ent = entitySel?.Entity ?? byEntity;
-            if (api.Side == EnumAppSide.Server)
-            {
-                var a = 1;
-            }
+
             if (ent != null && ent is EntityPlayer && api.Side == EnumAppSide.Server)
             {
                 var plr = ent as EntityPlayer;
@@ -52,6 +50,6 @@ namespace Barbershop
             }
 
             return true;
-        }
+        }*/
     }
 }

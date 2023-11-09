@@ -49,8 +49,8 @@
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-  <Compile Remove="CollectibleBehaviorBarber.cs" />
   <None Remove="assets\barbershop\itemtypes\comb.json" />
+  <None Remove="assets\barbershop\itemtypes\razor.json" />
   <None Remove="assets\barbershop\textures\magicwand.png" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
