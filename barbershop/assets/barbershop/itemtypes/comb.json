@@ -9,7 +9,7 @@
       "name": "Barbershop",
       
       "properties": {
-        "target": "self",
+        "target": "both",
         "transforms": [
           {
             "part": "hairbase",
