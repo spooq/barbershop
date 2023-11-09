@@ -19,6 +19,7 @@ namespace Barbershop
         public IClientNetworkChannel Channel;
 
         public ICoreClientAPI capi;
+        public ICoreServerAPI sapi;
 
         public const string HairBase = "hairbase";
         public const string HairExtra = "hairextra";
@@ -29,6 +30,8 @@ namespace Barbershop
         public override void Start(ICoreAPI api)
         {
             base.Start(api);
+
+            CollectibleBehaviorBarber.BarbershopModSystem = this;
 
             api.Network
                 .RegisterChannel(Mod.Info.ModID)
@@ -49,6 +52,61 @@ namespace Barbershop
             Channel = api.Network.GetChannel(Mod.Info.ModID);
 
             api.Event.PlayerEntitySpawn += Event_PlayerEntitySpawn;
+        }
+
+        public void NextStyleForPart(string targetUid, string part)
+        {
+            var targetPlayer = sapi.World.PlayerByUid(targetUid) as IServerPlayer;
+            if (targetPlayer == null)
+                return;
+
+            // Always refresh in case something weird happens where the player changes entity or something.
+            var bh = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (bh == null)
+                return;
+
+            // Find current pieces
+            string currentVariant = null;
+            foreach (var appliedPart in bh.AppliedSkinParts)
+            {
+                if (appliedPart.Code.StartsWith(part))
+                {
+                    currentVariant = appliedPart.Code;
+                    break;
+                }
+            }
+            if (string.IsNullOrEmpty(currentVariant))
+                return;
+
+            // Increment style
+            foreach (var asp in bh.AvailableSkinParts)
+            {
+                if (asp.Code == part)
+                {
+                    var variants = asp.VariantsByCode.Keys.ToArray();
+                    for (int i = 0; i < variants.Length; i++)
+                    {
+                        if (variants[i] == currentVariant)
+                        {
+                            int nxt = i + 1;
+                            if (i + 1 > variants.Length)
+                                nxt = 0;
+
+                            bh.selectSkinPart(asp.Code, variants[nxt]);
+                            targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
+                            targetPlayer.BroadcastPlayerData(false);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void AssetsFinalize(ICoreAPI api)
+        {
+            foreach (var item in api.World.Items)
+                if (item is ItemShears || item.Tool == EnumTool.Shears)
+                    item.CollectibleBehaviors = item.CollectibleBehaviors.Append(new CollectibleBehaviorBarber(item)).ToArray();
         }
 
         public void Event_PlayerEntitySpawn(IClientPlayer byPlayer)
@@ -86,6 +144,10 @@ namespace Barbershop
 
         public override void StartServerSide(ICoreServerAPI api)
         {
+            base.StartServerSide(api);
+
+            sapi = api;
+
             api.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarbershopPacket>(updateStyle);
         }
@@ -96,7 +158,7 @@ namespace Barbershop
             if (bh == null) return;
             bh.selectSkinPart(packet.Name, packet.Value);
             fromPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-            fromPlayer.BroadcastPlayerData(true);
+            fromPlayer.BroadcastPlayerData(false);
         }
     }
 }
