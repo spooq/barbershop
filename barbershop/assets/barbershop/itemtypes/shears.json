@@ -1,85 +1,189 @@
 {
-	code: "scissors",
-	class: "ItemShears",
-	damagedby: ["blockbreaking", "attacking"],
-	tool: "shears",
-	attributes: {
-		handbook: {
-			groupBy: ["scissors-*"]
-		},
-		toolrackTransform: {
-			translation: { y: 0.7 },
-			rotation: { y: 180 },
-			scale: 1.5
-		},
-		groundStorageTransform: {
-			translation: { x: 0, y: -0.005, z: 0.035 },
-			rotation: { x: 26, y: 88, z: -87 },
-			scale: 0.88
-		}
-	},
-	behaviors: [{ 
-		name: "GroundStorable",
-		properties: {
-			layout: 'WallHalves',
-			wallOffY: 1,
-			sprintKey: true,
-			selectionBox: { x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.1, z2: 1 },
-			collisionBox: { x1: 0, y1: 0, z1: 0, x2: 0, y2: 0, z2: 0 },
-		}
-	}],
-	variantgroups: [
-		{ code: "metal", states: ["copper", "tinbronze", "bismuthbronze", "blackbronze", "gold", "silver", "iron", "meteoriciron", "steel" ] },
-	],
-	shape: { base: "item/tool/shears" },
-	heldTpHitAnimation: "shears",
-	textures: {
-		"metal": { base: "block/metal/ingot/{metal}" }
-	},
-	attackpowerbytype: {
+	"attackpowerbytype": {
+		"scissors-bismuthbronze": 1,
+		"scissors-blackbronze": 2.5,
 		"scissors-copper": 1,
 		"scissors-gold": 1,
-		"scissors-silver": 1,
-		"scissors-bismuthbronze": 1,
-		"scissors-tinbronze": 1.5,
-		"scissors-blackbronze": 2.5,
 		"scissors-iron": 3,
 		"scissors-meteoriciron": 3.25,
-		"scissors-steel": 3.5
+		"scissors-silver": 1,
+		"scissors-steel": 3.5,
+		"scissors-tinbronze": 1.5
 	},
-	durabilitybytype: {
-		"scissors-gold": 750,
-		"scissors-silver": 750,
-		"scissors-copper": 1000,
-		"scissors-tinbronze": 1750,
+	"attributes": {
+		"groundStorageTransform": {
+			"rotation": {
+				"x": 26,
+				"y": 88,
+				"z": -87
+			},
+			"scale": 0.88,
+			"translation": {
+				"x": 0,
+				"y": -0.005,
+				"z": 0.035
+			}
+		},
+		"handbook": {
+			"groupBy": [
+				"scissors-*"
+			]
+		},
+		"toolrackTransform": {
+			"rotation": {
+				"y": 180
+			},
+			"scale": 1.5,
+			"translation": {
+				"y": 0.7
+			}
+		}
+	},
+	"behaviors": [
+		{
+			"name": "GroundStorable",
+			"properties": {
+				"collisionBox": {
+					"x1": 0,
+					"x2": 0,
+					"y1": 0,
+					"y2": 0,
+					"z1": 0,
+					"z2": 0
+				},
+				"layout": "WallHalves",
+				"selectionBox": {
+					"x1": 0,
+					"x2": 1,
+					"y1": 0,
+					"y2": 0.1,
+					"z1": 0,
+					"z2": 1
+				},
+				"sprintKey": true,
+				"wallOffY": 1
+			}
+		}
+	],
+	"class": "ItemShears",
+	"code": "scissors",
+	"creativeinventory": {
+		"general": [
+			"*"
+		],
+		"items": [
+			"*"
+		],
+		"tools": [
+			"*"
+		]
+	},
+	"damagedby": [
+		"blockbreaking",
+		"attacking"
+	],
+	"durabilitybytype": {
 		"scissors-bismuthbronze": 2000,
 		"scissors-blackbronze": 2250,
+		"scissors-copper": 1000,
+		"scissors-gold": 750,
 		"scissors-iron": 3800,
 		"scissors-meteoriciron": 4500,
-		"scissors-steel": 9500
+		"scissors-silver": 750,
+		"scissors-steel": 9500,
+		"scissors-tinbronze": 1750
 	},
-	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
-	guiTransform: {
-		translation: { x: 0.5, y: 0, z: 0 },
-		rotation: { x: -89, y: 45, z: 33 },
-		origin: { x: 0.85, y: 0.4, z: 0.48 },
-		scale: 2.5
+	"fpHandTransform": {
+		"rotation": {
+			"x": -35,
+			"y": 15,
+			"z": 90
+		},
+		"scale": 2.45,
+		"translation": {
+			"x": -0.24,
+			"y": 0.1,
+			"z": 0.1
+		}
 	},
-	fpHandTransform: {
-		translation: { x: -0.24, y: 0.1, z: 0.1 },
-		rotation: { x: -35, y: 15, z: 90 },
-		scale: 2.45
+	"groundTransform": {
+		"origin": {
+			"x": 0.5,
+			"y": 0,
+			"z": 0.5
+		},
+		"rotation": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		},
+		"scale": 3.6,
+		"translation": {
+			"x": 0,
+			"y": 0,
+			"z": 0
+		}
 	},
-	groundTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 3.6
+	"guiTransform": {
+		"origin": {
+			"x": 0.85,
+			"y": 0.4,
+			"z": 0.48
+		},
+		"rotation": {
+			"x": -89,
+			"y": 45,
+			"z": 33
+		},
+		"scale": 2.5,
+		"translation": {
+			"x": 0.5,
+			"y": 0,
+			"z": 0
+		}
 	},
-	tpHandTransform: {
-		translation: { x: -0.9, y: -0.11, z: -0.35 },
-		rotation: { x: -10, y: 0, z: -25 },
-		origin: { x: 0.68, y: 0, z: 0.42 },
-		scale: 1
-	}
+	"heldTpHitAnimation": "shears",
+	"shape": {
+		"base": "item/tool/shears"
+	},
+	"textures": {
+		"metal": {
+			"base": "block/metal/ingot/{metal}"
+		}
+	},
+	"tool": "shears",
+	"tpHandTransform": {
+		"origin": {
+			"x": 0.68,
+			"y": 0,
+			"z": 0.42
+		},
+		"rotation": {
+			"x": -10,
+			"y": 0,
+			"z": -25
+		},
+		"scale": 1,
+		"translation": {
+			"x": -0.9,
+			"y": -0.11,
+			"z": -0.35
+		}
+	},
+	"variantgroups": [
+		{
+			"code": "metal",
+			"states": [
+				"copper",
+				"tinbronze",
+				"bismuthbronze",
+				"blackbronze",
+				"gold",
+				"silver",
+				"iron",
+				"meteoriciron",
+				"steel"
+			]
+		}
+	]
 }
