@@ -7,17 +7,19 @@ namespace Barbershop
     {
         public static BarbershopModSystem BarbershopModSystem;
 
-        ICoreServerAPI sapi;
+        ICoreAPI api;
 
         public CollectibleBehaviorBarber(CollectibleObject collObj) : base(collObj)
         {
         }
+
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
 
-            if (api is ICoreServerAPI)
-                sapi = (ICoreServerAPI)api;
+            this.api = api;
+
+            BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
@@ -26,7 +28,7 @@ namespace Barbershop
             {
                 handHandling = EnumHandHandling.Handled;
 
-                if (sapi != null)
+                if (api.Side == EnumAppSide.Server)
                 {
                     var plr = entitySel.Entity as EntityPlayer;
                     var type = BarbershopModSystem.HairBase; // TODO: select which one gets changed

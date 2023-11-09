@@ -31,8 +31,6 @@ namespace Barbershop
         {
             base.Start(api);
 
-            CollectibleBehaviorBarber.BarbershopModSystem = this;
-
             api.Network
                 .RegisterChannel(Mod.Info.ModID)
                 .RegisterMessageType<BarbershopPacket>();
