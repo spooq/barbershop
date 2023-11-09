@@ -1,4 +1,23 @@
 {
+	"class": "ItemShears",
+	"code": "scissors",
+	"tool": "shears",
+	"variantgroups": [
+		{
+			"code": "metal",
+			"states": [
+				"copper",
+				"tinbronze",
+				"bismuthbronze",
+				"blackbronze",
+				"gold",
+				"silver",
+				"iron",
+				"meteoriciron",
+				"steel"
+			]
+		}
+	],
 	"attackpowerbytype": {
 		"scissors-bismuthbronze": 1,
 		"scissors-blackbronze": 2.5,
@@ -65,8 +84,6 @@
 			}
 		}
 	],
-	"class": "ItemShears",
-	"code": "scissors",
 	"creativeinventory": {
 		"general": [
 			"*"
@@ -151,7 +168,6 @@
 			"base": "block/metal/ingot/{metal}"
 		}
 	},
-	"tool": "shears",
 	"tpHandTransform": {
 		"origin": {
 			"x": 0.68,
@@ -169,21 +185,5 @@
 			"y": -0.11,
 			"z": -0.35
 		}
-	},
-	"variantgroups": [
-		{
-			"code": "metal",
-			"states": [
-				"copper",
-				"tinbronze",
-				"bismuthbronze",
-				"blackbronze",
-				"gold",
-				"silver",
-				"iron",
-				"meteoriciron",
-				"steel"
-			]
-		}
-	]
+	}
 }
