@@ -122,7 +122,7 @@ namespace Barbershop
             var cmd = capi.ChatCommands.Create("barber")
                         .WithDescription("Barbershop main command")
                         .RequiresPlayer()
-                        .RequiresPrivilege(Privilege.chat);
+                        .RequiresPrivilege(Privilege.gamemode);
 
             foreach (var asp in skinMod.AvailableSkinParts)
             {
