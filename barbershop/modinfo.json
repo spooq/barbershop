@@ -1,0 +1,13 @@
+{
+    "type": "code",
+    "modid": "barbershop",
+    "name": "barbershop",
+    "authors": [
+        "Crabb"
+    ],
+    "description": "Cut hair and beards",
+    "version": "1.0.0",
+    "dependencies": {
+        "game": ""
+    }
+}
