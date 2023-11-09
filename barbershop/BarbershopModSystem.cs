@@ -8,11 +8,17 @@ using Vintagestory.GameContent;
 
 namespace Barbershop
 {
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
+    public class BarberPacket
+    {
+        public string targetUid;
+        public string code;
+    }
+
     public class BarbershopModSystem : ModSystem
     {
         public IClientNetworkChannel Channel;
 
-        public ICoreClientAPI capi;
         public ICoreServerAPI sapi;
 
         public const string HairBase = "hairbase";
@@ -31,14 +37,16 @@ namespace Barbershop
             base.Start(api);
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
+
+            api.Network
+                .RegisterChannel(Mod.Info.ModID)
+                .RegisterMessageType<BarberPacket>();
         }
 
 
         public override void StartClientSide(ICoreClientAPI api)
         {
             base.StartClientSide(api);
-
-            capi = api;
 
             Channel = api.Network.GetChannel(Mod.Info.ModID);
         }
@@ -48,21 +56,38 @@ namespace Barbershop
             base.StartServerSide(api);
 
             sapi = api;
+
+            api.Network.GetChannel(Mod.Info.ModID)
+                .SetMessageHandler<BarberPacket>(onTransformPart);
         }
 
-        public void TransformPart(string targetUid, string part, string from, string to)
+        private void onTransformPart(IServerPlayer fromPlayer, BarberPacket packet)
         {
-            var targetPlayer = sapi.World.PlayerByUid(targetUid) as IServerPlayer;
-            if (targetPlayer == null)
-                return;
+            var item = sapi.World.GetItem(new AssetLocation(packet.code));
+            if (item != null)
+            {
+                var targetPlayer = sapi.World.PlayerByUid(fromPlayer.PlayerUID) as IServerPlayer;
+                if (targetPlayer == null)
+                    return;
 
-            var bh = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (bh == null)
+                var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
+                foreach (var tf in itemBehaviour.barberProperties.transforms)
+                    TransformPart(targetPlayer, tf.part, tf.from, tf.to);
+
+                targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
+                targetPlayer.BroadcastPlayerData(false);
+            }
+        }
+
+        public void TransformPart(IServerPlayer targetPlayer, string part, string from, string to)
+        {
+            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
                 return;
 
             // Find current pieces
             string currentVariant = null;
-            foreach (var appliedPart in bh.AppliedSkinParts)
+            foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
             {
                 if (appliedPart.PartCode == part)
                 {
@@ -73,35 +98,29 @@ namespace Barbershop
             if (string.IsNullOrEmpty(currentVariant))
                 return;
 
-            if (!WildcardUtil.Match(currentVariant, from))
+            if (!WildcardUtil.Match(from, currentVariant))
                 return;
 
             // Change style
-            foreach (var asp in bh.AvailableSkinParts)
+            foreach (var asp in playerBehaviour.AvailableSkinParts)
             {
                 if (asp.Code == part)
                 {
-                    bh.selectSkinPart(asp.Code, to);
-                    targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-                    targetPlayer.BroadcastPlayerData(false);
+                    playerBehaviour.selectSkinPart(asp.Code, to);
                     return;
                 }
             }
         }
 
-        public void NextStyleForPart(string targetUid, string part)
+        public void NextStyleForPart(IServerPlayer targetPlayer, string part)
         {
-            var targetPlayer = sapi.World.PlayerByUid(targetUid) as IServerPlayer;
-            if (targetPlayer == null)
-                return;
-
-            var bh = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (bh == null)
+            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
                 return;
 
             // Find current pieces
             string currentVariant = null;
-            foreach (var appliedPart in bh.AppliedSkinParts)
+            foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
             {
                 if (appliedPart.PartCode == part)
                 {
@@ -113,7 +132,7 @@ namespace Barbershop
                 return;
 
             // Increment style
-            foreach (var asp in bh.AvailableSkinParts)
+            foreach (var asp in playerBehaviour.AvailableSkinParts)
             {
                 if (asp.Code == part)
                 {
@@ -126,7 +145,7 @@ namespace Barbershop
                             if (nxt == variants.Length)
                                 nxt = 0;
 
-                            bh.selectSkinPart(asp.Code, variants[nxt]);
+                            playerBehaviour.selectSkinPart(asp.Code, variants[nxt]);
                             targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                             targetPlayer.BroadcastPlayerData(false);
                             return;

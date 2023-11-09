@@ -4,7 +4,7 @@ using Vintagestory.API.Common.Entities;
 
 namespace Barbershop
 {
-    public class BarberTransforms
+    public class BarberTransform
     {
         public string part;
         public string from;
@@ -14,16 +14,14 @@ namespace Barbershop
     public class BarberProperties
     {
         public string target = "";
-        public List<BarberTransforms> transforms = new List<BarberTransforms>();
+        public List<BarberTransform> transforms = new List<BarberTransform>();
     }
 
     public class CollectibleBehaviorBarber : CollectibleBehavior
     {
         public static BarbershopModSystem BarbershopModSystem;
 
-        public static ICoreAPI api;
-
-        BarberProperties barberProperties = new BarberProperties();
+        public BarberProperties barberProperties = new BarberProperties();
 
         public CollectibleBehaviorBarber(CollectibleObject collObj) : base(collObj)
         {
@@ -40,8 +38,6 @@ namespace Barbershop
         {
             base.OnLoaded(api);
 
-            CollectibleBehaviorBarber.api = api;
-
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
@@ -55,16 +51,11 @@ namespace Barbershop
 
             if (targetEntity != null && targetEntity is EntityPlayer)
             {
-                handHandling = EnumHandHandling.Handled;
-                handling = EnumHandling.Handled;
-
-                if (api.Side == EnumAppSide.Server)
+                BarbershopModSystem.Channel.SendPacket(new BarberPacket
                 {
-                    var plr = targetEntity as EntityPlayer;
-                    // never hit
-                    foreach (var style in barberProperties.transforms)
-                        BarbershopModSystem?.TransformPart(plr.PlayerUID, style.part, style.from, style.to);
-                }
+                    targetUid = (targetEntity as EntityPlayer).PlayerUID,
+                    code = collObj.Code.ToString()
+                });
             }
             else
             {

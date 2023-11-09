@@ -16,7 +16,7 @@
             "to": "none"
           },
           {
-            "part": "moustache",
+            "part": "mustache",
             "from": "*",
             "to": "none"
           }

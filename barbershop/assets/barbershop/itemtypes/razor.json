@@ -16,7 +16,7 @@
             "to": "none"
           },
           {
-            "part": "moustache",
+            "part": "mustache",
             "from": "*",
             "to": "none"
           }
@@ -24,7 +24,7 @@
       }
     }
   ],
-  "shape": { "base": "game:item/tool/pickaxe" },
+  "shape": { "base": "game:item/tool/shears" },
   "textures": {
     "metal": { "base": "game:block/metal/ingot/uranium" }
   },
