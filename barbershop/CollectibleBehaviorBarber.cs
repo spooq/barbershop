@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 
 namespace Barbershop
 {
@@ -12,6 +13,7 @@ namespace Barbershop
 
     public class BarberProperties
     {
+        public string target = "";
         public List<BarberTransforms> transforms = new List<BarberTransforms>();
     }
 
@@ -45,14 +47,20 @@ namespace Barbershop
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            var ent = entitySel?.Entity ?? byEntity;
-            if (ent is EntityPlayer)
+            Entity targetEntity = entitySel?.Entity ?? byEntity;
+            if (barberProperties.target == "self")
+                targetEntity = byEntity;
+            else if (barberProperties.target == "other")
+                targetEntity = entitySel?.Entity;
+
+            if (targetEntity != null && targetEntity is EntityPlayer)
             {
-                handHandling = EnumHandHandling.PreventDefaultAction;
+                handHandling = EnumHandHandling.Handled;
+                handling = EnumHandling.PreventDefault;
 
                 if (api.Side == EnumAppSide.Server)
                 {
-                    var plr = ent as EntityPlayer;
+                    var plr = targetEntity as EntityPlayer;
                     foreach (var style in barberProperties.transforms)
                         BarbershopModSystem?.TransformPart(plr.PlayerUID, style.part, style.from, style.to);
                     // BarbershopModSystem?.NextStyleForPart(plr.PlayerUID, type);

@@ -6,8 +6,9 @@
   },
   "behaviors": [
     {
-      "name": "Barber",
+      "name": "Barbershop",
       "properties": {
+        "target": "self",
         "transforms": [
           {
             "part": "beard",
