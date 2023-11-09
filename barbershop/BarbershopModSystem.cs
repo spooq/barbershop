@@ -60,7 +60,6 @@ namespace Barbershop
             if (targetPlayer == null)
                 return;
 
-            // Always refresh in case something weird happens where the player changes entity or something.
             var bh = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
             if (bh == null)
                 return;
