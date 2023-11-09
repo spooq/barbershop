@@ -1,5 +1,5 @@
 {
-  "code": "razor",
+  "code": "comb",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
@@ -7,24 +7,55 @@
   "behaviors": [
     {
       "name": "Barbershop",
+      
       "properties": {
         "target": "self",
         "transforms": [
           {
-            "part": "beard",
-            "from": "*",
-            "to": "none"
+            "part": "hairbase",
+            "from": "messy",
+            "to": "classic"
           },
           {
-            "part": "mustache",
-            "from": "*",
-            "to": "none"
+            "part": "hairbase",
+            "from": "messy2",
+            "to": "dreadlocks"
+          },
+          {
+            "part": "hairextra",
+            "from": "shortmessybraid",
+            "to": "neatbraid"
+          },
+          {
+            "part": "hairextra",
+            "from": "unkempt",
+            "to": "tiedback"
+          },
+          {
+            "part": "hairextra",
+            "from": "snood",
+            "to": "largestickbun"
+          },
+          {
+            "part": "hairextra",
+            "from": "largestickbun",
+            "to": "elaboratestickbun"
+          },
+          {
+            "part": "hairextra",
+            "from": "sidebraids",
+            "to": "sidebuns"
+          },
+          {
+            "part": "hairextra",
+            "from": "sidebuns",
+            "to": "siderolls"
           }
         ]
       }
     }
   ],
-  "shape": { "base": "game:item/tool/pickaxe" },
+  "shape": { "base": "game:item/tool/shears" },
   "textures": {
     "metal": { "base": "game:block/metal/ingot/uranium" }
   },

@@ -1,5 +1,5 @@
 {
-  "code": "razor",
+  "code": "scissors",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
@@ -8,37 +8,17 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "self",
+        "target": "other",
         "transforms": [
           {
-            "part": "beard",
-            "from": "brd-mut15-wildchops",
-            "to": "brd-mut05-friendly"
-          },
-          {
-            "part": "beard",
-            "from": "brd-box20-full",
-            "to": "brd-box10-short"
-          },
-          {
-            "part": "beard",
-            "from": "brd-full10-shaggy",
-            "to": "brd-full05-cleanfull"
-          },
-          {
-            "part": "beard",
-            "from": "brd-full05-cleanfull",
-            "to": "brd-full01-trimmedfull"
-          },
-          {
-            "part": "beard",
+            "part": "hairextra",
             "from": "*",
             "to": "none"
           },
           {
-            "part": "mustache",
+            "part": "hairbase",
             "from": "*",
-            "to": "none"
+            "to": "bald"
           }
         ]
       }

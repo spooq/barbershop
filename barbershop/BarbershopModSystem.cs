@@ -1,4 +1,5 @@
 ﻿using ProtoBuf;
+using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -70,20 +71,22 @@ namespace Barbershop
                 if (targetPlayer == null)
                     return;
 
+                var appliedParts = new List<string>();
                 var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
                 foreach (var tf in itemBehaviour.barberProperties.transforms)
-                    TransformPart(targetPlayer, tf.part, tf.from, tf.to);
+                    if (!appliedParts.Contains(tf.part) && TransformPart(targetPlayer, tf.part, tf.from, tf.to))
+                        appliedParts.Add(tf.part);
 
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                 targetPlayer.BroadcastPlayerData(false);
             }
         }
 
-        public void TransformPart(IServerPlayer targetPlayer, string part, string from, string to)
+        public bool TransformPart(IServerPlayer targetPlayer, string part, string from, string to)
         {
             var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
             if (playerBehaviour == null)
-                return;
+                return false;
 
             // Find current pieces
             string currentVariant = null;
@@ -96,10 +99,10 @@ namespace Barbershop
                 }
             }
             if (string.IsNullOrEmpty(currentVariant))
-                return;
+                return false;
 
             if (!WildcardUtil.Match(from, currentVariant))
-                return;
+                return false;
 
             // Change style
             foreach (var asp in playerBehaviour.AvailableSkinParts)
@@ -107,9 +110,11 @@ namespace Barbershop
                 if (asp.Code == part)
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public void NextStyleForPart(IServerPlayer targetPlayer, string part)
