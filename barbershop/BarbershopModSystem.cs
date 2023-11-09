@@ -10,6 +10,7 @@ namespace Barbershop
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class BarbershopPacket
     {
+        public string Uid;
         public string Name;
         public string Value;
     }
@@ -34,6 +35,8 @@ namespace Barbershop
             api.Network
                 .RegisterChannel(Mod.Info.ModID)
                 .RegisterMessageType<BarbershopPacket>();
+
+            api.RegisterCollectibleBehaviorClass("CollectibleBehaviorBarber", typeof(CollectibleBehaviorBarber));
         }
 
         public override bool ShouldLoad(EnumAppSide forSide)
@@ -102,7 +105,7 @@ namespace Barbershop
         public override void AssetsFinalize(ICoreAPI api)
         {
             foreach (var item in api.World.Items)
-                if (item is ItemShears || item.Tool == EnumTool.Shears)
+                if (item is ItemCheese)
                     item.CollectibleBehaviors = item.CollectibleBehaviors.Append(new CollectibleBehaviorBarber(item)).ToArray();
         }
 

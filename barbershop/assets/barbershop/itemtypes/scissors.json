@@ -1,0 +1,89 @@
+{
+	"class": "ItemShears",
+	"code": "scissors",
+	"tool": "shears",
+	"creativeinventory": {
+		"tools": [ "*" ]
+	},
+	"behaviors": [
+		{
+			"name": "CollectibleBehaviorBarber"
+		}
+	],
+			"fpHandTransform": {
+				"rotation": {
+					"x": -35,
+					"y": 15,
+					"z": 90
+				},
+				"scale": 2.45,
+				"translation": {
+					"x": -0.24,
+					"y": 0.1,
+					"z": 0.1
+				}
+			},
+			"groundTransform": {
+				"origin": {
+					"x": 0.5,
+					"y": 0,
+					"z": 0.5
+				},
+				"rotation": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"scale": 3.6,
+				"translation": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				}
+			},
+			"guiTransform": {
+				"origin": {
+					"x": 0.85,
+					"y": 0.4,
+					"z": 0.48
+				},
+				"rotation": {
+					"x": -89,
+					"y": 45,
+					"z": 33
+				},
+				"scale": 2.5,
+				"translation": {
+					"x": 0.5,
+					"y": 0,
+					"z": 0
+				}
+			},
+			"heldTpHitAnimation": "shears",
+			"shape": {
+				"base": "game:item/tool/shears"
+			},
+			"textures": {
+				"metal": {
+					"base": "game:block/metal/ingot/nickel"
+				}
+			},
+			"tpHandTransform": {
+				"origin": {
+					"x": 0.68,
+					"y": 0,
+					"z": 0.42
+				},
+				"rotation": {
+					"x": -10,
+					"y": 0,
+					"z": -25
+				},
+				"scale": 1,
+				"translation": {
+					"x": -0.9,
+					"y": -0.11,
+					"z": -0.35
+				}
+			}
+		}

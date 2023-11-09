@@ -1,5 +1,4 @@
 ﻿using Vintagestory.API.Common;
-using Vintagestory.API.Server;
 
 namespace Barbershop
 {
@@ -7,7 +6,7 @@ namespace Barbershop
     {
         public static BarbershopModSystem BarbershopModSystem;
 
-        ICoreAPI api;
+        public static ICoreAPI api;
 
         public CollectibleBehaviorBarber(CollectibleObject collObj) : base(collObj)
         {
@@ -17,26 +16,30 @@ namespace Barbershop
         {
             base.OnLoaded(api);
 
-            this.api = api;
+            CollectibleBehaviorBarber.api = api;
 
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
-        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            if (entitySel != null && entitySel.Entity is EntityPlayer)
+            var ent = entitySel?.Entity ?? byEntity;
+            if (ent != null && ent is EntityPlayer)
             {
-                handHandling = EnumHandHandling.Handled;
-
-                if (api.Side == EnumAppSide.Server)
+                if (byEntity.World.Side == EnumAppSide.Server)
                 {
-                    var plr = entitySel.Entity as EntityPlayer;
+                    var plr = ent as EntityPlayer;
                     var type = BarbershopModSystem.HairBase; // TODO: select which one gets changed
-                    BarbershopModSystem.NextStyleForPart(plr.PlayerUID, type);
+                    BarbershopModSystem?.NextStyleForPart(plr.PlayerUID, type);
                 }
-            }
 
-            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
+                handHandling = EnumHandHandling.PreventDefault;
+                handling = EnumHandling.PreventDefault;
+            }
+            else
+            {
+                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
+            }
         }
     }
 }
