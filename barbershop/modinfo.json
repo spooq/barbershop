@@ -6,7 +6,7 @@
     "Crabb"
   ],
   "description": "Cut hair and beards",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "game": ""
   },
