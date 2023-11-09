@@ -36,7 +36,8 @@ namespace Barbershop
                 .RegisterChannel(Mod.Info.ModID)
                 .RegisterMessageType<BarbershopPacket>();
 
-            api.RegisterCollectibleBehaviorClass("CollectibleBehaviorBarber", typeof(CollectibleBehaviorBarber));
+            //api.RegisterCollectibleBehaviorClass("Barber", typeof(CollectibleBehaviorBarber));
+            api.RegisterItemClass("ItemComb", typeof(Comb));
         }
 
         public override bool ShouldLoad(EnumAppSide forSide)
@@ -55,6 +56,16 @@ namespace Barbershop
             api.Event.PlayerEntitySpawn += Event_PlayerEntitySpawn;
         }
 
+        public override void StartServerSide(ICoreServerAPI api)
+        {
+            base.StartServerSide(api);
+
+            sapi = api;
+
+            api.Network.GetChannel(Mod.Info.ModID)
+                .SetMessageHandler<BarbershopPacket>(updateStyle);
+        }
+
         public void NextStyleForPart(string targetUid, string part)
         {
             var targetPlayer = sapi.World.PlayerByUid(targetUid) as IServerPlayer;
@@ -69,7 +80,7 @@ namespace Barbershop
             string currentVariant = null;
             foreach (var appliedPart in bh.AppliedSkinParts)
             {
-                if (appliedPart.Code.StartsWith(part))
+                if (appliedPart.PartCode == part)
                 {
                     currentVariant = appliedPart.Code;
                     break;
@@ -102,12 +113,16 @@ namespace Barbershop
             }
         }
 
+        /*
         public override void AssetsFinalize(ICoreAPI api)
         {
+            base.AssetsFinalize(api);
+
             foreach (var item in api.World.Items)
                 if (item is ItemCheese)
                     item.CollectibleBehaviors = item.CollectibleBehaviors.Append(new CollectibleBehaviorBarber(item)).ToArray();
         }
+        */
 
         public void Event_PlayerEntitySpawn(IClientPlayer byPlayer)
         {
@@ -142,15 +157,6 @@ namespace Barbershop
             return new TextCommandResult { Status = EnumCommandStatus.Success };
         }
 
-        public override void StartServerSide(ICoreServerAPI api)
-        {
-            base.StartServerSide(api);
-
-            sapi = api;
-
-            api.Network.GetChannel(Mod.Info.ModID)
-                .SetMessageHandler<BarbershopPacket>(updateStyle);
-        }
 
         public void updateStyle(IServerPlayer fromPlayer, BarbershopPacket packet)
         {
