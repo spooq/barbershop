@@ -1,6 +1,7 @@
 ﻿using ProtoBuf;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
@@ -27,6 +28,10 @@ namespace Barbershop
         public const string HairColor = "haircolor";
         public const string Moustache = "mustache";
         public const string Beard = "beard";
+
+        // Server-side only, holds each part a player has edited. Stored in the world save file.
+        // Player name -> part growtime
+        public Dictionary<string, Dictionary<string, int>> PlayerEditedParts = new();
 
         public override bool ShouldLoad(EnumAppSide forSide)
         {
@@ -58,6 +63,9 @@ namespace Barbershop
 
             sapi = api;
 
+            sapi.Event.SaveGameLoaded += OnSaveGameLoading;
+            sapi.Event.GameWorldSave += OnSaveGameSaving;
+
             api.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarberPacket>(onTransformPart);
         }
@@ -74,8 +82,17 @@ namespace Barbershop
                 var appliedParts = new List<string>();
                 var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
                 foreach (var tf in itemBehaviour.barberProperties.transforms)
+                {
                     if (!appliedParts.Contains(tf.part) && TransformPart(targetPlayer, tf.part, tf.from, tf.to))
+                    {
                         appliedParts.Add(tf.part);
+
+                        // Remember what parts players have edited and reset their growtime
+                        if (!PlayerEditedParts.ContainsKey(fromPlayer.PlayerUID))
+                            PlayerEditedParts[fromPlayer.PlayerUID] = new();
+                        PlayerEditedParts[fromPlayer.PlayerUID][tf.part] = 0;
+                    }
+                }
 
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                 targetPlayer.BroadcastPlayerData(true);
@@ -158,6 +175,19 @@ namespace Barbershop
                     }
                 }
             }
+        }
+
+        private void OnSaveGameSaving()
+        {
+            sapi.WorldManager.SaveGame.StoreData(Mod.Info.ModID, SerializerUtil.Serialize(PlayerEditedParts));
+        }
+
+        private void OnSaveGameLoading()
+        {
+            byte[] data = sapi.WorldManager.SaveGame.GetData(Mod.Info.ModID);
+            PlayerEditedParts = data == null
+                ? new()
+                : SerializerUtil.Deserialize<Dictionary<string, Dictionary<string, int>>>(data);
         }
     }
 }
