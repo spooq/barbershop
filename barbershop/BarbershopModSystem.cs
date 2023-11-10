@@ -126,7 +126,7 @@ namespace Barbershop
 
                     var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     if (savedData == null)
-                        continue;
+                        OnCharacterReset(targetPlayer);
 
                     bool dirty = false;
                     if (savedData.timeSinceEdited[HairBase] > 0)
