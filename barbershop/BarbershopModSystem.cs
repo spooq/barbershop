@@ -16,6 +16,13 @@ namespace Barbershop
         public string code;
     }
 
+    public class PlayerBarbershopData
+    {
+        public bool HasHair = false;
+        public bool HasFacialHair = false;
+        public Dictionary<string, double> timeSinceEdited = new();
+    }
+
     public class BarbershopModSystem : ModSystem
     {
         public IClientNetworkChannel Channel;
@@ -28,10 +35,10 @@ namespace Barbershop
         public const string Moustache = "mustache";
         public const string Beard = "beard";
 
-        // Server-side only, holds each part a player has edited. Stored in the world save file.
-        // Player name -> elapsed day that part was set
-        double lastCheckOfElapsedDays = -1;
-        public Dictionary<string, Dictionary<string, double>> PlayerEditedParts;
+        // Server-side only
+        BarberProperties hairGrowth;
+        double lastCheckOfElapsedDays;
+        public Dictionary<string, PlayerBarbershopData> modSavedData;
 
         public override bool ShouldLoad(EnumAppSide forSide)
         {
@@ -63,21 +70,22 @@ namespace Barbershop
 
             sapi = api;
 
+            hairGrowth = new(); // TODO: load from file
+            modSavedData = new();
+
             sapi.Event.PlayerJoin += OnPlayerJoin;
             sapi.Event.SaveGameLoaded += OnSaveGameLoading;
             sapi.Event.GameWorldSave += OnSaveGameSaving;
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
-            PlayerEditedParts = new();
-
             api.Network.GetChannel(Mod.Info.ModID)
-                .SetMessageHandler<BarberPacket>(onTransformPart);
+                .SetMessageHandler<BarberPacket>(onApplyTransformsFromItem);
         }
 
         private void OnPlayerJoin(IServerPlayer byPlayer)
         {
-            if (!PlayerEditedParts.ContainsKey(byPlayer.PlayerUID))
-                PlayerEditedParts[byPlayer.PlayerUID] = new();
+            if (!modSavedData.ContainsKey(byPlayer.PlayerUID))
+                modSavedData[byPlayer.PlayerUID] = new();
         }
 
         private void OnServerRunGame()
@@ -93,33 +101,24 @@ namespace Barbershop
             {
                 lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
 
-                foreach (var onlinePlr in sapi.World.AllOnlinePlayers.Cast<IServerPlayer>())
+                foreach (var targetPlayer in sapi.World.AllOnlinePlayers.Cast<IServerPlayer>())
                 {
                     bool dirty = false;
-                    foreach (var part in PlayerEditedParts[onlinePlr.PlayerUID])
-                    {
-                        PlayerEditedParts[onlinePlr.PlayerUID][part.Key] += diff;
-
-                        // Grow and reset
-                        if (part.Value > 1f)
-                        {
-                            // when loop over all transforms remember to break after success
-                            switch (part.Key)
-                            {
-                                case Beard:
-                                    dirty |= TransformPart(onlinePlr, part.Key, "none", "brd-stubble");
-                                    break;
-                                case Moustache:
-                                    dirty |= TransformPart(onlinePlr, part.Key, "none", "mst-line01-pencil");
-                                    break;
-                            }
-                        }
-                    }
+                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairBase] > 0)
+                        dirty |= applyOneStepToPart(targetPlayer, HairBase, hairGrowth.hairbase);
+                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairExtra] > 0)
+                        dirty |= applyOneStepToPart(targetPlayer, HairExtra, hairGrowth.hairextra);
+                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairColor] > 0)
+                        dirty |= applyOneStepToPart(targetPlayer, HairColor, hairGrowth.haircolor);
+                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[Moustache] > 0 && modSavedData[targetPlayer.PlayerUID].HasFacialHair)
+                        dirty |= applyOneStepToPart(targetPlayer, Moustache, hairGrowth.moustache);
+                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[Beard] > 0 && modSavedData[targetPlayer.PlayerUID].HasFacialHair)
+                        dirty |= applyOneStepToPart(targetPlayer, Beard, hairGrowth.beard);
 
                     if (dirty)
                     {
-                        onlinePlr.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-                        onlinePlr.BroadcastPlayerData(false);
+                        targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
+                        targetPlayer.BroadcastPlayerData(false);
                     }
                 }
             }
@@ -127,37 +126,48 @@ namespace Barbershop
             sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
-        public void onTransformPart(IServerPlayer fromPlayer, BarberPacket packet)
+        public void onApplyTransformsFromItem(IServerPlayer fromPlayer, BarberPacket packet)
         {
-            var item = sapi.World.GetItem(new AssetLocation(packet.code));
-            if (item != null)
+            var item = sapi.World?.GetItem(new AssetLocation(packet.code));
+            if (item == null)
+                return;
+
+            var targetPlayer = sapi.World.PlayerByUid(packet.targetUid) as IServerPlayer;
+            if (targetPlayer == null)
+                return;
+
+            var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
+            if (itemBehaviour == null)
+                return;
+
+            ApplyBarberProperties(targetPlayer, itemBehaviour.barberProperties);
+        }
+
+        private void ApplyBarberProperties(IServerPlayer targetPlayer, BarberProperties barberProperties)
+        {
+            bool dirty = false;
+            dirty |= applyOneStepToPart(targetPlayer, HairBase, barberProperties.hairbase);
+            dirty |= applyOneStepToPart(targetPlayer, HairExtra, barberProperties.hairextra);
+            dirty |= applyOneStepToPart(targetPlayer, HairColor, barberProperties.haircolor);
+            dirty |= applyOneStepToPart(targetPlayer, Moustache, barberProperties.moustache);
+            dirty |= applyOneStepToPart(targetPlayer, Beard, barberProperties.beard);
+            if (dirty)
             {
-                var targetPlayer = sapi.World.PlayerByUid(packet.targetUid) as IServerPlayer;
-                if (targetPlayer == null)
-                    return;
-
-                var appliedParts = new SortedSet<string>();
-                var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
-
-                foreach (var tf in itemBehaviour.barberProperties.hairbase.transforms)
-                    if (!appliedParts.Contains(HairBase) && TransformPart(targetPlayer, HairBase, tf.from, tf.to))
-                        appliedParts.Add(HairBase);
-
-                foreach (var tf in itemBehaviour.barberProperties.hairbase.transforms)
-                    if (!appliedParts.Contains(HairExtra) && TransformPart(targetPlayer, HairExtra, tf.from, tf.to))
-                        appliedParts.Add(HairExtra);
-
-                foreach (var tf in itemBehaviour.barberProperties.moustache.transforms)
-                    if (!appliedParts.Contains(Moustache) && TransformPart(targetPlayer, Moustache, tf.from, tf.to))
-                        appliedParts.Add(Moustache);
-
-                foreach (var tf in itemBehaviour.barberProperties.beard.transforms)
-                    if (!appliedParts.Contains(Beard) && TransformPart(targetPlayer, Beard, tf.from, tf.to))
-                        appliedParts.Add(Beard);
-
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-                targetPlayer.BroadcastPlayerData(true);
+                targetPlayer.BroadcastPlayerData(false);
             }
+        }
+
+        public bool applyOneStepToPart(IServerPlayer targetPlayer, string part, BarberTransforms barberTransforms)
+        {
+            if (barberTransforms.transforms == null)
+                return false;
+
+            foreach (var tf in barberTransforms.transforms)
+                if (TransformPart(targetPlayer, part, tf.from, tf.to))
+                    return true;
+
+            return false;
         }
 
         public bool TransformPart(IServerPlayer targetPlayer, string part, string from, string to)
@@ -188,7 +198,7 @@ namespace Barbershop
                 if (asp.Code == part)
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
-                    PlayerEditedParts[targetPlayer.PlayerUID][part] = 0;
+                    modSavedData[targetPlayer.PlayerUID].timeSinceEdited[part] = 0;
                     return true;
                 }
             }
@@ -196,34 +206,17 @@ namespace Barbershop
             return false;
         }
 
-        public void SetPart(IServerPlayer targetPlayer, string part, string to)
-        {
-            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
-                return;
-
-            // Change style
-            foreach (var asp in playerBehaviour.AvailableSkinParts)
-            {
-                if (asp.Code == part)
-                {
-                    playerBehaviour.selectSkinPart(asp.Code, to);
-                    return;
-                }
-            }
-        }
-
         public void OnSaveGameSaving()
         {
-            sapi.WorldManager.SaveGame.StoreData(Mod.Info.ModID, SerializerUtil.Serialize(PlayerEditedParts));
+            sapi.WorldManager.SaveGame.StoreData(Mod.Info.ModID, SerializerUtil.Serialize(modSavedData));
         }
 
         public void OnSaveGameLoading()
         {
             byte[] data = sapi.WorldManager.SaveGame.GetData(Mod.Info.ModID);
-            PlayerEditedParts = data == null
+            modSavedData = data == null
                 ? new()
-                : SerializerUtil.Deserialize<Dictionary<string, Dictionary<string, double>>>(data);
+                : SerializerUtil.Deserialize<Dictionary<string, PlayerBarbershopData>>(data);
         }
     }
 }

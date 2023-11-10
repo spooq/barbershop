@@ -22,6 +22,7 @@ namespace Barbershop
         public BarberTransforms hairextra = new();
         public BarberTransforms beard = new();
         public BarberTransforms moustache = new();
+        public BarberTransforms haircolor = new();
     }
 
     public class CollectibleBehaviorBarber : CollectibleBehavior
