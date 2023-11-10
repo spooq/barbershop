@@ -84,34 +84,6 @@ namespace Barbershop
             sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
-        public void OnCharacterReset(IServerPlayer byPlayer)
-        {
-            var playerBehaviour = byPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
-                return;
-
-            var savedata = new PlayerBarbershopData
-            {
-                timeSinceEdited = new Dictionary<string, double>
-            {
-                { HairBase, 0 },
-                { HairExtra, 0 },
-                { HairColor, 0},
-                { Moustache, 0 },
-                { Beard, 0}
-            }
-            };
-
-            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
-            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
-
-            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Moustache) != "none";
-            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
-
-            byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
-        }
-
-
         public void OnTimePassed(float obj)
         {
             var diff = sapi.World.Calendar.ElapsedDays - lastCheckOfElapsedDays;
@@ -149,6 +121,33 @@ namespace Barbershop
             }
 
             sapi.World.RegisterCallback(OnTimePassed, 1000);
+        }
+
+        public void OnCharacterReset(IServerPlayer byPlayer)
+        {
+            var playerBehaviour = byPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
+                return;
+
+            var savedata = new PlayerBarbershopData
+            {
+                timeSinceEdited = new Dictionary<string, double>
+            {
+                { HairBase, 0 },
+                { HairExtra, 0 },
+                { HairColor, 0},
+                { Moustache, 0 },
+                { Beard, 0}
+            }
+            };
+
+            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
+            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
+
+            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Moustache) != "none";
+            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
+
+            byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
         }
 
         public void onApplyTransformsFromItem(IServerPlayer fromPlayer, BarberPacket packet)
@@ -228,19 +227,11 @@ namespace Barbershop
 
         private static string GetCurrentStyle(EntityBehaviorExtraSkinnable playerBehaviour, string part)
         {
-
-            // Find current style
-            string currentStyle = null;
             foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
-            {
                 if (appliedPart.PartCode == part)
-                {
-                    currentStyle = appliedPart.Code;
-                    break;
-                }
-            }
+                    return appliedPart.Code;
 
-            return currentStyle;
+            return null;
         }
     }
 }
