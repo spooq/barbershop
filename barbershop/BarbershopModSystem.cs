@@ -39,7 +39,6 @@ namespace Barbershop
         // Server-side only
         BarberProperties hairGrowth;
         double lastCheckOfElapsedDays;
-        public Dictionary<string, PlayerBarbershopData> modSavedData;
 
         public override bool ShouldLoad(EnumAppSide forSide)
         {
@@ -74,11 +73,15 @@ namespace Barbershop
             hairGrowth = JsonConvert.DeserializeObject<BarberProperties>(hairgrowAsset.ToText());
 
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
-            sapi.Event.SaveGameLoaded += OnSaveGameLoading;
-            sapi.Event.GameWorldSave += OnSaveGameSaving;
 
             api.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarberPacket>(onApplyTransformsFromItem);
+        }
+
+        private void OnServerRunGame()
+        {
+            lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
+            sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
         public void OnCharacterReset(IServerPlayer byPlayer)
@@ -87,7 +90,6 @@ namespace Barbershop
             if (playerBehaviour == null)
                 return;
 
-            double timeSpawned = sapi.World.Calendar.ElapsedDays;
             var savedata = new PlayerBarbershopData
             {
                 timeSinceEdited = new Dictionary<string, double>
@@ -106,14 +108,9 @@ namespace Barbershop
             savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Moustache) != "none";
             savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
 
-            modSavedData[byPlayer.PlayerUID] = savedata;
+            byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
         }
 
-        private void OnServerRunGame()
-        {
-            lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
-            sapi.World.RegisterCallback(OnTimePassed, 1000);
-        }
 
         public void OnTimePassed(float obj)
         {
@@ -124,19 +121,21 @@ namespace Barbershop
 
                 foreach (var targetPlayer in sapi.World.AllOnlinePlayers.Cast<IServerPlayer>())
                 {
-                    if (targetPlayer.ConnectionState != EnumClientState.Playing || !modSavedData.ContainsKey(targetPlayer.PlayerUID))
+                    if (targetPlayer.ConnectionState != EnumClientState.Playing)
                         continue;
 
+                    var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     bool dirty = false;
-                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairBase] > 0)
+
+                    if (savedData.timeSinceEdited[HairBase] > 0)
                         dirty |= applyOneStepToPart(targetPlayer, HairBase, hairGrowth.hairbase);
-                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairExtra] > 0)
+                    if (savedData.timeSinceEdited[HairExtra] > 0)
                         dirty |= applyOneStepToPart(targetPlayer, HairExtra, hairGrowth.hairextra);
-                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairColor] > 0)
+                    if (savedData.timeSinceEdited[HairColor] > 0)
                         dirty |= applyOneStepToPart(targetPlayer, HairColor, hairGrowth.haircolor);
-                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[Moustache] > 0 && modSavedData[targetPlayer.PlayerUID].HasFacialHair)
+                    if (savedData.timeSinceEdited[Moustache] > 0 && savedData.HasFacialHair)
                         dirty |= applyOneStepToPart(targetPlayer, Moustache, hairGrowth.moustache);
-                    if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[Beard] > 0 && modSavedData[targetPlayer.PlayerUID].HasFacialHair)
+                    if (savedData.timeSinceEdited[Beard] > 0 && savedData.HasFacialHair)
                         dirty |= applyOneStepToPart(targetPlayer, Beard, hairGrowth.beard);
 
                     if (dirty)
@@ -210,11 +209,13 @@ namespace Barbershop
                 if (asp.Code == part)
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
-                    modSavedData[targetPlayer.PlayerUID].timeSinceEdited[part] = 0;
 
+                    var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+                    savedData.timeSinceEdited[part] = 0;
                     // Player wants facial hair.
                     if (part == Beard || part == Moustache)
-                        modSavedData[targetPlayer.PlayerUID].HasFacialHair = true;
+                        savedData.HasFacialHair = true;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedData));
 
                     return true;
                 }
@@ -238,19 +239,6 @@ namespace Barbershop
             }
 
             return currentStyle;
-        }
-
-        public void OnSaveGameSaving()
-        {
-            sapi.WorldManager.SaveGame.StoreData(Mod.Info.ModID, SerializerUtil.Serialize(modSavedData));
-        }
-
-        public void OnSaveGameLoading()
-        {
-            byte[] data = sapi.WorldManager.SaveGame.GetData(Mod.Info.ModID);
-            modSavedData = data == null
-                ? new()
-                : SerializerUtil.Deserialize<Dictionary<string, PlayerBarbershopData>>(data);
         }
     }
 }
