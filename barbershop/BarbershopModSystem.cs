@@ -20,8 +20,8 @@ namespace Barbershop
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class PlayerBarbershopData
     {
-        public bool HasHair = false;
-        public bool HasFacialHair = false;
+        public bool CanGrowHair = false;
+        public bool CanGrowFacialHair = false;
         public Dictionary<string, double> timeSinceEdited;
     }
 
@@ -76,7 +76,7 @@ namespace Barbershop
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
             api.Network.GetChannel(Mod.Info.ModID)
-                .SetMessageHandler<BarberPacket>(onApplyTransformsFromItem);
+                .SetMessageHandler<BarberPacket>(ApplyBarberItemToPlayer);
         }
 
         private void OnServerRunGame()
@@ -105,12 +105,12 @@ namespace Barbershop
                     }
 
                     bool dirty = TryAndGrowHair(targetPlayer, HairColor, hairGrowth.haircolor, diff, ref saveData);
-                    if (saveData.HasHair)
+                    if (saveData.CanGrowHair)
                     {
                         dirty |= TryAndGrowHair(targetPlayer, HairBase, hairGrowth.hairbase, diff, ref saveData);
                         dirty |= TryAndGrowHair(targetPlayer, HairExtra, hairGrowth.hairextra, diff, ref saveData);
                     }
-                    if (saveData.HasFacialHair)
+                    if (saveData.CanGrowFacialHair)
                     {
                         dirty |= TryAndGrowHair(targetPlayer, Mustache, hairGrowth.mustache, diff, ref saveData);
                         dirty |= TryAndGrowHair(targetPlayer, Beard, hairGrowth.beard, diff, ref saveData);
@@ -125,15 +125,7 @@ namespace Barbershop
                 }
             }
 
-            sapi.World.RegisterCallback(OnTimePassed, 1000);
-        }
-
-        public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
-        {
-            saveData.timeSinceEdited[part] += diff;
-            if (saveData.timeSinceEdited[part] > 1)
-                return applyOneStepToPart(targetPlayer, part, barberProps);
-            return false;
+            sapi.World.RegisterCallback(OnTimePassed, 10000);
         }
 
         public void OnCharacterReset(IServerPlayer byPlayer)
@@ -154,16 +146,25 @@ namespace Barbershop
             }
             };
 
-            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
-            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
+            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
+            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
 
-            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Mustache) != "none";
-            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
+            savedata.CanGrowFacialHair |= GetCurrentStyle(playerBehaviour, Mustache) != "none";
+            savedata.CanGrowFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
 
             byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
         }
 
-        public void onApplyTransformsFromItem(IServerPlayer fromPlayer, BarberPacket packet)
+        public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
+        {
+            saveData.timeSinceEdited[part] += diff;
+            if (saveData.timeSinceEdited[part] > 1)
+                return ApplyFirstMatchingTransform(targetPlayer, part, barberProps);
+            return false;
+        }
+
+
+        public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
         {
             var item = sapi.World?.GetItem(new AssetLocation(packet.code));
             if (item == null)
@@ -177,17 +178,12 @@ namespace Barbershop
             if (itemBehaviour == null)
                 return;
 
-            ApplyBarberProperties(targetPlayer, itemBehaviour.barberProperties);
-        }
-
-        private void ApplyBarberProperties(IServerPlayer targetPlayer, BarberProperties barberProperties)
-        {
             bool dirty = false;
-            dirty |= applyOneStepToPart(targetPlayer, HairBase, barberProperties.hairbase);
-            dirty |= applyOneStepToPart(targetPlayer, HairExtra, barberProperties.hairextra);
-            dirty |= applyOneStepToPart(targetPlayer, HairColor, barberProperties.haircolor);
-            dirty |= applyOneStepToPart(targetPlayer, Mustache, barberProperties.mustache);
-            dirty |= applyOneStepToPart(targetPlayer, Beard, barberProperties.beard);
+            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairBase, itemBehaviour.barberProperties.hairbase);
+            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairExtra, itemBehaviour.barberProperties.hairextra);
+            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairColor, itemBehaviour.barberProperties.haircolor);
+            dirty |= ApplyFirstMatchingTransform(targetPlayer, Mustache, itemBehaviour.barberProperties.mustache);
+            dirty |= ApplyFirstMatchingTransform(targetPlayer, Beard, itemBehaviour.barberProperties.beard);
             if (dirty)
             {
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
@@ -195,19 +191,19 @@ namespace Barbershop
             }
         }
 
-        public bool applyOneStepToPart(IServerPlayer targetPlayer, string part, List<BarberTransform> barberTransforms)
+        public bool ApplyFirstMatchingTransform(IServerPlayer targetPlayer, string part, List<BarberTransform> barberTransforms)
         {
             if (barberTransforms == null)
                 return false;
 
             foreach (var tf in barberTransforms)
-                if (TransformPart(targetPlayer, part, tf.from, tf.to))
+                if (AttemptTransform(targetPlayer, part, tf.from, tf.to))
                     return true;
 
             return false;
         }
 
-        public bool TransformPart(IServerPlayer targetPlayer, string part, string from, string to)
+        public bool AttemptTransform(IServerPlayer targetPlayer, string part, string from, string to)
         {
             var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
             if (playerBehaviour == null)
@@ -226,9 +222,6 @@ namespace Barbershop
 
                     var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     savedData.timeSinceEdited[part] = 0;
-                    // Player wants facial hair.
-                    if (part == Beard || part == Mustache)
-                        savedData.HasFacialHair = true;
                     targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedData));
 
                     return true;
