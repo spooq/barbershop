@@ -8,6 +8,10 @@
     {
       "from": "short",
       "to": "unkempt"
+    },
+    {
+      "from": "dreadlocks",
+      "to": "messy"
     }
   ],
   "hairextra": [

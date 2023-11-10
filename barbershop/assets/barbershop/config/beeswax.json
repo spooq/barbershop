@@ -1,0 +1,19 @@
+{
+  "target": "self",
+  "hairbase": [
+    {
+      "from": "short",
+      "to": "shortspiky"
+    },
+    {
+      "from": "flowing",
+      "to": "iroquis"
+    }
+  ],
+  "hairextra": [
+  ],
+  "beard": [
+  ],
+  "mustache": [
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "code": "comb",
+  "code": "afrocomb",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
@@ -15,16 +15,12 @@
         "target": "both",
         "hairbase": [
           {
-            "from": "short",
-            "to": "shortparted"
+            "from": "longflowing",
+            "to": "afro"
           },
           {
-            "from": "messy2",
-            "to": "classic"
-          },
-          {
-            "from": "afro",
-            "to": "longflowing"
+            "from": "combed",
+            "to": "afro"
           }
         ]
       }

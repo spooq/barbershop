@@ -12,11 +12,23 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "both",
+        "target": "other",
         "hairbase": [
           {
-            "from": "messy2",
+            "from": "combed",
             "to": "dreadlocks"
+          },
+          {
+            "from": "longflowing",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "messy",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "dreadlocks",
+            "to": "longflowing"
           }
         ]
       }
