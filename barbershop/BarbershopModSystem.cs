@@ -17,6 +17,7 @@ namespace Barbershop
         public string code;
     }
 
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class PlayerBarbershopData
     {
         public bool HasHair = false;
@@ -98,7 +99,10 @@ namespace Barbershop
 
                     var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     if (savedData == null)
+                    {
                         OnCharacterReset(targetPlayer);
+                        continue;
+                    }
 
                     bool dirty = false;
                     if (savedData.timeSinceEdited[HairBase] > 0)
