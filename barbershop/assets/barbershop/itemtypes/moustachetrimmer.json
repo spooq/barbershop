@@ -16,6 +16,26 @@
         "target": "both",
         "mustache": [
           {
+            "from": "mst-u01-horseshoe",
+            "to": "mst-u05-stirrups"
+          },
+          {
+            "from": "mst-u05-stirrups",
+            "": "mst-line20-seagull"
+          },
+          {
+            "from": "mst-line20-seagull",
+            "to": "mst-line10-sheriff"
+          },
+          {
+            "from": "mst-line10-sheriff",
+            "to": "mst-line05-seargent"
+          },
+          {
+            "from": "mst-line05-seargent",
+            "to": "mst-line01-pencil"
+          },
+          {
             "from": "*",
             "to": "none"
           }
