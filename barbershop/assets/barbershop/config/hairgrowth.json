@@ -50,6 +50,10 @@
       "to": "brd-box20-full"
     },
     {
+      "from": "brd-box20-full",
+      "to": "brd-full10-shaggy"
+    },
+    {
       "from": "brd-chin01-mouche",
       "to": "brd-chin05-chinpatch"
     },
