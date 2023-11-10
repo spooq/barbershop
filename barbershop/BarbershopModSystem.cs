@@ -84,7 +84,7 @@ namespace Barbershop
         private void OnServerRunGame()
         {
             lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
-            sapi.World.RegisterCallback(OnTimePassed, 1000);// (int)(1000f * sapi.World.Calendar.SpeedOfTime * 60f * 60f * sapi.World.Calendar.CalendarSpeedMul));
+            sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
         public void OnTimePassed(float obj)
@@ -102,10 +102,18 @@ namespace Barbershop
                         PlayerEditedParts[onlinePlr.PlayerUID][part.Key] += diff;
 
                         // Grow and reset
-                        if (part.Key == Beard && part.Value > 1f)
+                        if (part.Value > 1f)
                         {
                             // when loop over all transforms remember to break after success
-                            dirty |= TransformPart(onlinePlr, part.Key, "none", "brd-stubble"); // TODO!
+                            switch (part.Key)
+                            {
+                                case Beard:
+                                    dirty |= TransformPart(onlinePlr, part.Key, "none", "brd-stubble");
+                                    break;
+                                case Moustache:
+                                    dirty |= TransformPart(onlinePlr, part.Key, "none", "mst-line01-pencil");
+                                    break;
+                            }
                         }
                     }
 
@@ -132,17 +140,8 @@ namespace Barbershop
                 var appliedParts = new SortedSet<string>();
                 var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
                 foreach (var tf in itemBehaviour.barberProperties.transforms)
-                {
                     if (!appliedParts.Contains(tf.part) && TransformPart(targetPlayer, tf.part, tf.from, tf.to))
-                    {
                         appliedParts.Add(tf.part);
-
-                        // Remember what parts players have edited and reset their growtime
-                        //if (!PlayerEditedParts.ContainsKey(targetPlayer.PlayerUID))
-                            //PlayerEditedParts[targetPlayer.PlayerUID] = new();
-                        //PlayerEditedParts[targetPlayer.PlayerUID][tf.part] = 0;
-                    }
-                }
 
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                 targetPlayer.BroadcastPlayerData(true);
@@ -198,48 +197,6 @@ namespace Barbershop
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
                     return;
-                }
-            }
-        }
-        public void NextStyleForPart(IServerPlayer targetPlayer, string part)
-        {
-            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
-                return;
-
-            // Find current pieces
-            string currentVariant = null;
-            foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
-            {
-                if (appliedPart.PartCode == part)
-                {
-                    currentVariant = appliedPart.Code;
-                    break;
-                }
-            }
-            if (string.IsNullOrEmpty(currentVariant))
-                return;
-
-            // Increment style
-            foreach (var asp in playerBehaviour.AvailableSkinParts)
-            {
-                if (asp.Code == part)
-                {
-                    var variants = asp.VariantsByCode.Keys.ToArray();
-                    for (int i = 0; i < variants.Length; i++)
-                    {
-                        if (variants[i] == currentVariant)
-                        {
-                            int nxt = i + 1;
-                            if (nxt == variants.Length)
-                                nxt = 0;
-
-                            playerBehaviour.selectSkinPart(asp.Code, variants[nxt]);
-                            targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-                            targetPlayer.BroadcastPlayerData(false);
-                            return;
-                        }
-                    }
                 }
             }
         }
