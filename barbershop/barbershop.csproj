@@ -49,6 +49,7 @@
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
+  <None Remove="assets\barbershop\config\hairgrowth.json" />
   <None Remove="assets\barbershop\itemtypes\comb.json" />
   <None Remove="assets\barbershop\itemtypes\dreadbeads.json" />
   <None Remove="assets\barbershop\itemtypes\hairhook.json" />
