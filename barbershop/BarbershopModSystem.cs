@@ -97,29 +97,31 @@ namespace Barbershop
                     if (targetPlayer.ConnectionState != EnumClientState.Playing)
                         continue;
 
-                    var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
-                    if (savedData == null)
+                    var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+                    if (saveData == null)
                     {
                         OnCharacterReset(targetPlayer);
                         continue;
                     }
 
-                    bool dirty = TryAndGrowHair(targetPlayer, HairColor, hairGrowth.haircolor, diff, ref savedData);
-                    if (savedData.HasHair)
+                    bool dirty = TryAndGrowHair(targetPlayer, HairColor, hairGrowth.haircolor, diff, ref saveData);
+                    if (saveData.HasHair)
                     {
-                        dirty |= TryAndGrowHair(targetPlayer, HairBase, hairGrowth.hairbase, diff, ref savedData);
-                        dirty |= TryAndGrowHair(targetPlayer, HairExtra, hairGrowth.hairextra, diff, ref savedData);
+                        dirty |= TryAndGrowHair(targetPlayer, HairBase, hairGrowth.hairbase, diff, ref saveData);
+                        dirty |= TryAndGrowHair(targetPlayer, HairExtra, hairGrowth.hairextra, diff, ref saveData);
                     }
-                    if (savedData.HasFacialHair)
+                    if (saveData.HasFacialHair)
                     {
-                        dirty |= TryAndGrowHair(targetPlayer, Mustache, hairGrowth.mustache, diff, ref savedData);
-                        dirty |= TryAndGrowHair(targetPlayer, Beard, hairGrowth.beard, diff, ref savedData);
+                        dirty |= TryAndGrowHair(targetPlayer, Mustache, hairGrowth.mustache, diff, ref saveData);
+                        dirty |= TryAndGrowHair(targetPlayer, Beard, hairGrowth.beard, diff, ref saveData);
                     }
                     if (dirty)
                     {
                         targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                         targetPlayer.BroadcastPlayerData(false);
                     }
+
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
                 }
             }
 
