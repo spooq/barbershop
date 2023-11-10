@@ -36,6 +36,10 @@
             "to": "mst-line01-pencil"
           },
           {
+            "from": "mst-walrus30-fat",
+            "to": "mst-walrus05-neat"
+          }
+          {
             "from": "*",
             "to": "none"
           }
