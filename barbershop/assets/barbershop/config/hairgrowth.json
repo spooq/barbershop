@@ -35,15 +35,15 @@
     },
     {
       "from": "brd-box01-chincurtain",
-      "to": "brd-box05-anchor"
+      "to": "brd-box10-short"
     },
     {
       "from": "brd-box05-anchor",
-      "to": "brd-box07-ducktail"
+      "to": "brd-box10-short"
     },
     {
       "from": "brd-box07-ducktail",
-      "to": "brd-box10-short"
+      "to": "brd-box20-full"
     },
     {
       "from": "brd-box10-short",
@@ -76,6 +76,18 @@
     {
       "from": "brd-side05-sideburns",
       "to": "brd-side15-sidewhiskers"
+    },
+    {
+      "from": "brd-wisp10-wiseman",
+      "to": "brd-full01-trimmedfull"
+    },
+    {
+      "from": "brd-full01-trimmedfull",
+      "to": "brd-full05-cleanfull"
+    },
+    {
+      "from": "brd-full05-cleanfull",
+      "to": "brd-full10-shaggy"
     }
   ],
   "mustache": [

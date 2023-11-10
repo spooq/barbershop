@@ -17,11 +17,15 @@
         "beard": [
           {
             "from": "brd-mut15-wildchops",
+            "to": "brd-mut10-muttonchops"
+          },
+          {
+            "from": "brd-mut10-muttonchops",
             "to": "brd-mut05-friendly"
           },
           {
-            "from": "brd-box20-full",
-            "to": "brd-box10-short"
+            "from": "brd-mut05-friendly",
+            "to": "none"
           },
           {
             "from": "brd-full10-shaggy",
@@ -30,6 +34,18 @@
           {
             "from": "brd-full05-cleanfull",
             "to": "brd-full01-trimmedfull"
+          },
+          {
+            "from": "brd-full01-trimmedfull",
+            "to": "brd-wisp10-wiseman"
+          },
+          {
+            "from": "brd-box10-short",
+            "to": "brd-box05-anchor"
+          },
+          {
+            "from": "brd-box20-full",
+            "to": "brd-box07-ducktail"
           },
           {
             "from": "*",
