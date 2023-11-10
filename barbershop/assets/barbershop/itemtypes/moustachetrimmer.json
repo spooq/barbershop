@@ -38,7 +38,7 @@
           {
             "from": "mst-walrus30-fat",
             "to": "mst-walrus05-neat"
-          }
+          },
           {
             "from": "*",
             "to": "none"
