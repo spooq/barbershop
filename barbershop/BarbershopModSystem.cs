@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using Newtonsoft.Json;
+using ProtoBuf;
 using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Client;
@@ -20,7 +21,7 @@ namespace Barbershop
     {
         public bool HasHair = false;
         public bool HasFacialHair = false;
-        public Dictionary<string, double> timeSinceEdited = new();
+        public Dictionary<string, double> timeSinceEdited;
     }
 
     public class BarbershopModSystem : ModSystem
@@ -56,7 +57,6 @@ namespace Barbershop
                 .RegisterMessageType<BarberPacket>();
         }
 
-
         public override void StartClientSide(ICoreClientAPI api)
         {
             base.StartClientSide(api);
@@ -70,22 +70,43 @@ namespace Barbershop
 
             sapi = api;
 
-            hairGrowth = new(); // TODO: load from file
-            modSavedData = new();
+            var hairgrowAsset = sapi.Assets.Get("barbershop:config/hairgrowth.json");
+            hairGrowth = JsonConvert.DeserializeObject<BarberProperties>(hairgrowAsset.ToText());
 
-            sapi.Event.PlayerJoin += OnPlayerJoin;
+            sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
             sapi.Event.SaveGameLoaded += OnSaveGameLoading;
             sapi.Event.GameWorldSave += OnSaveGameSaving;
-            sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
             api.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarberPacket>(onApplyTransformsFromItem);
         }
 
-        private void OnPlayerJoin(IServerPlayer byPlayer)
+        public void OnCharacterReset(IServerPlayer byPlayer)
         {
-            if (!modSavedData.ContainsKey(byPlayer.PlayerUID))
-                modSavedData[byPlayer.PlayerUID] = new();
+            var playerBehaviour = byPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
+                return;
+
+            double timeSpawned = sapi.World.Calendar.ElapsedDays;
+            var savedata = new PlayerBarbershopData
+            {
+                timeSinceEdited = new Dictionary<string, double>
+            {
+                { HairBase, timeSpawned },
+                { HairExtra, timeSpawned },
+                { HairColor, timeSpawned},
+                { Moustache, timeSpawned },
+                { Beard, timeSpawned}
+            }
+            };
+
+            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
+            savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
+
+            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Moustache) != "none";
+            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
+
+            modSavedData[byPlayer.PlayerUID] = savedata;
         }
 
         private void OnServerRunGame()
@@ -103,6 +124,9 @@ namespace Barbershop
 
                 foreach (var targetPlayer in sapi.World.AllOnlinePlayers.Cast<IServerPlayer>())
                 {
+                    if (targetPlayer.ConnectionState != EnumClientState.Playing || !modSavedData.ContainsKey(targetPlayer.PlayerUID))
+                        continue;
+
                     bool dirty = false;
                     if (modSavedData[targetPlayer.PlayerUID].timeSinceEdited[HairBase] > 0)
                         dirty |= applyOneStepToPart(targetPlayer, HairBase, hairGrowth.hairbase);
@@ -176,20 +200,8 @@ namespace Barbershop
             if (playerBehaviour == null)
                 return false;
 
-            // Find current pieces
-            string currentVariant = null;
-            foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
-            {
-                if (appliedPart.PartCode == part)
-                {
-                    currentVariant = appliedPart.Code;
-                    break;
-                }
-            }
-            if (string.IsNullOrEmpty(currentVariant))
-                return false;
-
-            if (!WildcardUtil.Match(from, currentVariant))
+            string currentStyle = GetCurrentStyle(playerBehaviour, part);
+            if (string.IsNullOrEmpty(currentStyle) || !WildcardUtil.Match(from, currentStyle))
                 return false;
 
             // Change style
@@ -199,11 +211,33 @@ namespace Barbershop
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
                     modSavedData[targetPlayer.PlayerUID].timeSinceEdited[part] = 0;
+
+                    // Player wants facial hair.
+                    if (part == Beard || part == Moustache)
+                        modSavedData[targetPlayer.PlayerUID].HasFacialHair = true;
+
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private static string GetCurrentStyle(EntityBehaviorExtraSkinnable playerBehaviour, string part)
+        {
+
+            // Find current style
+            string currentStyle = null;
+            foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
+            {
+                if (appliedPart.PartCode == part)
+                {
+                    currentStyle = appliedPart.Code;
+                    break;
+                }
+            }
+
+            return currentStyle;
         }
 
         public void OnSaveGameSaving()
