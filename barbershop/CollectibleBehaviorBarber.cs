@@ -10,19 +10,14 @@ namespace Barbershop
         public string to;
     }
 
-    public class BarberTransforms
-    {
-        public List<BarberTransform> transforms;
-    }
-
     public class BarberProperties
     {
         public string target = "";
-        public BarberTransforms hairbase = new();
-        public BarberTransforms hairextra = new();
-        public BarberTransforms beard = new();
-        public BarberTransforms moustache = new();
-        public BarberTransforms haircolor = new();
+        public List<BarberTransform> hairbase = new();
+        public List<BarberTransform> hairextra = new();
+        public List<BarberTransform> beard = new();
+        public List<BarberTransform> moustache = new();
+        public List<BarberTransform> haircolor = new();
     }
 
     public class CollectibleBehaviorBarber : CollectibleBehavior

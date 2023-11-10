@@ -182,12 +182,12 @@ namespace Barbershop
             }
         }
 
-        public bool applyOneStepToPart(IServerPlayer targetPlayer, string part, BarberTransforms barberTransforms)
+        public bool applyOneStepToPart(IServerPlayer targetPlayer, string part, List<BarberTransform> barberTransforms)
         {
-            if (barberTransforms.transforms == null)
+            if (barberTransforms == null)
                 return false;
 
-            foreach (var tf in barberTransforms.transforms)
+            foreach (var tf in barberTransforms)
                 if (TransformPart(targetPlayer, part, tf.from, tf.to))
                     return true;
 
