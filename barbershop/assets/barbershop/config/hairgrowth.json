@@ -1,39 +1,42 @@
 {
   "transforms": [
     {
-      "part": "hairbase",
-      "from": "bald",
-      "to": "short"
-    },
-    {
-      "part": "hairbase",
-      "from": "short",
-      "to": "unkempt"
-    },
-    {
-      "part": "hairextra",
-      "from": "none",
-      "to": "unkempt"
-    },
-    {
-      "part": "beard",
-      "from": "none",
-      "to": "brd-stubble"
-    },
-    {
-      "part": "beard",
-      "from": "brd-stubble",
-      "to": "brd-box10-short"
-    },
-    {
-      "part": "beard",
-      "from": "brd-stubble",
-      "to": "brd-full10-shaggy"
-    },
-    {
-      "part": "mustache",
-      "from": "none",
-      "to": "mst-line01-pencil"
+      "hairbase": [
+        {
+          "from": "bald",
+          "to": "short"
+        },
+        {
+          "from": "short",
+          "to": "unkempt"
+        }
+      ],
+      "hairextra": [
+        {
+          "from": "none",
+          "to": "unkempt"
+        }
+      ],
+      "beard": [
+        {
+          "from": "none",
+          "to": "brd-stubble"
+        },
+        {
+          "from": "brd-stubble",
+          "to": "brd-box10-short"
+        },
+        {
+          "from": "brd-stubble",
+          "to": "brd-full10-shaggy"
+        }
+      ],
+      "mustache": [
+        {
+          "from": "none",
+          "to": "mst-line01-pencil"
+        }
+      ]
     }
   ]
 }

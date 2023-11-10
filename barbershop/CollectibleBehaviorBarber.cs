@@ -6,15 +6,22 @@ namespace Barbershop
 {
     public class BarberTransform
     {
-        public string part;
         public string from;
         public string to;
+    }
+
+    public class BarberTransforms
+    {
+        public List<BarberTransform> transforms;
     }
 
     public class BarberProperties
     {
         public string target = "";
-        public List<BarberTransform> transforms = new List<BarberTransform>();
+        public BarberTransforms hairbase = new();
+        public BarberTransforms hairextra = new();
+        public BarberTransforms beard = new();
+        public BarberTransforms moustache = new();
     }
 
     public class CollectibleBehaviorBarber : CollectibleBehavior
@@ -43,7 +50,7 @@ namespace Barbershop
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            Entity targetEntity = entitySel?.Entity ?? byEntity;
+            Entity targetEntity = entitySel?.Entity ?? byEntity; //both is default
             if (barberProperties.target == "self")
                 targetEntity = byEntity;
             else if (barberProperties.target == "other")

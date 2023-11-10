@@ -1,28 +1,43 @@
 {
-  "code": "hairhook",
+  "code": "beardtrimmer",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/comb" },
+  "shape": { "base": "barbershop:item/razor" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" }
+    "wood": { "base": "game:block/wood/debarked/larch" },
+    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
   },
   "behaviors": [
     {
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": [
-          {
-            "part": "hairbase",
-            "styling": [
-              {
-                "from": "classic",
-                "to": "neatbraid"
-              }
-            ]
-          }
+        "transforms": {
+          "beard": [
+            {
+              "from": "brd-mut15-wildchops",
+              "to": "brd-mut05-friendly"
+            },
+            {
+              "from": "brd-box20-full",
+              "to": "brd-box10-short"
+            },
+            {
+              "from": "brd-full10-shaggy",
+              "to": "brd-full05-cleanfull"
+            },
+            {
+              "from": "brd-full05-cleanfull",
+              "to": "brd-full01-trimmedfull"
+            },
+            {
+              "from": "*",
+              "to": "none"
+            }
+          ]
+        }
       }
     }
   ],

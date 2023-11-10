@@ -1,12 +1,13 @@
 {
-  "code": "hairhook",
+  "code": "moustachetrimmer",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/comb" },
+  "shape": { "base": "barbershop:item/razor" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" }
+    "wood": { "base": "game:block/wood/debarked/larch" },
+    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
   },
   "behaviors": [
     {
@@ -15,14 +16,14 @@
         "target": "both",
         "transforms": [
           {
-            "part": "hairbase",
-            "styling": [
+            "mustache": [
               {
-                "from": "classic",
-                "to": "neatbraid"
+                "from": "*",
+                "to": "none"
               }
             ]
           }
+        ]
       }
     }
   ],

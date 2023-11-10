@@ -138,9 +138,22 @@ namespace Barbershop
 
                 var appliedParts = new SortedSet<string>();
                 var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
-                foreach (var tf in itemBehaviour.barberProperties.transforms)
-                    if (!appliedParts.Contains(tf.part) && TransformPart(targetPlayer, tf.part, tf.from, tf.to))
-                        appliedParts.Add(tf.part);
+
+                foreach (var tf in itemBehaviour.barberProperties.hairbase.transforms)
+                    if (!appliedParts.Contains(HairBase) && TransformPart(targetPlayer, HairBase, tf.from, tf.to))
+                        appliedParts.Add(HairBase);
+
+                foreach (var tf in itemBehaviour.barberProperties.hairbase.transforms)
+                    if (!appliedParts.Contains(HairExtra) && TransformPart(targetPlayer, HairExtra, tf.from, tf.to))
+                        appliedParts.Add(HairExtra);
+
+                foreach (var tf in itemBehaviour.barberProperties.moustache.transforms)
+                    if (!appliedParts.Contains(Moustache) && TransformPart(targetPlayer, Moustache, tf.from, tf.to))
+                        appliedParts.Add(Moustache);
+
+                foreach (var tf in itemBehaviour.barberProperties.beard.transforms)
+                    if (!appliedParts.Contains(Beard) && TransformPart(targetPlayer, Beard, tf.from, tf.to))
+                        appliedParts.Add(Beard);
 
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                 targetPlayer.BroadcastPlayerData(true);
