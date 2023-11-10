@@ -16,10 +16,10 @@
         "hairbase": [
           {
             "from": "short",
-            "to": "shortparted"
+            "to": "short-parted"
           },
           {
-            "from": "shortparted",
+            "from": "short-parted",
             "to": "short"
           },
           {
