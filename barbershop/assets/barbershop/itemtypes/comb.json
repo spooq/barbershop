@@ -26,6 +26,12 @@
             "from": "afro",
             "to": "longflowing"
           }
+        ],
+        "hairextra": [
+          {
+            "from": "unkempt",
+            "to": "none"
+          }
         ]
       }
     }

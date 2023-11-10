@@ -22,6 +22,12 @@
             "from": "combed",
             "to": "afro"
           }
+        ],
+        "hairextra": [
+          {
+            "from": "unkempt",
+            "to": "none"
+          }
         ]
       }
     }
