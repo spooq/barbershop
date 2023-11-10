@@ -13,9 +13,8 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": [
+        "hairbase": [
           {
-            "part": "hairbase",
             "from": "messy2",
             "to": "dreadlocks"
           }

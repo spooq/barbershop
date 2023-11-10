@@ -13,15 +13,10 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": [
+        "hairbase": [
           {
-            "part": "hairbase",
-            "styling": [
-              {
-                "from": "classic",
-                "to": "neatbraid"
-              }
-            ]
+            "from": "classic",
+            "to": "neatbraid"
           }
         ]
       }

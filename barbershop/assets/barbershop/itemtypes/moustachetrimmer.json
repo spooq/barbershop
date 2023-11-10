@@ -14,14 +14,10 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": [
+        "mustache": [
           {
-            "mustache": [
-              {
-                "from": "*",
-                "to": "none"
-              }
-            ]
+            "from": "*",
+            "to": "none"
           }
         ]
       }

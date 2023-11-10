@@ -13,13 +13,12 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": {
-          "hairbase": {
-
-            "from": "classic",
-            "to": "dreadlocks"
+        "hairbase": [
+          {
+            "from": "messy",
+            "to": "classic"
           }
-        }
+        ]
       }
     }
   ],

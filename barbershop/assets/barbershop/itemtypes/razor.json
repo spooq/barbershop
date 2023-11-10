@@ -14,20 +14,18 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": {
-          "beard": [
-            {
-              "from": "*",
-              "to": "none"
-            }
-          ],
-          "mustache": [
-            {
-              "from": "*",
-              "to": "none"
-            }
-          ]
-        }
+        "beard": [
+          {
+            "from": "*",
+            "to": "none"
+          }
+        ],
+        "mustache": [
+          {
+            "from": "*",
+            "to": "none"
+          }
+        ]
       }
     }
   ],

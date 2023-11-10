@@ -14,30 +14,28 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "transforms": {
-          "beard": [
-            {
-              "from": "brd-mut15-wildchops",
-              "to": "brd-mut05-friendly"
-            },
-            {
-              "from": "brd-box20-full",
-              "to": "brd-box10-short"
-            },
-            {
-              "from": "brd-full10-shaggy",
-              "to": "brd-full05-cleanfull"
-            },
-            {
-              "from": "brd-full05-cleanfull",
-              "to": "brd-full01-trimmedfull"
-            },
-            {
-              "from": "*",
-              "to": "none"
-            }
-          ]
-        }
+        "beard": [
+          {
+            "from": "brd-mut15-wildchops",
+            "to": "brd-mut05-friendly"
+          },
+          {
+            "from": "brd-box20-full",
+            "to": "brd-box10-short"
+          },
+          {
+            "from": "brd-full10-shaggy",
+            "to": "brd-full05-cleanfull"
+          },
+          {
+            "from": "brd-full05-cleanfull",
+            "to": "brd-full01-trimmedfull"
+          },
+          {
+            "from": "*",
+            "to": "none"
+          }
+        ]
       }
     }
   ],
