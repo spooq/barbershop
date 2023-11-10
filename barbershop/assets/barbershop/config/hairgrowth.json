@@ -31,11 +31,51 @@
     },
     {
       "from": "brd-stubble",
+      "to": "brd-box01-chincurtain"
+    },
+    {
+      "from": "brd-box01-chincurtain",
+      "to": "brd-box05-anchor"
+    },
+    {
+      "from": "brd-box05-anchor",
+      "to": "brd-box07-ducktail"
+    },
+    {
+      "from": "brd-box07-ducktail",
       "to": "brd-box10-short"
     },
     {
       "from": "brd-box10-short",
-      "to": "brd-full10-shaggy"
+      "to": "brd-box20-full"
+    },
+    {
+      "from": "brd-chin01-mouche",
+      "to": "brd-chin05-chinpatch"
+    },
+    {
+      "from": "brd-chin05-chinpatch",
+      "to": "brd-chin10-chinpuff"
+    },
+    {
+      "from": "brd-chin10-chinpuff",
+      "to": "brd-chin15-goatee"
+    },
+    {
+      "from": "brd-chin15-goatee",
+      "to": "brd-chin20-goateehorns"
+    },
+    {
+      "from": "brd-mut05-friendly",
+      "to": "brd-mut10-muttonchops"
+    },
+    {
+      "from": "brd-mut10-muttonchops",
+      "to": "brd-mut15-wildchops"
+    },
+    {
+      "from": "brd-side05-sideburns",
+      "to": "brd-side15-sidewhiskers"
     }
   ],
   "mustache": [
