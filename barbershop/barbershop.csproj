@@ -60,16 +60,13 @@
   <None Remove="assets\barbershop\itemtypes\mustachetrimmer.json" />
   <None Remove="assets\barbershop\itemtypes\razor.json" />
   <None Remove="assets\barbershop\itemtypes\scissors.json" />
+  <None Remove="assets\barbershop\lang\en.json" />
   <None Remove="assets\barbershop\shapes\comb.json" />
   <None Remove="assets\barbershop\shapes\razor.json" />
   <None Remove="assets\barbershop\textures\magicwand.png" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-</ItemGroup>
-
-<ItemGroup>
-  <Folder Include="assets\barbershop\lang\" />
 </ItemGroup>
 
 </Project>

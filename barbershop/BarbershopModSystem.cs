@@ -102,9 +102,10 @@ namespace Barbershop
             switch (args.Parsers[0].GetValue() as string)
             {
                 case "show":
-                    var cangrowhair = saveData.CanGrowHair ? "can" : "can't";
-                    var cangrowfacial = saveData.CanGrowFacialHair ? "can" : "can't";
-                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, $"You {cangrowhair} grow hair on your scalp, and {cangrowfacial} grow facial hair", EnumChatType.Notification);
+                    var cangrowhair = saveData.CanGrowHair ? Lang.Get("cangrowhairscalp") : Lang.Get("cantgrowhairscalp");
+                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowhair, EnumChatType.Notification);
+                    var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("cangrowhairface") : Lang.Get("cantgrowhairface");
+                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowfacial, EnumChatType.Notification);
                     break;
                 case "hair":
                     saveData.CanGrowHair = true;
