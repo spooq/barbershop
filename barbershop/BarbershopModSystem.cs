@@ -225,7 +225,7 @@ namespace Barbershop
             return false;
         }
 
-        private static string GetCurrentStyle(EntityBehaviorExtraSkinnable playerBehaviour, string part)
+        private string GetCurrentStyle(EntityBehaviorExtraSkinnable playerBehaviour, string part)
         {
             foreach (var appliedPart in playerBehaviour.AppliedSkinParts)
                 if (appliedPart.PartCode == part)
