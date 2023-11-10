@@ -6,7 +6,7 @@
   },
   "shape": { "base": "barbershop:item/comb" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" }
+    "wood": { "base": "game:block/wood/debarked/ebony" }
   },
   "behaviors": [
     {
