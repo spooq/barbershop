@@ -7,7 +7,19 @@
     },
     {
       "from": "short-trimmed",
+      "to": "short"
+    },
+    {
+      "from": "shortparted",
       "to": "messy2"
+    },
+    {
+      "from": "short",
+      "to": "messy2"
+    },
+    {
+      "from": "classic",
+      "to": "mediumlength-bangs"
     },
     {
       "from": "messy2",
