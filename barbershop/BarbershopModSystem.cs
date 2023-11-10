@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
 using Vintagestory.GameContent;
@@ -75,8 +77,56 @@ namespace Barbershop
 
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
-            api.Network.GetChannel(Mod.Info.ModID)
+            sapi.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarberPacket>(ApplyBarberItemToPlayer);
+
+            sapi.ChatCommands.Create("barber")
+                .WithDescription("Barbershop main command")
+                .RequiresPlayer()
+                .RequiresPrivilege(Privilege.chat)
+                .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string>{ "show", "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
+                .HandleWith(onBarberCommand);
+        }
+
+        private TextCommandResult onBarberCommand(TextCommandCallingArgs args)
+        {
+            var targetPlayer = args.Caller.Player as IServerPlayer;
+
+            var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+            if (saveData == null)
+            {
+                OnCharacterReset(targetPlayer);
+                saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+            }
+
+            switch (args.Parsers[0].GetValue() as string)
+            {
+                case "show":
+                    var cangrowhair = saveData.CanGrowHair ? "can" : "can't";
+                    var cangrowfacial = saveData.CanGrowFacialHair ? "can" : "can't";
+                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, $"You grow {cangrowhair} hair on your scalp, and {cangrowfacial} grow facial hair", EnumChatType.Notification);
+                    break;
+                case "hair":
+                    saveData.CanGrowHair = true;
+                    break;
+                case "nohair":
+                    AttemptTransform(targetPlayer, HairBase, "*", "bald");
+                    AttemptTransform(targetPlayer, HairExtra, "*", "none");
+                    saveData.CanGrowHair = false;
+                    break;
+                case "facialhair":
+                    saveData.CanGrowFacialHair = true;
+                    break;
+                case "nofacialhair":
+                    AttemptTransform(targetPlayer, Beard, "*", "none");
+                    AttemptTransform(targetPlayer, Mustache, "*", "none");
+                    saveData.CanGrowFacialHair = false;
+                    break;
+            }
+
+            targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
+
+            return TextCommandResult.Success();
         }
 
         private void OnServerRunGame()
@@ -220,9 +270,9 @@ namespace Barbershop
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
 
-                    var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
-                    savedData.timeSinceEdited[part] = 0;
-                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedData));
+                    var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+                    saveData.timeSinceEdited[part] = 0;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
 
                     return true;
                 }
