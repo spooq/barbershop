@@ -7,7 +7,23 @@
     },
     {
       "from": "short-trimmed",
-      "to": "unkempt"
+      "to": "messy2"
+    },
+    {
+      "from": "messy2",
+      "to": "mediumlength-bangs"
+    },
+    {
+      "from": "mediumlength-bangs",
+      "to": "longflowing"
+    },
+    {
+      "from": "longflowing",
+      "to": "longwithstrands"
+    },
+    {
+      "from": "longwithstrands",
+      "to": "combed"
     },
     {
       "from": "dreadlocks",
