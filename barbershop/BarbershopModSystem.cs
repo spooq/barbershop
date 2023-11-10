@@ -92,11 +92,11 @@ namespace Barbershop
             {
                 timeSinceEdited = new Dictionary<string, double>
             {
-                { HairBase, timeSpawned },
-                { HairExtra, timeSpawned },
-                { HairColor, timeSpawned},
-                { Moustache, timeSpawned },
-                { Beard, timeSpawned}
+                { HairBase, 0 },
+                { HairExtra, 0 },
+                { HairColor, 0},
+                { Moustache, 0 },
+                { Beard, 0}
             }
             };
 
