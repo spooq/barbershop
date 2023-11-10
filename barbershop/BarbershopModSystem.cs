@@ -78,7 +78,7 @@ namespace Barbershop
                         appliedParts.Add(tf.part);
 
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
-                targetPlayer.BroadcastPlayerData(false);
+                targetPlayer.BroadcastPlayerData(true);
             }
         }
 

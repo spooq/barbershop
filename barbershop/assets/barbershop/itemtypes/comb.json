@@ -4,10 +4,14 @@
     "general": [ "*" ],
     "tools": [ "*" ]
   },
+  "shape": { "base": "barbershop:item/comb" },
+  "textures": {
+    "wood": { "base": "game:block/wood/debarked/larch" }
+  },
   "behaviors": [
     {
       "name": "Barbershop",
-      
+
       "properties": {
         "target": "both",
         "transforms": [
@@ -55,10 +59,6 @@
       }
     }
   ],
-  "shape": { "base": "game:item/tool/shears" },
-  "textures": {
-    "metal": { "base": "game:block/metal/ingot/uranium" }
-  },
   "guiTransform": {
     "translation": {
       "x": 0,

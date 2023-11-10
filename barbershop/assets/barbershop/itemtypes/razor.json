@@ -4,6 +4,11 @@
     "general": [ "*" ],
     "tools": [ "*" ]
   },
+  "shape": { "base": "barbershop:item/razor" },
+  "textures": {
+    "wood": { "base": "game:block/wood/debarked/larch" },
+    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
+  },
   "behaviors": [
     {
       "name": "Barbershop",
@@ -44,10 +49,6 @@
       }
     }
   ],
-  "shape": { "base": "game:item/tool/shears" },
-  "textures": {
-    "metal": { "base": "game:block/metal/ingot/uranium" }
-  },
   "guiTransform": {
     "translation": {
       "x": 0,
