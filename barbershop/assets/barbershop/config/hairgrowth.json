@@ -27,15 +27,11 @@
     },
     {
       "from": "mediumlength-bangs",
-      "to": "longflowing"
-    },
-    {
-      "from": "longflowing",
       "to": "longwithstrands"
     },
     {
       "from": "longwithstrands",
-      "to": "combed"
+      "to": "longflowing"
     },
     {
       "from": "dreadlocks",

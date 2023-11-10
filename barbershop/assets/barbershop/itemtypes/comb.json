@@ -29,6 +29,10 @@
           {
             "from": "afro",
             "to": "longflowing"
+          },
+          {
+            "from": "longwithstrands",
+            "to": "combed"
           }
         ],
         "hairextra": [
