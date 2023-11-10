@@ -131,7 +131,7 @@ namespace Barbershop
         public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
         {
             saveData.timeSinceEdited[part] += diff;
-            if (saveData.timeSinceEdited[part] > 0)
+            if (saveData.timeSinceEdited[part] > 1)
                 return applyOneStepToPart(targetPlayer, part, barberProps);
             return false;
         }
