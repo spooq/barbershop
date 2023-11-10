@@ -19,6 +19,10 @@
             "to": "shortparted"
           },
           {
+            "from": "shortparted",
+            "to": "short"
+          },
+          {
             "from": "messy2",
             "to": "classic"
           },

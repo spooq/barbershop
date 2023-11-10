@@ -195,7 +195,7 @@ namespace Barbershop
             }
             };
 
-            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
+            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairBase) != "bald";
             savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
 
             savedata.CanGrowFacialHair |= GetCurrentStyle(playerBehaviour, Mustache) != "none";

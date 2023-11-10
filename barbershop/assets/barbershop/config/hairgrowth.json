@@ -3,10 +3,10 @@
   "hairbase": [
     {
       "from": "bald",
-      "to": "short"
+      "to": "short-trimmed"
     },
     {
-      "from": "short",
+      "from": "short-trimmed",
       "to": "unkempt"
     },
     {
