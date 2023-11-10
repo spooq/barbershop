@@ -120,12 +120,10 @@ namespace Barbershop
                         targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                         targetPlayer.BroadcastPlayerData(false);
                     }
-
-                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
                 }
             }
 
-            sapi.World.RegisterCallback(OnTimePassed, 10000);
+            sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
         public void OnCharacterReset(IServerPlayer byPlayer)
@@ -158,11 +156,13 @@ namespace Barbershop
         public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
         {
             saveData.timeSinceEdited[part] += diff;
+
+            // TODO: Should handle fast-forward of more than one day.
             if (saveData.timeSinceEdited[part] > 1)
                 return ApplyFirstMatchingTransform(targetPlayer, part, barberProps);
+
             return false;
         }
-
 
         public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
         {
