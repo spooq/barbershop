@@ -19,5 +19,9 @@
   "beard": [
   ],
   "mustache": [
+    {
+      "from": "mst-u01-horseshoe",
+      "to": "mst-line15-eccentric"
+    }
   ]
 }
