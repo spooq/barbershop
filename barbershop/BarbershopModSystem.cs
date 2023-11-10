@@ -125,8 +125,10 @@ namespace Barbershop
                         continue;
 
                     var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
-                    bool dirty = false;
+                    if (savedData == null)
+                        continue;
 
+                    bool dirty = false;
                     if (savedData.timeSinceEdited[HairBase] > 0)
                         dirty |= applyOneStepToPart(targetPlayer, HairBase, hairGrowth.hairbase);
                     if (savedData.timeSinceEdited[HairExtra] > 0)
