@@ -34,7 +34,7 @@ namespace Barbershop
         public const string HairBase = "hairbase";
         public const string HairExtra = "hairextra";
         public const string HairColor = "haircolor";
-        public const string Moustache = "mustache";
+        public const string Mustache = "mustache";
         public const string Beard = "beard";
 
         // Server-side only
@@ -104,18 +104,17 @@ namespace Barbershop
                         continue;
                     }
 
-                    bool dirty = false;
-                    if (savedData.timeSinceEdited[HairBase] > 0)
-                        dirty |= applyOneStepToPart(targetPlayer, HairBase, hairGrowth.hairbase);
-                    if (savedData.timeSinceEdited[HairExtra] > 0)
-                        dirty |= applyOneStepToPart(targetPlayer, HairExtra, hairGrowth.hairextra);
-                    if (savedData.timeSinceEdited[HairColor] > 0)
-                        dirty |= applyOneStepToPart(targetPlayer, HairColor, hairGrowth.haircolor);
-                    if (savedData.timeSinceEdited[Moustache] > 0 && savedData.HasFacialHair)
-                        dirty |= applyOneStepToPart(targetPlayer, Moustache, hairGrowth.moustache);
-                    if (savedData.timeSinceEdited[Beard] > 0 && savedData.HasFacialHair)
-                        dirty |= applyOneStepToPart(targetPlayer, Beard, hairGrowth.beard);
-
+                    bool dirty = TryAndGrowHair(targetPlayer, HairColor, hairGrowth.haircolor, diff, ref savedData);
+                    if (savedData.HasHair)
+                    {
+                        dirty |= TryAndGrowHair(targetPlayer, HairBase, hairGrowth.hairbase, diff, ref savedData);
+                        dirty |= TryAndGrowHair(targetPlayer, HairExtra, hairGrowth.hairextra, diff, ref savedData);
+                    }
+                    if (savedData.HasFacialHair)
+                    {
+                        dirty |= TryAndGrowHair(targetPlayer, Mustache, hairGrowth.mustache, diff, ref savedData);
+                        dirty |= TryAndGrowHair(targetPlayer, Beard, hairGrowth.beard, diff, ref savedData);
+                    }
                     if (dirty)
                     {
                         targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
@@ -125,6 +124,14 @@ namespace Barbershop
             }
 
             sapi.World.RegisterCallback(OnTimePassed, 1000);
+        }
+
+        public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
+        {
+            saveData.timeSinceEdited[part] += diff;
+            if (saveData.timeSinceEdited[part] > 0)
+                return applyOneStepToPart(targetPlayer, part, barberProps);
+            return false;
         }
 
         public void OnCharacterReset(IServerPlayer byPlayer)
@@ -140,7 +147,7 @@ namespace Barbershop
                 { HairBase, 0 },
                 { HairExtra, 0 },
                 { HairColor, 0},
-                { Moustache, 0 },
+                { Mustache, 0 },
                 { Beard, 0}
             }
             };
@@ -148,7 +155,7 @@ namespace Barbershop
             savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairBase) != "none";
             savedata.HasHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
 
-            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Moustache) != "none";
+            savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Mustache) != "none";
             savedata.HasFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
 
             byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
@@ -177,7 +184,7 @@ namespace Barbershop
             dirty |= applyOneStepToPart(targetPlayer, HairBase, barberProperties.hairbase);
             dirty |= applyOneStepToPart(targetPlayer, HairExtra, barberProperties.hairextra);
             dirty |= applyOneStepToPart(targetPlayer, HairColor, barberProperties.haircolor);
-            dirty |= applyOneStepToPart(targetPlayer, Moustache, barberProperties.moustache);
+            dirty |= applyOneStepToPart(targetPlayer, Mustache, barberProperties.mustache);
             dirty |= applyOneStepToPart(targetPlayer, Beard, barberProperties.beard);
             if (dirty)
             {
@@ -218,7 +225,7 @@ namespace Barbershop
                     var savedData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     savedData.timeSinceEdited[part] = 0;
                     // Player wants facial hair.
-                    if (part == Beard || part == Moustache)
+                    if (part == Beard || part == Mustache)
                         savedData.HasFacialHair = true;
                     targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedData));
 

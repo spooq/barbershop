@@ -16,7 +16,7 @@ namespace Barbershop
         public List<BarberTransform> hairbase = new();
         public List<BarberTransform> hairextra = new();
         public List<BarberTransform> beard = new();
-        public List<BarberTransform> moustache = new();
+        public List<BarberTransform> mustache = new();
         public List<BarberTransform> haircolor = new();
     }
 
