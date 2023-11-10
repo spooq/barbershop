@@ -1,49 +1,24 @@
 {
-  "code": "razor",
+  "code": "hairhook",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/razor" },
+  "shape": { "base": "barbershop:item/comb" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" },
-    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
+    "wood": { "base": "game:block/wood/debarked/larch" }
   },
   "behaviors": [
     {
       "name": "Barbershop",
+
       "properties": {
         "target": "both",
         "transforms": [
           {
-            "part": "beard",
-            "from": "brd-mut15-wildchops",
-            "to": "brd-mut05-friendly"
-          },
-          {
-            "part": "beard",
-            "from": "brd-box20-full",
-            "to": "brd-box10-short"
-          },
-          {
-            "part": "beard",
-            "from": "brd-full10-shaggy",
-            "to": "brd-full05-cleanfull"
-          },
-          {
-            "part": "beard",
-            "from": "brd-full05-cleanfull",
-            "to": "brd-full01-trimmedfull"
-          },
-          {
-            "part": "beard",
-            "from": "*",
-            "to": "none"
-          },
-          {
-            "part": "mustache",
-            "from": "*",
-            "to": "none"
+            "part": "hairbase",
+            "from": "classic",
+            "to": "neatbraid"
           }
         ]
       }

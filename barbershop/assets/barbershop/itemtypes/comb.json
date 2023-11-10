@@ -1,5 +1,5 @@
 {
-  "code": "comb",
+  "code": "dreadbeads",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
@@ -17,43 +17,8 @@
         "transforms": [
           {
             "part": "hairbase",
-            "from": "messy",
-            "to": "classic"
-          },
-          {
-            "part": "hairbase",
-            "from": "messy2",
+            "from": "classic",
             "to": "dreadlocks"
-          },
-          {
-            "part": "hairextra",
-            "from": "shortmessybraid",
-            "to": "neatbraid"
-          },
-          {
-            "part": "hairextra",
-            "from": "unkempt",
-            "to": "tiedback"
-          },
-          {
-            "part": "hairextra",
-            "from": "snood",
-            "to": "largestickbun"
-          },
-          {
-            "part": "hairextra",
-            "from": "largestickbun",
-            "to": "elaboratestickbun"
-          },
-          {
-            "part": "hairextra",
-            "from": "sidebraids",
-            "to": "sidebuns"
-          },
-          {
-            "part": "hairextra",
-            "from": "sidebuns",
-            "to": "siderolls"
           }
         ]
       }

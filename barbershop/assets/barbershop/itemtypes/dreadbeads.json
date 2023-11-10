@@ -1,49 +1,59 @@
 {
-  "code": "razor",
+  "code": "comb",
   "creativeinventory": {
     "general": [ "*" ],
     "tools": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/razor" },
+  "shape": { "base": "barbershop:item/comb" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" },
-    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
+    "wood": { "base": "game:block/wood/debarked/larch" }
   },
   "behaviors": [
     {
       "name": "Barbershop",
+
       "properties": {
         "target": "both",
         "transforms": [
           {
-            "part": "beard",
-            "from": "brd-mut15-wildchops",
-            "to": "brd-mut05-friendly"
+            "part": "hairbase",
+            "from": "messy",
+            "to": "classic"
           },
           {
-            "part": "beard",
-            "from": "brd-box20-full",
-            "to": "brd-box10-short"
+            "part": "hairbase",
+            "from": "messy2",
+            "to": "dreadlocks"
           },
           {
-            "part": "beard",
-            "from": "brd-full10-shaggy",
-            "to": "brd-full05-cleanfull"
+            "part": "hairextra",
+            "from": "shortmessybraid",
+            "to": "neatbraid"
           },
           {
-            "part": "beard",
-            "from": "brd-full05-cleanfull",
-            "to": "brd-full01-trimmedfull"
+            "part": "hairextra",
+            "from": "unkempt",
+            "to": "tiedback"
           },
           {
-            "part": "beard",
-            "from": "*",
-            "to": "none"
+            "part": "hairextra",
+            "from": "snood",
+            "to": "largestickbun"
           },
           {
-            "part": "mustache",
-            "from": "*",
-            "to": "none"
+            "part": "hairextra",
+            "from": "largestickbun",
+            "to": "elaboratestickbun"
+          },
+          {
+            "part": "hairextra",
+            "from": "sidebraids",
+            "to": "sidebuns"
+          },
+          {
+            "part": "hairextra",
+            "from": "sidebuns",
+            "to": "siderolls"
           }
         ]
       }

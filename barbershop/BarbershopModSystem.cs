@@ -1,7 +1,7 @@
 ﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
@@ -30,8 +30,9 @@ namespace Barbershop
         public const string Beard = "beard";
 
         // Server-side only, holds each part a player has edited. Stored in the world save file.
-        // Player name -> part growtime
-        public Dictionary<string, Dictionary<string, int>> PlayerEditedParts = new();
+        // Player name -> elapsed day that part was set
+        double lastCheckOfElapsedDays = -1;
+        public Dictionary<string, Dictionary<string, double>> PlayerEditedParts;
 
         public override bool ShouldLoad(EnumAppSide forSide)
         {
@@ -63,23 +64,72 @@ namespace Barbershop
 
             sapi = api;
 
+            sapi.Event.PlayerJoin += OnPlayerJoin;
             sapi.Event.SaveGameLoaded += OnSaveGameLoading;
             sapi.Event.GameWorldSave += OnSaveGameSaving;
+            sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
+
+            PlayerEditedParts = new();
 
             api.Network.GetChannel(Mod.Info.ModID)
                 .SetMessageHandler<BarberPacket>(onTransformPart);
         }
 
-        private void onTransformPart(IServerPlayer fromPlayer, BarberPacket packet)
+        private void OnPlayerJoin(IServerPlayer byPlayer)
+        {
+            if (!PlayerEditedParts.ContainsKey(byPlayer.PlayerUID))
+                PlayerEditedParts[byPlayer.PlayerUID] = new();
+        }
+
+        private void OnServerRunGame()
+        {
+            lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
+            sapi.World.RegisterCallback(OnTimePassed, 1000);// (int)(1000f * sapi.World.Calendar.SpeedOfTime * 60f * 60f * sapi.World.Calendar.CalendarSpeedMul));
+        }
+
+        public void OnTimePassed(float obj)
+        {
+            var diff = sapi.World.Calendar.ElapsedDays - lastCheckOfElapsedDays;
+            if (diff != 0)
+            {
+                lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
+
+                foreach (var onlinePlr in sapi.World.AllOnlinePlayers.Cast<IServerPlayer>())
+                {
+                    bool dirty = false;
+                    foreach (var part in PlayerEditedParts[onlinePlr.PlayerUID])
+                    {
+                        PlayerEditedParts[onlinePlr.PlayerUID][part.Key] += diff;
+
+                        // Grow and reset
+                        if (part.Key == Beard && part.Value > 1f)
+                        {
+                            // when loop over all transforms remember to break after success
+                            dirty |= TransformPart(onlinePlr, part.Key, "none", "brd-stubble"); // TODO!
+                        }
+                    }
+
+                    if (dirty)
+                    {
+                        onlinePlr.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
+                        onlinePlr.BroadcastPlayerData(false);
+                    }
+                }
+            }
+
+            sapi.World.RegisterCallback(OnTimePassed, 1000);
+        }
+
+        public void onTransformPart(IServerPlayer fromPlayer, BarberPacket packet)
         {
             var item = sapi.World.GetItem(new AssetLocation(packet.code));
             if (item != null)
             {
-                var targetPlayer = sapi.World.PlayerByUid(fromPlayer.PlayerUID) as IServerPlayer;
+                var targetPlayer = sapi.World.PlayerByUid(packet.targetUid) as IServerPlayer;
                 if (targetPlayer == null)
                     return;
 
-                var appliedParts = new List<string>();
+                var appliedParts = new SortedSet<string>();
                 var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
                 foreach (var tf in itemBehaviour.barberProperties.transforms)
                 {
@@ -88,9 +138,9 @@ namespace Barbershop
                         appliedParts.Add(tf.part);
 
                         // Remember what parts players have edited and reset their growtime
-                        if (!PlayerEditedParts.ContainsKey(fromPlayer.PlayerUID))
-                            PlayerEditedParts[fromPlayer.PlayerUID] = new();
-                        PlayerEditedParts[fromPlayer.PlayerUID][tf.part] = 0;
+                        //if (!PlayerEditedParts.ContainsKey(targetPlayer.PlayerUID))
+                            //PlayerEditedParts[targetPlayer.PlayerUID] = new();
+                        //PlayerEditedParts[targetPlayer.PlayerUID][tf.part] = 0;
                     }
                 }
 
@@ -127,6 +177,7 @@ namespace Barbershop
                 if (asp.Code == part)
                 {
                     playerBehaviour.selectSkinPart(asp.Code, to);
+                    PlayerEditedParts[targetPlayer.PlayerUID][part] = 0;
                     return true;
                 }
             }
@@ -134,6 +185,22 @@ namespace Barbershop
             return false;
         }
 
+        public void SetPart(IServerPlayer targetPlayer, string part, string to)
+        {
+            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
+                return;
+
+            // Change style
+            foreach (var asp in playerBehaviour.AvailableSkinParts)
+            {
+                if (asp.Code == part)
+                {
+                    playerBehaviour.selectSkinPart(asp.Code, to);
+                    return;
+                }
+            }
+        }
         public void NextStyleForPart(IServerPlayer targetPlayer, string part)
         {
             var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
@@ -177,17 +244,17 @@ namespace Barbershop
             }
         }
 
-        private void OnSaveGameSaving()
+        public void OnSaveGameSaving()
         {
             sapi.WorldManager.SaveGame.StoreData(Mod.Info.ModID, SerializerUtil.Serialize(PlayerEditedParts));
         }
 
-        private void OnSaveGameLoading()
+        public void OnSaveGameLoading()
         {
             byte[] data = sapi.WorldManager.SaveGame.GetData(Mod.Info.ModID);
             PlayerEditedParts = data == null
                 ? new()
-                : SerializerUtil.Deserialize<Dictionary<string, Dictionary<string, int>>>(data);
+                : SerializerUtil.Deserialize<Dictionary<string, Dictionary<string, double>>>(data);
         }
     }
 }
