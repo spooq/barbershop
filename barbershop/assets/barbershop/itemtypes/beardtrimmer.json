@@ -48,8 +48,8 @@
             "to": "brd-box07-ducktail"
           },
           {
-            "from": "*",
-            "to": "none"
+            "from": "brd-stubble",
+            "to": "brd-chin01-mouche"
           }
         ]
       }

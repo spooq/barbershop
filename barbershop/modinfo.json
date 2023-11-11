@@ -6,7 +6,7 @@
     "Crabb", "Sheepon"
   ],
   "description": "Cut hair and beards",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "dependencies": {
     "game": ""
   },
