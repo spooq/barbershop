@@ -15,11 +15,7 @@
         "target": "both",
         "hairbase": [
           {
-            "from": "longflowing",
-            "to": "afro"
-          },
-          {
-            "from": "combed",
+            "from": "*",
             "to": "afro"
           }
         ],
