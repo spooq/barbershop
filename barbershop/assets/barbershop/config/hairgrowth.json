@@ -9,26 +9,30 @@
       "from": "short-trimmed",
       "to": "short"
     },
-    {
-      "from": "short-parted",
-      "to": "messy2"
-    },
+
     {
       "from": "short",
-      "to": "messy2"
+      "to": "classic"
     },
+    {
+      "from": "short-parted",
+      "to": "classic"
+    },
+
     {
       "from": "classic",
-      "to": "mediumlength-bangs"
-    },
-    {
-      "from": "messy2",
-      "to": "mediumlength-bangs"
+      "to": "longwithstrands"
     },
     {
       "from": "mediumlength-bangs",
       "to": "longwithstrands"
     },
+    {
+      "from": "layered",
+      "to": "longwithstrands"
+    },
+
+
     {
       "from": "longwithstrands",
       "to": "longflowing"
@@ -37,13 +41,20 @@
       "from": "combed",
       "to": "longflowing"
     },
+
+
+    {
+      "from": "balding",
+      "to": "tonsure"
+    },
+    {
+      "from": "tonsure",
+      "to": "indigenousbalding"
+    },
+
     {
       "from": "dreadlocks",
       "to": "messy"
-    },
-    {
-      "from": "iroquois",
-      "to": "kniaz"
     }
   ],
   "hairextra": [
@@ -126,6 +137,7 @@
       "from": "brd-box07-ducktail",
       "to": "brd-box20-full"
     },
+
     {
       "from": "brd-full05-cleanfull",
       "to": "brd-full10-shaggy"

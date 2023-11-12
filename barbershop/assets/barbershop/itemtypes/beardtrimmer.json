@@ -33,6 +33,7 @@
           },
 
 
+
           {
             "from": "brd-full10-shaggy",
             "to": "brd-full05-cleanfull"
@@ -47,21 +48,22 @@
           },
 
 
+
           {
-            "from": "brd-side15-sidewhiskers",
-            "to": "brd-side05-sideburns"
-          },
-          {
-            "from": "brd-mut05-friendly",
-            "to": "brd-side15-sidewhiskers"
+            "from": "brd-mut15-wildchops",
+            "to": "brd-mut10-muttonchops"
           },
           {
             "from": "brd-mut10-muttonchops",
             "to": "brd-mut05-friendly"
           },
           {
-            "from": "brd-mut15-wildchops",
-            "to": "brd-mut10-muttonchops"
+            "from": "brd-mut05-friendly",
+            "to": "brd-side15-sidewhiskers"
+          },
+          {
+            "from": "brd-side15-sidewhiskers",
+            "to": "brd-side05-sideburns"
           },
 
 
@@ -81,10 +83,6 @@
           {
             "from": "brd-chin05-chinpatch",
             "to": "brd-chin01-mouche"
-          },
-          {
-            "from": "brd-chin01-mouche",
-            "to": "none"
           }
 
 

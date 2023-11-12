@@ -5,9 +5,15 @@
       "from": "short",
       "to": "shortspiky"
     },
+
+
     {
-      "from": "flowing",
-      "to": "iroquis"
+      "from": "short",
+      "to": "iroquois"
+    },
+    {
+      "from": "short-parted",
+      "to": "iroquois"
     },
     {
       "from": "kniaz",

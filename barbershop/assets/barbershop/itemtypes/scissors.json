@@ -9,16 +9,63 @@
       "name": "Barbershop",
       "properties": {
         "target": "other",
+        "hairbase": [
+          {
+            "from": "short-trimmed",
+            "to": "bald"
+          },
+
+          {
+            "from": "short",
+            "to": "short-trimmed"
+          },
+          {
+            "from": "short-parted",
+            "to": "short-trimmed"
+          },
+
+          {
+            "from": "longwithstrands",
+            "to": "short"
+          },
+          {
+            "from": "longwithstrands",
+            "to": "short"
+          },
+          {
+            "from": "longwithstrands",
+            "to": "short"
+          },
+
+
+          {
+            "from": "longwithstrands",
+            "to": "classic"
+          },
+          {
+            "from": "combed",
+            "to": "classic"
+          },
+
+
+          {
+            "from": "longflowing",
+            "to": "longwithstrands"
+          },
+
+          {
+            "from": "indigenousbalding",
+            "to": "tonsure"
+          },
+          {
+            "from": "tonsure",
+            "to": "balding"
+          }
+        ],
         "hairextra": [
           {
             "from": "*",
             "to": "none"
-          }
-        ],
-        "hairbase": [
-          {
-            "from": "*",
-            "to": "bald"
           }
         ]
       }
