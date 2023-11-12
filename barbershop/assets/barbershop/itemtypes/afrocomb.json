@@ -15,8 +15,48 @@
         "target": "both",
         "hairbase": [
           {
-            "from": "*",
-            "to": "afro"
+            "from": "combed",
+            "to": "afrocomb"
+          },
+          {
+            "from": "layered",
+            "to": "afrocomb"
+          },
+          {
+            "from": "longflowing",
+            "to": "afrocomb"
+          },
+          {
+            "from": "longwithstrands",
+            "to": "afrocomb"
+          },
+          {
+            "from": "mediumlength-bangs",
+            "to": "afrocomb"
+          },
+          {
+            "from": "messy2",
+            "to": "afrocomb"
+          },
+          {
+            "from": "classic",
+            "to": "afrocomb"
+          },
+          {
+            "from": "short",
+            "to": "afrocomb"
+          },
+          {
+            "from": "short-parted",
+            "to": "afrocomb"
+          },
+          {
+            "from": "shortspiky",
+            "to": "afrocomb"
+          },
+          {
+            "from": "short-trimmed",
+            "to": "afrocomb"
           }
         ],
         "hairextra": [
