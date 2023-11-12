@@ -15,20 +15,16 @@
         "target": "other",
         "hairbase": [
           {
-            "from": "combed",
+            "from": "classic",
             "to": "dreadlocks"
           },
           {
-            "from": "longflowing",
+            "from": "mediumlength-bangs",
             "to": "dreadlocks"
           },
           {
-            "from": "messy",
+            "from": "layered",
             "to": "dreadlocks"
-          },
-          {
-            "from": "dreadlocks",
-            "to": "longflowing"
           }
         ]
       }
