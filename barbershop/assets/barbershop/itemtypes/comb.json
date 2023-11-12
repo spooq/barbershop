@@ -22,17 +22,29 @@
             "from": "short-parted",
             "to": "short"
           },
+
+
           {
-            "from": "messy2",
+            "from": "classic",
+            "to": "layered"
+          },
+          {
+            "from": "layered",
+            "to": "mediumlength-bangs"
+          },
+          {
+            "from": "mediumlength-bangs",
             "to": "classic"
           },
-          {
-            "from": "afro",
-            "to": "longflowing"
-          },
+
+
           {
             "from": "longwithstrands",
             "to": "combed"
+          },
+          {
+            "from": "combed",
+            "to": "longwithstrands"
           }
         ],
         "hairextra": [
