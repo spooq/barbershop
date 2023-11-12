@@ -15,7 +15,19 @@
         "target": "other",
         "hairbase": [
           {
-            "from": "classic",
+            "from": "combed",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "layered",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "longflowing",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "longwithstrands",
             "to": "dreadlocks"
           },
           {
@@ -23,7 +35,27 @@
             "to": "dreadlocks"
           },
           {
-            "from": "layered",
+            "from": "messy2",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "classic",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "short",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "short-parted",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "shortspiky",
+            "to": "dreadlocks"
+          },
+          {
+            "from": "short-trimmed",
             "to": "dreadlocks"
           }
         ]
