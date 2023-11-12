@@ -58,6 +58,92 @@
             "from": "short-trimmed",
             "to": "dreadlocks"
           }
+        ],
+        "hairextra": [
+          {
+            "from": "backbun",
+            "to": "tieddreads"
+          },
+          {
+            "from": "braidedup",
+            "to": "tieddreads"
+          },
+          {
+            "from": "elaboratestickbun",
+            "to": "tieddreads"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "tieddreads"
+          },
+          {
+            "from": "largestickbun",
+            "to": "tieddreads"
+          },
+          {
+            "from": "neatbraid",
+            "to": "tieddreads"
+          },
+          {
+            "from": "classicponytail",
+            "to": "tieddreads"
+          },
+          {
+            "from": "ponytail",
+            "to": "tieddreads"
+          },
+          {
+            "from": "rolledbraidwithbun",
+            "to": "tieddreads"
+          },
+          {
+            "from": "shortmessybraid",
+            "to": "tieddreads"
+          },
+          {
+            "from": "sidebraids",
+            "to": "tieddreads"
+          },
+          {
+            "from": "sidebuns",
+            "to": "tieddreads"
+          },
+          {
+            "from": "siderolls",
+            "to": "tieddreads"
+          },
+          {
+            "from": "snood",
+            "to": "tieddreads"
+          },
+          {
+            "from": "thicklongfrenchbraid",
+            "to": "tieddreads"
+          },
+          {
+            "from": "tiedback",
+            "to": "tieddreads"
+          },
+          {
+            "from": "tiedtopknot",
+            "to": "tieddreads"
+          },
+          {
+            "from": "topbun",
+            "to": "tieddreads"
+          },
+          {
+            "from": "topknot",
+            "to": "tieddreads"
+          },
+          {
+            "from": "unkempt",
+            "to": "tieddreads"
+          },
+          {
+            "from": "vikingtopbraid",
+            "to": "tieddreads"
+          }
         ]
       }
     }

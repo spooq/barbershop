@@ -55,8 +55,10 @@
   <None Remove="assets\barbershop\itemtypes\beardtrimmer.json" />
   <None Remove="assets\barbershop\itemtypes\comb.json" />
   <None Remove="assets\barbershop\itemtypes\dreadbeads.json" />
+  <None Remove="assets\barbershop\itemtypes\hairband.json" />
   <None Remove="assets\barbershop\itemtypes\hairclippers.json" />
   <None Remove="assets\barbershop\itemtypes\hairhook.json" />
+  <None Remove="assets\barbershop\itemtypes\hairpin.json" />
   <None Remove="assets\barbershop\itemtypes\mustachetrimmer.json" />
   <None Remove="assets\barbershop\itemtypes\razor.json" />
   <None Remove="assets\barbershop\itemtypes\scissors.json" />

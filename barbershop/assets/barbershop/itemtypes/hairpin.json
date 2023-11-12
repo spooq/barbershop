@@ -1,0 +1,92 @@
+{
+  "code": "hairpin",
+  "creativeinventory": {
+    "general": [ "*" ],
+    "tools": [ "*" ]
+  },
+  "shape": { "base": "barbershop:item/comb" },
+  "textures": {
+    "wood": { "base": "game:block/wood/debarked/larch" }
+  },
+  "behaviors": [
+    {
+      "name": "Barbershop",
+      "properties": {
+        "target": "both",
+        "hairbase": [
+          {
+            "from": "classic",
+            "to": "neatbraid"
+          }
+        ]
+      }
+    }
+  ],
+  "guiTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": -89,
+      "y": 47,
+      "z": 33
+    },
+    "origin": {
+      "x": 0.59,
+      "y": 0,
+      "z": 0.44
+    },
+    "scale": 1.75
+  },
+  "fpHandTransform": {
+    "translation": {
+      "x": -0.2,
+      "y": -0.2,
+      "z": 0
+    },
+    "rotation": {
+      "x": 15,
+      "y": 15,
+      "z": 90
+    },
+    "scale": 2.45
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 3.4
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.87,
+      "y": -0.01,
+      "z": -0.56
+    },
+    "rotation": {
+      "x": -81,
+      "y": 0,
+      "z": 0
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0,
+      "z": 0.5
+    },
+    "scale": 0.8
+  }
+}
