@@ -13,10 +13,107 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "hairbase": [
+        "hairextra": [
+
           {
-            "from": "classic",
-            "to": "neatbraid"
+            "from": "backbun",
+            "to": "ponytail"
+          },
+          {
+            "from": "braidedup",
+            "to": "ponytail"
+          },
+          {
+            "from": "elaboratestickbun",
+            "to": "ponytail"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "ponytail"
+          },
+          {
+            "from": "largestickbun",
+            "to": "ponytail"
+          },
+          {
+            "from": "neatbraid",
+            "to": "ponytail"
+          },
+          {
+            "from": "classicponytail",
+            "to": "ponytail"
+          },
+          {
+            "from": "rolledbraidwithbun",
+            "to": "ponytail"
+          },
+          {
+            "from": "shortmessybraid",
+            "to": "ponytail"
+          },
+          {
+            "from": "sidebraids",
+            "to": "ponytail"
+          },
+          {
+            "from": "sidebuns",
+            "to": "ponytail"
+          },
+          {
+            "from": "siderolls",
+            "to": "ponytail"
+          },
+          {
+            "from": "snood",
+            "to": "ponytail"
+          },
+          {
+            "from": "thicklongfrenchbraid",
+            "to": "ponytail"
+          },
+          {
+            "from": "tiedback",
+            "to": "ponytail"
+          },
+          {
+            "from": "tiedtopknot",
+            "to": "ponytail"
+          },
+          {
+            "from": "topbun",
+            "to": "ponytail"
+          },
+          {
+            "from": "topknot",
+            "to": "ponytail"
+          },
+          {
+            "from": "unkempt",
+            "to": "ponytail"
+          },
+          {
+            "from": "vikingtopbraid",
+            "to": "ponytail"
+          },
+          {
+            "from": "ponytail",
+            "to": "classicponytail"
+          },
+          {
+            "from": "classicponytail",
+            "to": "tiedback"
+          },
+          {
+            "from": "tiedback",
+            "to": "topknot"
+          },
+          {
+            "from": "topknot",
+            "to": "tiedtopknot"
+          },
+          {
+            "from": "vikingtopbraid",
+            "to": "ponytail"
           }
         ]
       }

@@ -14,9 +14,114 @@
       "properties": {
         "target": "both",
         "hairbase": [
+
           {
-            "from": "classic",
-            "to": "neatbraid"
+            "from": "neatbraid",
+            "to": "topbun"
+          },
+          {
+            "from": "braidedup",
+            "to": "topbun"
+          },
+          {
+            "from": "elaboratestickbun",
+            "to": "topbun"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "topbun"
+          },
+          {
+            "from": "largestickbun",
+            "to": "topbun"
+          },
+          {
+            "from": "ponytail",
+            "to": "topbun"
+          },
+          {
+            "from": "classicponytail",
+            "to": "topbun"
+          },
+          {
+            "from": "rolledbraidwithbun",
+            "to": "topbun"
+          },
+          {
+            "from": "shortmessybraid",
+            "to": "topbun"
+          },
+          {
+            "from": "sidebraids",
+            "to": "topbun"
+          },
+          {
+            "from": "sidebuns",
+            "to": "topbun"
+          },
+          {
+            "from": "siderolls",
+            "to": "topbun"
+          },
+          {
+            "from": "snood",
+            "to": "topbun"
+          },
+          {
+            "from": "thicklongfrenchbraid",
+            "to": "topbun"
+          },
+          {
+            "from": "tiedback",
+            "to": "topbun"
+          },
+          {
+            "from": "tiedtopknot",
+            "to": "topbun"
+          },
+          {
+            "from": "topbun",
+            "to": "topbun"
+          },
+          {
+            "from": "topknot",
+            "to": "topbun"
+          },
+          {
+            "from": "unkempt",
+            "to": "topbun"
+          },
+          {
+            "from": "vikingtopbraid",
+            "to": "topbun"
+          },
+          {
+            "from": "topbun",
+            "to": "backbun"
+          },
+          {
+            "from": "backbun",
+            "to": "snood"
+          },
+          {
+            "from": "snood",
+            "to": "largestickbun"
+          },
+          {
+            "from": "largestickbun",
+            "to": "elaboratestickbun"
+          },
+          {
+            "from": "elaboratestickbun",
+            "to": "sidebuns"
+          },
+          {
+            "from": "sidebuns",
+            "to": "siderolls"
+          },
+          {
+            "from": "siderolls",
+            "to": "topbun"
           }
         ]
       }

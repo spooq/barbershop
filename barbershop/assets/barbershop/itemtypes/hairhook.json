@@ -14,9 +14,114 @@
       "properties": {
         "target": "both",
         "hairbase": [
+
           {
-            "from": "classic",
+            "from": "backbun",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "braidedup",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "elaboratestickbun",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "largestickbun",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "ponytail",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "classicshortmessybraid",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "rolledbraidwithbun",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "shortmessybraid",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "sidebraids",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "sidebuns",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "siderolls",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "snood",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "thicklongfrenchbraid",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "tiedback",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "tiedtopknot",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "topbun",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "topknot",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "unkempt",
+            "to": "shortmessybraid"
+          },
+          {
+            "from": "shortmessybraid",
             "to": "neatbraid"
+          },
+          {
+            "from": "neatbraid",
+            "to": "thicklongfrenchbraid"
+          },
+          {
+            "from": "thicklongfrenchbraid",
+            "to": "braidedup"
+          },
+          {
+            "from": "braidedup",
+            "to": "sidebraids"
+          },
+          {
+            "from": "sidebraids",
+            "to": "headsidebraid"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "rolledbraidwithbun"
+          },
+          {
+            "from": "rolledbraidwithbun",
+            "to": "vikingtopbraid"
+          },
+          {
+            "from": "vikingtopbraid",
+            "to": "shortmessybraid"
           }
         ]
       }
