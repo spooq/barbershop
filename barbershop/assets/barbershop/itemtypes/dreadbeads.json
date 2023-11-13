@@ -12,7 +12,7 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "other",
+        "target": "both",
         "hairbase": [
           {
             "from": "combed",
