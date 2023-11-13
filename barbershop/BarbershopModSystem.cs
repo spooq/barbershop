@@ -88,9 +88,13 @@ namespace Barbershop
                 .HandleWith(onBarberCommand);
         }
 
-        private TextCommandResult onBarberCommand(TextCommandCallingArgs args)
+        public TextCommandResult onBarberCommand(TextCommandCallingArgs args)
         {
             var targetPlayer = args.Caller.Player as IServerPlayer;
+
+            var playerBehaviour = targetPlayer?.Entity?.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
+                return new TextCommandResult { Status = EnumCommandStatus.Error, StatusMessage = $"Could not get playerBehaviour EntityBehaviorExtraSkinnable" };
 
             var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
             if (saveData == null)
@@ -104,33 +108,48 @@ namespace Barbershop
                 case "show":
                     var cangrowhair = saveData.CanGrowHair ? Lang.Get("cangrowhairscalp") : Lang.Get("cantgrowhairscalp");
                     targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowhair, EnumChatType.Notification);
+
                     var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("cangrowhairface") : Lang.Get("cantgrowhairface");
                     targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowfacial, EnumChatType.Notification);
-                    break;
+
+                    var message = cangrowhair + Environment.NewLine
+                                + cangrowfacial + Environment.NewLine
+                                + $"{HairBase} {GetCurrentStyle(playerBehaviour, HairBase)} {saveData.timeSinceEdited[HairBase]}" + Environment.NewLine
+                                + $"{HairExtra} {GetCurrentStyle(playerBehaviour, HairExtra)} {saveData.timeSinceEdited[HairExtra]}" + Environment.NewLine
+                                + $"{HairColor} {GetCurrentStyle(playerBehaviour, HairColor)} {saveData.timeSinceEdited[HairColor]}" + Environment.NewLine
+                                + $"{Mustache} {GetCurrentStyle(playerBehaviour, Mustache)} {saveData.timeSinceEdited[Mustache]}" + Environment.NewLine
+                                + $"{Beard} {GetCurrentStyle(playerBehaviour, Beard)} {saveData.timeSinceEdited[Beard]}" + Environment.NewLine;
+                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = message };
+
                 case "hair":
                     saveData.CanGrowHair = true;
-                    break;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
+                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cangrowhairscalp") };
+
                 case "nohair":
                     AttemptTransform(targetPlayer, HairBase, "*", "bald");
                     AttemptTransform(targetPlayer, HairExtra, "*", "none");
                     saveData.CanGrowHair = false;
-                    break;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
+                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cantgrowhairscalp") };
+
                 case "facialhair":
                     saveData.CanGrowFacialHair = true;
-                    break;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
+                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cangrowhairface") };
+
                 case "nofacialhair":
                     AttemptTransform(targetPlayer, Beard, "*", "none");
                     AttemptTransform(targetPlayer, Mustache, "*", "none");
                     saveData.CanGrowFacialHair = false;
-                    break;
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
+                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cantgrowhairface") };
             }
 
-            targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
-
-            return TextCommandResult.Success();
+            return new TextCommandResult { Status = EnumCommandStatus.Error, StatusMessage = $"Unknown error in {Mod.Info.ModID}" };
         }
 
-        private void OnServerRunGame()
+        public void OnServerRunGame()
         {
             lastCheckOfElapsedDays = sapi.World.Calendar.ElapsedDays;
             sapi.World.RegisterCallback(OnTimePassed, 1000);
