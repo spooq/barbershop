@@ -1,3 +1,19 @@
 {
-
+  "ingredientPattern": "T,R,T",
+  "width": 1,
+  "height": 3,
+  "ingredients": {
+    "T": {
+      "type": "item",
+      "code": "game:flax-twine"
+    },
+    "R": {
+        "type": "item",
+        "code": "game:resin"
+    }
+  },
+  "output": {
+    "type": "item",
+    "code": "barbershop:dreadbeads"
+  }
 }
