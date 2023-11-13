@@ -52,10 +52,6 @@
             "to": "ponytail"
           },
           {
-            "from": "sidebuns",
-            "to": "ponytail"
-          },
-          {
             "from": "siderolls",
             "to": "ponytail"
           },
@@ -104,7 +100,11 @@
             "to": "tiedtopknot"
           },
           {
-            "from": "vikingtopbraid",
+            "from": "tiedtopknot",
+            "to": "sidebuns"
+          },
+          {
+          	"from": "sidebuns",
             "to": "ponytail"
           }
         ]
