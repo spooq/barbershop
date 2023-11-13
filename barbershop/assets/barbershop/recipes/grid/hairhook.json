@@ -1,0 +1,15 @@
+{
+  "ingredientPattern": "SS,_S",
+  "width": 2,
+  "height": 2,
+  "ingredients": {
+    "T": {
+      "type": "item",
+      "code": "game:stick"
+    }
+  },
+  "output": {
+    "type": "item",
+    "code": "barbershop:hairhook"
+  }
+}
