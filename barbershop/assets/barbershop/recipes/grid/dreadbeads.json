@@ -5,7 +5,7 @@
   "ingredients": {
     "T": {
       "type": "item",
-      "code": "game:flax-twine"
+      "code": "game:flaxtwine"
     },
     "R": {
         "type": "item",
