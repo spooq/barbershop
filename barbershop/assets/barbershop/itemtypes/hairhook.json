@@ -70,7 +70,7 @@
             "from": "unkempt",
             "to": "shortmessybraid"
           },
-          
+
           {
             "from": "shortmessybraid",
             "to": "headsidebraid"
@@ -79,7 +79,7 @@
             "from": "headsidebraid",
             "to": "rolledbraidwithbun"
           },
-					{
+          {
             "from": "rolledbraidwithbun",
             "to": "sidebraids"
           },
@@ -98,6 +98,7 @@
           {
             "from": "braidedup",
             "to": "headsidebraid"
+          },
           {
             "from": "headsidebraid",
             "to": "rolledbraidwithbun"
