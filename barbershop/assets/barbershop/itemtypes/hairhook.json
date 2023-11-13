@@ -28,10 +28,6 @@
             "to": "shortmessybraid"
           },
           {
-            "from": "headsidebraid",
-            "to": "shortmessybraid"
-          },
-          {
             "from": "largestickbun",
             "to": "shortmessybraid"
           },
@@ -40,19 +36,7 @@
             "to": "shortmessybraid"
           },
           {
-            "from": "classicshortmessybraid",
-            "to": "shortmessybraid"
-          },
-          {
-            "from": "rolledbraidwithbun",
-            "to": "shortmessybraid"
-          },
-          {
-            "from": "shortmessybraid",
-            "to": "shortmessybraid"
-          },
-          {
-            "from": "sidebraids",
+            "from": "classic",
             "to": "shortmessybraid"
           },
           {
@@ -65,10 +49,6 @@
           },
           {
             "from": "snood",
-            "to": "shortmessybraid"
-          },
-          {
-            "from": "thicklongfrenchbraid",
             "to": "shortmessybraid"
           },
           {
@@ -91,8 +71,21 @@
             "from": "unkempt",
             "to": "shortmessybraid"
           },
+          
           {
             "from": "shortmessybraid",
+            "to": "headsidebraid"
+          },
+          {
+            "from": "headsidebraid",
+            "to": "rolledbraidwithbun"
+          },
+					{
+            "from": "rolledbraidwithbun",
+            "to": "sidebraids"
+          },
+          {
+            "from": "sidebraids",
             "to": "neatbraid"
           },
           {
@@ -105,12 +98,7 @@
           },
           {
             "from": "braidedup",
-            "to": "sidebraids"
-          },
-          {
-            "from": "sidebraids",
             "to": "headsidebraid"
-          },
           {
             "from": "headsidebraid",
             "to": "rolledbraidwithbun"
