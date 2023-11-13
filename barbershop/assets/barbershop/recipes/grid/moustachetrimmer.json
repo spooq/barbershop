@@ -1,0 +1,19 @@
+{
+  "ingredientPattern": "SK,S_",
+  "width": 2,
+  "height": 2,
+  "ingredients": {
+    "K": {
+      "type": "item",
+      "code": "game:knifeblade-*"
+    },
+    "S": {
+      "type": "item",
+      "code": "game:stick"
+    }
+  },
+  "output": {
+    "type": "item",
+    "code": "barbershop:mustachetrimmer"
+  }
+}
