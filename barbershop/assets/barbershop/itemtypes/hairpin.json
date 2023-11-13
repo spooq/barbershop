@@ -4,7 +4,7 @@
     "general": [ "*" ],
     "barbershop": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/comb" },
+  "shape": { "base": "game:item/stick" },
   "textures": {
     "wood": { "base": "game:block/wood/debarked/larch" }
   },

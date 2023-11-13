@@ -92,33 +92,30 @@ namespace Barbershop
         {
             var targetPlayer = args.Caller.Player as IServerPlayer;
 
-            var playerBehaviour = targetPlayer?.Entity?.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
+            var skinnable = targetPlayer?.Entity?.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (skinnable == null)
                 return new TextCommandResult { Status = EnumCommandStatus.Error, StatusMessage = $"Could not get playerBehaviour EntityBehaviorExtraSkinnable" };
 
             var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
             if (saveData == null)
             {
-                OnCharacterReset(targetPlayer);
-                saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+                saveData = OnCharacterReset(skinnable);
+                targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
             }
 
             switch (args.Parsers[0].GetValue() as string)
             {
                 case "show":
                     var cangrowhair = saveData.CanGrowHair ? Lang.Get("cangrowhairscalp") : Lang.Get("cantgrowhairscalp");
-                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowhair, EnumChatType.Notification);
-
                     var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("cangrowhairface") : Lang.Get("cantgrowhairface");
-                    targetPlayer.SendMessage(GlobalConstants.CurrentChatGroup, cangrowfacial, EnumChatType.Notification);
 
                     var message = cangrowhair + Environment.NewLine
                                 + cangrowfacial + Environment.NewLine
-                                + $"{HairBase} {GetCurrentStyle(playerBehaviour, HairBase)} {saveData.timeSinceEdited[HairBase]}" + Environment.NewLine
-                                + $"{HairExtra} {GetCurrentStyle(playerBehaviour, HairExtra)} {saveData.timeSinceEdited[HairExtra]}" + Environment.NewLine
-                                + $"{HairColor} {GetCurrentStyle(playerBehaviour, HairColor)} {saveData.timeSinceEdited[HairColor]}" + Environment.NewLine
-                                + $"{Mustache} {GetCurrentStyle(playerBehaviour, Mustache)} {saveData.timeSinceEdited[Mustache]}" + Environment.NewLine
-                                + $"{Beard} {GetCurrentStyle(playerBehaviour, Beard)} {saveData.timeSinceEdited[Beard]}" + Environment.NewLine;
+                                + $"{HairBase} {GetCurrentStyle(skinnable, HairBase)} {saveData.timeSinceEdited[HairBase]}" + Environment.NewLine
+                                + $"{HairExtra} {GetCurrentStyle(skinnable, HairExtra)} {saveData.timeSinceEdited[HairExtra]}" + Environment.NewLine
+                                + $"{HairColor} {GetCurrentStyle(skinnable, HairColor)} {saveData.timeSinceEdited[HairColor]}" + Environment.NewLine
+                                + $"{Mustache} {GetCurrentStyle(skinnable, Mustache)} {saveData.timeSinceEdited[Mustache]}" + Environment.NewLine
+                                + $"{Beard} {GetCurrentStyle(skinnable, Beard)} {saveData.timeSinceEdited[Beard]}" + Environment.NewLine;
                     return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = message };
 
                 case "hair":
@@ -127,8 +124,8 @@ namespace Barbershop
                     return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cangrowhairscalp") };
 
                 case "nohair":
-                    AttemptTransform(targetPlayer, HairBase, "*", "bald");
-                    AttemptTransform(targetPlayer, HairExtra, "*", "none");
+                    AttemptTransform(skinnable, HairBase, "*", "bald", ref saveData);
+                    AttemptTransform(skinnable, HairExtra, "*", "none", ref saveData);
                     saveData.CanGrowHair = false;
                     targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
                     return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cantgrowhairscalp") };
@@ -139,8 +136,8 @@ namespace Barbershop
                     return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cangrowhairface") };
 
                 case "nofacialhair":
-                    AttemptTransform(targetPlayer, Beard, "*", "none");
-                    AttemptTransform(targetPlayer, Mustache, "*", "none");
+                    AttemptTransform(skinnable, Beard, "*", "none", ref saveData);
+                    AttemptTransform(skinnable, Mustache, "*", "none", ref saveData);
                     saveData.CanGrowFacialHair = false;
                     targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
                     return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = Lang.Get("cantgrowhairface") };
@@ -167,42 +164,41 @@ namespace Barbershop
                     if (targetPlayer.ConnectionState != EnumClientState.Playing)
                         continue;
 
+                    var skinnable = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+                    if (skinnable == null)
+                        continue;
+
                     var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
                     if (saveData == null)
-                    {
-                        OnCharacterReset(targetPlayer);
-                        continue;
-                    }
+                        saveData = OnCharacterReset(skinnable);
 
-                    bool dirty = TryAndGrowHair(targetPlayer, HairColor, hairGrowth.haircolor, diff, ref saveData);
+                    bool dirty = TryAndGrowHair(skinnable, HairColor, hairGrowth.haircolor, diff, ref saveData);
                     if (saveData.CanGrowHair)
                     {
-                        dirty |= TryAndGrowHair(targetPlayer, HairBase, hairGrowth.hairbase, diff, ref saveData);
-                        dirty |= TryAndGrowHair(targetPlayer, HairExtra, hairGrowth.hairextra, diff, ref saveData);
+                        dirty |= TryAndGrowHair(skinnable, HairBase, hairGrowth.hairbase, diff, ref saveData);
+                        dirty |= TryAndGrowHair(skinnable, HairExtra, hairGrowth.hairextra, diff, ref saveData);
                     }
                     if (saveData.CanGrowFacialHair)
                     {
-                        dirty |= TryAndGrowHair(targetPlayer, Mustache, hairGrowth.mustache, diff, ref saveData);
-                        dirty |= TryAndGrowHair(targetPlayer, Beard, hairGrowth.beard, diff, ref saveData);
+                        dirty |= TryAndGrowHair(skinnable, Mustache, hairGrowth.mustache, diff, ref saveData);
+                        dirty |= TryAndGrowHair(skinnable, Beard, hairGrowth.beard, diff, ref saveData);
                     }
                     if (dirty)
                     {
                         targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                         targetPlayer.BroadcastPlayerData(false);
                     }
+
+                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
                 }
             }
 
             sapi.World.RegisterCallback(OnTimePassed, 1000);
         }
 
-        public void OnCharacterReset(IServerPlayer byPlayer)
+        public PlayerBarbershopData OnCharacterReset(EntityBehaviorExtraSkinnable skinnable)
         {
-            var playerBehaviour = byPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
-                return;
-
-            var savedata = new PlayerBarbershopData
+            var saveData = new PlayerBarbershopData
             {
                 timeSinceEdited = new Dictionary<string, double>
             {
@@ -214,34 +210,42 @@ namespace Barbershop
             }
             };
 
-            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairBase) != "bald";
-            savedata.CanGrowHair |= GetCurrentStyle(playerBehaviour, HairExtra) != "none";
+            saveData.CanGrowHair |= GetCurrentStyle(skinnable, HairBase) != "bald";
+            saveData.CanGrowHair |= GetCurrentStyle(skinnable, HairExtra) != "none";
 
-            savedata.CanGrowFacialHair |= GetCurrentStyle(playerBehaviour, Mustache) != "none";
-            savedata.CanGrowFacialHair |= GetCurrentStyle(playerBehaviour, Beard) != "none";
+            saveData.CanGrowFacialHair |= GetCurrentStyle(skinnable, Mustache) != "none";
+            saveData.CanGrowFacialHair |= GetCurrentStyle(skinnable, Beard) != "none";
 
-            byPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(savedata));
+            return saveData;
         }
 
-        public bool TryAndGrowHair(IServerPlayer targetPlayer, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
+        public bool TryAndGrowHair(EntityBehaviorExtraSkinnable skinnable, string part, List<BarberTransform> barberProps, double diff, ref PlayerBarbershopData saveData)
         {
             saveData.timeSinceEdited[part] += diff;
 
             // TODO: Should handle fast-forward of more than one day.
             if (saveData.timeSinceEdited[part] > 1)
-                return ApplyFirstMatchingTransform(targetPlayer, part, barberProps);
+                return ApplyFirstMatchingTransform(skinnable, part, barberProps, ref saveData);
 
             return false;
         }
 
         public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
         {
-            var item = sapi.World?.GetItem(new AssetLocation(packet.code));
-            if (item == null)
-                return;
-
             var targetPlayer = sapi.World.PlayerByUid(packet.targetUid) as IServerPlayer;
             if (targetPlayer == null)
+                return;
+
+            var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+            if (saveData == null)
+                return;
+
+            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
+            if (playerBehaviour == null)
+                return;
+
+            var item = sapi.World?.GetItem(new AssetLocation(packet.code));
+            if (item == null)
                 return;
 
             var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
@@ -249,51 +253,45 @@ namespace Barbershop
                 return;
 
             bool dirty = false;
-            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairBase, itemBehaviour.barberProperties.hairbase);
-            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairExtra, itemBehaviour.barberProperties.hairextra);
-            dirty |= ApplyFirstMatchingTransform(targetPlayer, HairColor, itemBehaviour.barberProperties.haircolor);
-            dirty |= ApplyFirstMatchingTransform(targetPlayer, Mustache, itemBehaviour.barberProperties.mustache);
-            dirty |= ApplyFirstMatchingTransform(targetPlayer, Beard, itemBehaviour.barberProperties.beard);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairBase, itemBehaviour.barberProperties.hairbase, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairExtra, itemBehaviour.barberProperties.hairextra, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairColor, itemBehaviour.barberProperties.haircolor, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Mustache, itemBehaviour.barberProperties.mustache, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Beard, itemBehaviour.barberProperties.beard, ref saveData);
+
             if (dirty)
             {
                 targetPlayer.Entity.WatchedAttributes.MarkPathDirty("skinConfig");
                 targetPlayer.BroadcastPlayerData(false);
+                targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
             }
         }
 
-        public bool ApplyFirstMatchingTransform(IServerPlayer targetPlayer, string part, List<BarberTransform> barberTransforms)
+        public bool ApplyFirstMatchingTransform(EntityBehaviorExtraSkinnable playerBehaviour, string part, List<BarberTransform> barberTransforms, ref PlayerBarbershopData saveData)
         {
             if (barberTransforms == null)
                 return false;
 
             foreach (var tf in barberTransforms)
-                if (AttemptTransform(targetPlayer, part, tf.from, tf.to))
+                if (AttemptTransform(playerBehaviour, part, tf.from, tf.to, ref saveData))
                     return true;
 
             return false;
         }
 
-        public bool AttemptTransform(IServerPlayer targetPlayer, string part, string from, string to)
+        public bool AttemptTransform(EntityBehaviorExtraSkinnable skinnable, string part, string from, string to, ref PlayerBarbershopData saveData)
         {
-            var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
-            if (playerBehaviour == null)
-                return false;
-
-            string currentStyle = GetCurrentStyle(playerBehaviour, part);
+            string currentStyle = GetCurrentStyle(skinnable, part);
             if (string.IsNullOrEmpty(currentStyle) || !WildcardUtil.Match(from, currentStyle))
                 return false;
 
             // Change style
-            foreach (var asp in playerBehaviour.AvailableSkinParts)
+            foreach (var asp in skinnable.AvailableSkinParts)
             {
                 if (asp.Code == part)
                 {
-                    playerBehaviour.selectSkinPart(asp.Code, to);
-
-                    var saveData = targetPlayer.GetModData<PlayerBarbershopData>(Mod.Info.ModID);
+                    skinnable.selectSkinPart(asp.Code, to);
                     saveData.timeSinceEdited[part] = 0;
-                    targetPlayer.SetModdata(Mod.Info.ModID, SerializerUtil.Serialize(saveData));
-
                     return true;
                 }
             }
