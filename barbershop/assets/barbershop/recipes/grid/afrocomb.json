@@ -1,6 +1,6 @@
 {
-  "ingredientPattern": "S,S",
-  "width": 1,
+  "ingredientPattern": "_S_,SSS",
+  "width": 3,
   "height": 2,
   "ingredients": {
     "S": {
