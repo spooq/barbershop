@@ -13,8 +13,7 @@
       "name": "Barbershop",
       "properties": {
         "target": "both",
-        "hairbase": [
-
+        "hairextra": [
           {
             "from": "backbun",
             "to": "shortmessybraid"

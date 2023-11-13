@@ -9,16 +9,16 @@
       "name": "Barbershop",
       "properties": {
         "target": "other",
-        "hairextra": [
-          {
-            "from": "*",
-            "to": "none"
-          }
-        ],
         "hairbase": [
           {
             "from": "*",
             "to": "bald"
+          }
+        ],
+        "hairextra": [
+          {
+            "from": "*",
+            "to": "none"
           }
         ]
       }
