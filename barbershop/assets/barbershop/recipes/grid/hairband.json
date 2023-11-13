@@ -1,0 +1,15 @@
+{
+  "ingredientPattern": "TT",
+  "width": 2,
+  "height": 1,
+  "ingredients": {
+    "T": {
+      "type": "item",
+      "code": "game:flaxtwine"
+    }
+  },
+  "output": {
+    "type": "item",
+    "code": "barbershop:hairband"
+  }
+}
