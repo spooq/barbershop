@@ -83,6 +83,7 @@
             "from": "vikingtopbraid",
             "to": "ponytail"
           },
+          
           {
             "from": "ponytail",
             "to": "classicponytail"
@@ -101,10 +102,6 @@
           },
           {
             "from": "tiedtopknot",
-            "to": "sidebuns"
-          },
-          {
-          	"from": "sidebuns",
             "to": "ponytail"
           }
         ]
