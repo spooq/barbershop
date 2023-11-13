@@ -2,7 +2,7 @@
   "code": "dreadbeads",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "shape": { "base": "barbershop:item/comb" },
   "textures": {

@@ -2,7 +2,7 @@
   "code": "hairpin",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "shape": { "base": "barbershop:item/comb" },
   "textures": {
@@ -52,18 +52,6 @@
           },
           {
             "from": "sidebraids",
-            "to": "topbun"
-          },
-          {
-            "from": "sidebuns",
-            "to": "topbun"
-          },
-          {
-            "from": "siderolls",
-            "to": "topbun"
-          },
-          {
-            "from": "snood",
             "to": "topbun"
           },
           {

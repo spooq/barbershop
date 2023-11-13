@@ -2,7 +2,7 @@
   "code": "scissors",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "behaviors": [
     {

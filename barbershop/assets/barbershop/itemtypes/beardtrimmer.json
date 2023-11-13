@@ -2,7 +2,7 @@
   "code": "beardtrimmer",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "shape": { "base": "barbershop:item/razor" },
   "textures": {

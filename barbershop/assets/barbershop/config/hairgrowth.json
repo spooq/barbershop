@@ -55,6 +55,11 @@
     {
       "from": "dreadlocks",
       "to": "messy"
+    },
+
+    {
+      "from": "iroquois",
+      "to": "kniaz"
     }
   ],
   "hairextra": [

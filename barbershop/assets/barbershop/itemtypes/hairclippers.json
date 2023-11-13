@@ -2,7 +2,7 @@
   "code": "hairclippers",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "behaviors": [
     {

@@ -2,7 +2,7 @@
   "code": "hairhook",
   "creativeinventory": {
     "general": [ "*" ],
-    "tools": [ "*" ]
+    "barbershop": [ "*" ]
   },
   "shape": { "base": "barbershop:item/comb" },
   "textures": {
