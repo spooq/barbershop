@@ -1,0 +1,52 @@
+[
+  {
+    "file": "game:itemtypes/resource/fat.json",
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "Barbershop",
+        "properties": {
+          "target": "both",
+          "mustache": [
+            {
+              "from": "mst-line01-pencil",
+              "to": "mst-walrus05-neat"
+            },
+            {
+              "from": "mst-line05-seargent",
+              "to": "mst-whiskbroom"
+            },
+            {
+              "from": "mst-line10-sheriff",
+              "to": "mst-u01-horseshoe"
+            },
+            {
+              "from": "mst-line20-seagull",
+              "to": "mst-u05-stirrups"
+            },
+
+            {
+              "from": "mst-walrus30-fat",
+              "to": "mst-line15-eccentric"
+            }
+          ],
+          "hairbase": [
+            {
+              "from": "short",
+              "to": "shortspiky"
+            },
+            {
+              "from": "shortspiky",
+              "to": "iroquois"
+            },
+            {
+              "from": "kniaz",
+              "to": "iroquois"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
