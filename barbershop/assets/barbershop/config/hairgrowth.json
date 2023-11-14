@@ -53,6 +53,7 @@
     },
 
     {
+      "timeToGrowInDays": 20,
       "from": "dreadlocks",
       "to": "messy"
     },
@@ -70,6 +71,7 @@
   ],
   "beard": [
     {
+      "timeToGrowInDays": 2,
       "from": "none",
       "to": "brd-stubble"
     },
@@ -159,6 +161,7 @@
   ],
   "mustache": [
     {
+      "timeToGrowInDays": 5,
       "from": "none",
       "to": "mst-line01-pencil"
     },
