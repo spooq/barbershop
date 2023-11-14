@@ -32,25 +32,18 @@
             "to": "mst-line10-sheriff"
           },
           {
-            "from": "mst-u01-horseshoe",
+            "from": "mst-walrus30-fat",
             "to": "mst-line20-seagull"
           },
+
           {
             "from": "mst-u05-stirrups",
             "to": "mst-u01-horseshoe"
           },
-          {
-            "from": "mst-line15-eccentric",
-            "to": "mst-u05-stirrups"
-          },
 
           {
-            "from": "mst-walrus30-fat",
+            "from": "mst-whiskbroom",
             "to": "mst-walrus05-neat"
-          },
-          {
-            "from": "mst-walrus05-neat",
-            "to": "mst-whiskbroom"
           }
         ]
       }
