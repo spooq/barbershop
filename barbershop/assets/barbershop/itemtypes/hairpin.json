@@ -4,7 +4,7 @@
     "general": [ "*" ],
     "barbershop": [ "*" ]
   },
-  "shape": { "base": "game:item/stick" },
+  "shape": { "base": "barbershop:item/hairpins" },
   "textures": {
     "wood": { "base": "game:block/wood/debarked/larch" }
   },
@@ -126,7 +126,7 @@
       "y": 0,
       "z": 0.44
     },
-    "scale": 1.75
+    "scale": 1
   },
   "fpHandTransform": {
     "translation": {
@@ -139,7 +139,7 @@
       "y": 15,
       "z": 90
     },
-    "scale": 2.45
+    "scale": 0.2
   },
   "groundTransform": {
     "translation": {
@@ -157,13 +157,13 @@
       "y": 0,
       "z": 0.5
     },
-    "scale": 3.4
+    "scale": 0.2
   },
   "tpHandTransform": {
     "translation": {
-      "x": -0.87,
-      "y": -0.01,
-      "z": -0.56
+      "x": 0,
+      "y": 0,
+      "z": 0
     },
     "rotation": {
       "x": -81,
@@ -175,6 +175,6 @@
       "y": 0,
       "z": 0.5
     },
-    "scale": 0.8
+    "scale": 0.05
   }
 }

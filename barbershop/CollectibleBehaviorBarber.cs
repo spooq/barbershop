@@ -8,11 +8,12 @@ namespace Barbershop
     {
         public string from;
         public string to;
+        public double overrideGrowthTime = 0.0;
     }
 
     public class BarberProperties
     {
-        public string target = "";
+        public string target = ""; // TODO: remove this in favour of left/right click
         public List<BarberTransform> hairbase = new();
         public List<BarberTransform> hairextra = new();
         public List<BarberTransform> beard = new();

@@ -106,8 +106,8 @@ namespace Barbershop
             switch (args.Parsers[0].GetValue() as string)
             {
                 case "show":
-                    var cangrowhair = saveData.CanGrowHair ? Lang.Get("cangrowhairscalp") : Lang.Get("cantgrowhairscalp");
-                    var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("cangrowhairface") : Lang.Get("cantgrowhairface");
+                    var cangrowhair = saveData.CanGrowHair ? Lang.Get("barbershop:cangrowhairscalp") : Lang.Get("barbershop:cantgrowhairscalp");
+                    var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("barbershop:cangrowhairface") : Lang.Get("barbershop:cantgrowhairface");
 
                     var message = cangrowhair + Environment.NewLine
                                 + cangrowfacial + Environment.NewLine
