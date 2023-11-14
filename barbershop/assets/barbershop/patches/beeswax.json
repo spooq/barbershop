@@ -30,20 +30,6 @@
               "from": "mst-walrus30-fat",
               "to": "mst-line15-eccentric"
             }
-          ],
-          "hairbase": [
-            {
-              "from": "short",
-              "to": "shortspiky"
-            },
-            {
-              "from": "shortspiky",
-              "to": "iroquois"
-            },
-            {
-              "from": "kniaz",
-              "to": "iroquois"
-            }
           ]
         }
       }
