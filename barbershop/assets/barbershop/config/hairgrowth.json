@@ -176,7 +176,12 @@
     },
     {
       "from": "mst-line20-seagull",
-      "to": "mst-u01-horseshoe"
+      "to": "mst-walrus30-fat"
+    },
+
+    {
+      "from": "mst-walrus05-neat",
+      "to": "mst-whiskbroom"
     },
     {
       "from": "mst-u01-horseshoe",
@@ -184,14 +189,6 @@
     },
     {
       "from": "mst-line15-eccentric",
-      "to": "mst-u01-horseshoe"
-    },
-    {
-      "from": "mst-whiskbroom",
-      "to": "mst-walrus05-neat"
-    },
-    {
-      "from": "mst-walrus05-neat",
       "to": "mst-walrus30-fat"
     }
   ]
