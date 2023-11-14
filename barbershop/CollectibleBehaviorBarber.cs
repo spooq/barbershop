@@ -8,7 +8,7 @@ namespace Barbershop
     {
         public string from;
         public string to;
-        public double timeToGrowInDays = 0.0;
+        public double timeToGrowInDays = 5.0;
     }
 
     public class BarberProperties

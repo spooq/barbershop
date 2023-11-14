@@ -53,7 +53,7 @@
     },
 
     {
-      "timeToGrowInDays": 20,
+      "timeToGrowInDays": 10,
       "from": "dreadlocks",
       "to": "messy"
     },
@@ -65,6 +65,7 @@
   ],
   "hairextra": [
     {
+      "timeToGrowInDays": 2,
       "from": "none",
       "to": "unkempt"
     }
@@ -161,7 +162,6 @@
   ],
   "mustache": [
     {
-      "timeToGrowInDays": 5,
       "from": "none",
       "to": "mst-line01-pencil"
     },
