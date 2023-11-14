@@ -1,6 +1,20 @@
 {
-  "cangrowhairscalp": "You can grow hair on your scalp.",
-  "cantgrowhairscalp": "You can't grow hair on your scalp.",
-  "cangrowhairface": "You can grow hair on your face.",
-  "cantgrowhairface": "You can't grow hair on your face."
+  "game:tabname-barbershop": "Barbershop",
+  "barbershop:cangrowhairscalp": "You can grow hair on your scalp.",
+  "barbershop:cantgrowhairscalp": "You can't grow hair on your scalp.",
+  "barbershop:cangrowhairface": "You can grow hair on your face.",
+  "barbershop:cantgrowhairface": "You can't grow hair on your face.",
+
+  "barbershop:item-afrocomb": "Afro comb",
+  "barbershop:item-beardtrimmer": "Beard trimmer",
+  "barbershop:item-comb": "Comb",
+  "barbershop:item-dreadbeads": "Dreadbeads",
+  "barbershop:item-hairband": "Hairband",
+  "barbershop:item-hairclippers": "Hair clippers",
+  "barbershop:item-hairhook": "Hair hook",
+  "barbershop:item-hairpin": "Hairpin",
+  "barbershop:item-mirror": "Hand mirror",
+  "barbershop:item-mustachetrimmer": "Mustache trimmer",
+  "barbershop:item-razor": "Cut-throat razor",
+  "barbershop:item-scissors": "Barbers scissors"
 }

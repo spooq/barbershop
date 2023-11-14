@@ -58,12 +58,14 @@
   <None Remove="assets\barbershop\itemtypes\hairclippers.json" />
   <None Remove="assets\barbershop\itemtypes\hairhook.json" />
   <None Remove="assets\barbershop\itemtypes\hairpin.json" />
+  <None Remove="assets\barbershop\itemtypes\handmirror.json" />
   <None Remove="assets\barbershop\itemtypes\razor.json" />
   <None Remove="assets\barbershop\itemtypes\scissors.json" />
   <None Remove="assets\barbershop\lang\en.json" />
   <None Remove="assets\barbershop\patches\beeswax.json" />
   <None Remove="assets\barbershop\recipes\grid\afrocomb.json" />
   <None Remove="assets\barbershop\recipes\grid\comb.json" />
+  <None Remove="assets\barbershop\recipes\grid\handmirror.json" />
   <None Remove="assets\barbershop\recipes\grid\razor.json" />
   <None Remove="assets\barbershop\recipes\scissors.json" />
   <None Remove="assets\barbershop\shapes\comb.json" />
