@@ -13,7 +13,6 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "both",
         "beard": [
           {
             "from": "brd-stubble",

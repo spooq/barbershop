@@ -1,0 +1,42 @@
+{
+  "blue": {
+    "haircolor": [
+      {
+        "from": "steelblue",
+        "to": "queenblue"
+      },
+      {
+        "from": "*",
+        "to": "steelblue"
+      }
+    ]
+  },
+  "red": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "russet"
+      }
+    ]
+  },
+  "yellow": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "harvestgold"
+      }
+    ]
+  },
+  "purple": {
+    "haircolor": [
+      {
+        "from": "palatinatepurple",
+        "to": "darkpurple"
+      },
+      {
+        "from": "*",
+        "to": "palatinatepurple"
+      }
+    ]
+  }
+}

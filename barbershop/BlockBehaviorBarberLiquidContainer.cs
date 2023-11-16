@@ -45,14 +45,18 @@ namespace Barbershop
 
         public bool TryApplyHairDye(EntityPlayer targetPlayer, ItemStack itemStack)
         {
-            var code = (block as BlockLiquidContainerTopOpened)?.GetContent(itemStack)?.Item?.Code?.ToString();
-            if (code == null)
+            var item = (block as BlockLiquidContainerTopOpened)?.GetContent(itemStack)?.Item;
+            if (item == null || item.FirstCodePart() != "dye")
                 return false;
 
-            BarbershopModSystem.Channel.SendPacket(new BarberPacket
+            var variant = item.Variant["color"];
+            if (variant == null)
+                return false;
+
+            BarbershopModSystem.DyeChannel.SendPacket(new BarberPacket
             {
                 targetUid = targetPlayer.PlayerUID,
-                code = code
+                code = variant
             });
             return true;
         }

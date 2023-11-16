@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using Vintagestory.API.Common;
+﻿using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 
 namespace Barbershop
 {
-
-
     public class CollectibleBehaviorBarber : CollectibleBehavior
     {
         public static BarbershopModSystem BarbershopModSystem;
@@ -32,17 +29,11 @@ namespace Barbershop
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            Entity targetEntity = entitySel?.Entity ?? byEntity; //both is default
-            if (barberProperties.target == "self")
-                targetEntity = byEntity;
-            else if (barberProperties.target == "other")
-                targetEntity = entitySel?.Entity;
-
-            if (targetEntity != null && targetEntity is EntityPlayer)
+            if (byEntity != null && byEntity is EntityPlayer)
             {
-                BarbershopModSystem.Channel.SendPacket(new BarberPacket
+                BarbershopModSystem.ItemChannel.SendPacket(new BarberPacket
                 {
-                    targetUid = (targetEntity as EntityPlayer).PlayerUID,
+                    targetUid = (byEntity as EntityPlayer).PlayerUID,
                     code = collObj.Code.ToString()
                 });
             }

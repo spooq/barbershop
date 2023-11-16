@@ -13,7 +13,6 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "both",
         "mustache": [
           {
             "from": "mst-line01-pencil",

@@ -1,8 +1,0 @@
-[
-  {
-    "file": "game:blocktypes/clay/bowl.json",
-    "op": "add",
-    "path": "/behaviors/-",
-    "value": [ { "name": "BarbershopContainer" } ]
-  }
-]

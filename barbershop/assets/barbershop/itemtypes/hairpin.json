@@ -12,7 +12,6 @@
     {
       "name": "Barbershop",
       "properties": {
-        "target": "both",
         "hairextra": [
           {
             "from": "neatbraid",

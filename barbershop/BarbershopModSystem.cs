@@ -36,7 +36,6 @@ namespace Barbershop
 
     public class BarberProperties
     {
-        public string target = ""; // TODO: remove this in favour of left/right click
         public List<BarberTransform> hairbase = new();
         public List<BarberTransform> hairextra = new();
         public List<BarberTransform> beard = new();
@@ -46,7 +45,10 @@ namespace Barbershop
 
     public class BarbershopModSystem : ModSystem
     {
-        public IClientNetworkChannel Channel;
+        public IClientNetworkChannel ItemChannel;
+        public const string ItemChannelName = "barbershop_item";
+        public IClientNetworkChannel DyeChannel;
+        public const string DyeChannelName = "barbershop_dye";
 
         public ICoreServerAPI sapi;
 
@@ -60,6 +62,8 @@ namespace Barbershop
         BarberProperties hairGrowth;
         double lastCheckOfElapsedDays;
 
+        Dictionary<string, BarberProperties> dyes;
+
         public override bool ShouldLoad(EnumAppSide forSide)
         {
             return true;
@@ -71,9 +75,14 @@ namespace Barbershop
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
             api.RegisterBlockBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
+            api.RegisterBlockBehaviorClass("BarbershopMirror", typeof(CollectibleBehaviorBarberMirror));
 
             api.Network
-                .RegisterChannel(Mod.Info.ModID)
+                .RegisterChannel(ItemChannelName)
+                .RegisterMessageType<BarberPacket>();
+
+            api.Network
+                .RegisterChannel(DyeChannelName)
                 .RegisterMessageType<BarberPacket>();
         }
 
@@ -81,7 +90,8 @@ namespace Barbershop
         {
             base.StartClientSide(api);
 
-            Channel = api.Network.GetChannel(Mod.Info.ModID);
+            ItemChannel = api.Network.GetChannel(ItemChannelName);
+            DyeChannel = api.Network.GetChannel(DyeChannelName);
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -90,13 +100,19 @@ namespace Barbershop
 
             sapi = api;
 
-            var hairgrowAsset = sapi.Assets.Get("barbershop:config/hairgrowth.json");
+            var hairgrowAsset = sapi.Assets.Get("barbershop:config/growth.json");
             hairGrowth = JsonConvert.DeserializeObject<BarberProperties>(hairgrowAsset.ToText());
+
+            var dyeAsset = sapi.Assets.Get("barbershop:config/dye.json");
+            dyes = JsonConvert.DeserializeObject<Dictionary<string, BarberProperties>>(dyeAsset.ToText());
 
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
-            sapi.Network.GetChannel(Mod.Info.ModID)
+            sapi.Network.GetChannel(ItemChannelName)
                 .SetMessageHandler<BarberPacket>(ApplyBarberItemToPlayer);
+
+            sapi.Network.GetChannel(DyeChannelName)
+                .SetMessageHandler<BarberPacket>(ApplyBarberDyeToPlayer);
 
             sapi.ChatCommands.Create("barber")
                 .WithDescription("Barbershop main command")
@@ -104,6 +120,14 @@ namespace Barbershop
                 .RequiresPrivilege(Privilege.chat)
                 .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string> { "show", "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
                 .HandleWith(onBarberCommand);
+        }
+
+        public override void AssetsFinalize(ICoreAPI api)
+        {
+            base.AssetsFinalize(api);
+
+            var bowl = api.World.GetBlock(new AssetLocation("bowl-fired"));
+            bowl.CollectibleBehaviors = bowl.CollectibleBehaviors.Append(new BlockBehaviorBarberLiquidContainer(bowl));
         }
 
         public TextCommandResult onBarberCommand(TextCommandCallingArgs args)
@@ -124,12 +148,12 @@ namespace Barbershop
             switch (args.Parsers[0].GetValue() as string)
             {
                 case "show":
-                    var hairStr = Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)));
+                    var hairStr = Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase), Lang.Get("game:color-" + GetCurrentStyle(skinnable, HairColor)).ToLower());
                     var hairExtraStr = Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra));
                     if (!saveData.CanGrowHair)
                         hairStr = hairExtraStr = "";
 
-                    var beardStr = Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)));
+                    var beardStr = Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard), Lang.Get("game:color-" + GetCurrentStyle(skinnable, HairColor)).ToLower());
                     var mustacheStr = Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache));
                     if (!saveData.CanGrowFacialHair)
                         mustacheStr = beardStr = "";
@@ -275,9 +299,30 @@ namespace Barbershop
             return false;
         }
 
+        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
+        {
+            if (!dyes.ContainsKey(packet.code))
+                return;
+
+            ApplyBarberPropertiesToPlayer(fromPlayer, packet.targetUid, dyes[packet.code]);
+        }
+
         public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
         {
-            var targetPlayer = sapi.World.PlayerByUid(packet.targetUid) as IServerPlayer;
+            var item = sapi.World?.GetItem(new AssetLocation(packet.code));
+            if (item == null)
+                return;
+
+            var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
+            if (itemBehaviour == null)
+                return;
+
+            ApplyBarberPropertiesToPlayer(fromPlayer, packet.targetUid, itemBehaviour.barberProperties);
+        }
+
+        public void ApplyBarberPropertiesToPlayer(IServerPlayer fromPlayer, string targetUid, BarberProperties barberProperties)
+        {
+            var targetPlayer = sapi.World.PlayerByUid(targetUid) as IServerPlayer;
             if (targetPlayer == null)
                 return;
 
@@ -289,20 +334,13 @@ namespace Barbershop
             if (playerBehaviour == null)
                 return;
 
-            var item = sapi.World?.GetItem(new AssetLocation(packet.code));
-            if (item == null)
-                return;
-
-            var itemBehaviour = item.GetCollectibleBehavior<CollectibleBehaviorBarber>(true);
-            if (itemBehaviour == null)
-                return;
 
             bool dirty = false;
-            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairBase, itemBehaviour.barberProperties.hairbase, ref saveData);
-            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairExtra, itemBehaviour.barberProperties.hairextra, ref saveData);
-            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairColor, itemBehaviour.barberProperties.haircolor, ref saveData);
-            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Mustache, itemBehaviour.barberProperties.mustache, ref saveData);
-            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Beard, itemBehaviour.barberProperties.beard, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairBase, barberProperties.hairbase, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairExtra, barberProperties.hairextra, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairColor, barberProperties.haircolor, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Mustache, barberProperties.mustache, ref saveData);
+            dirty |= ApplyFirstMatchingTransform(playerBehaviour, Beard, barberProperties.beard, ref saveData);
 
             if (dirty)
             {

@@ -4,7 +4,7 @@
   "height": 2,
   "ingredients": {
     "G": {
-      "type": "item",
+      "type": "block",
       "code": "game:glass-plain"
     },
     "S": {
