@@ -102,7 +102,7 @@ namespace Barbershop
                 .WithDescription("Barbershop main command")
                 .RequiresPlayer()
                 .RequiresPrivilege(Privilege.chat)
-                .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string>{ "show", "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
+                .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string> { "show", "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
                 .HandleWith(onBarberCommand);
         }
 
@@ -125,26 +125,29 @@ namespace Barbershop
             {
                 case "show":
                     var hairStr = Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)));
-                    var hairExtra = Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra));
+                    var hairExtraStr = Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra));
                     if (!saveData.CanGrowHair)
-                        hairStr = hairExtra = "";
+                        hairStr = hairExtraStr = "";
+
+                    var beardStr = Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)));
+                    var mustacheStr = Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache));
+                    if (!saveData.CanGrowFacialHair)
+                        mustacheStr = beardStr = "";
 
                     return new TextCommandResult
                     {
-                        
                         Status = EnumCommandStatus.Success,
                         StatusMessage =
-                            Lang.Get("barbershop:description",
-                            hairStr,
-                            hairExtra,
-                            Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor))),
-                            Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard)))
-
-                            /*
-                            saveData.timeSinceEdited[HairBase],
-                            saveData.timeSinceEdited[HairExtra],
-                            saveData.timeSinceEdited[Mustache],
-                            saveData.timeSinceEdited[Beard]))*/
+                        Lang.Get("barbershop:description",
+                        hairStr,
+                        hairExtraStr,
+                        beardStr,
+                        mustacheStr)
+                        /*
+                        saveData.timeSinceEdited[HairBase],
+                        saveData.timeSinceEdited[HairExtra],
+                        saveData.timeSinceEdited[Mustache],
+                        saveData.timeSinceEdited[Beard]))*/
                     };
 
                 case "show2":
