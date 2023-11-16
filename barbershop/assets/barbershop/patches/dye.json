@@ -1,0 +1,20 @@
+[
+  {
+    "file": "game:itemtypes/liquid/dye.json",
+    "op": "add",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "Barbershop",
+        "properties": {
+          "haircolor": [
+            {
+              "from": "*",
+              "to": "blue"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

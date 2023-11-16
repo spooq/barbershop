@@ -27,6 +27,23 @@ namespace Barbershop
         public Dictionary<string, double> timeSinceEdited;
     }
 
+    public class BarberTransform
+    {
+        public string from;
+        public string to;
+        public double timeToGrowInDays = 5.0;
+    }
+
+    public class BarberProperties
+    {
+        public string target = ""; // TODO: remove this in favour of left/right click
+        public List<BarberTransform> hairbase = new();
+        public List<BarberTransform> hairextra = new();
+        public List<BarberTransform> beard = new();
+        public List<BarberTransform> mustache = new();
+        public List<BarberTransform> haircolor = new();
+    }
+
     public class BarbershopModSystem : ModSystem
     {
         public IClientNetworkChannel Channel;
@@ -53,6 +70,7 @@ namespace Barbershop
             base.Start(api);
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
+            api.RegisterCollectibleBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
 
             api.Network
                 .RegisterChannel(Mod.Info.ModID)

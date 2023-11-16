@@ -1,0 +1,69 @@
+﻿using Vintagestory.API.Common;
+using Vintagestory.GameContent;
+
+namespace Barbershop
+{
+    public class BlockBehaviorBarberLiquidContainer : BlockBehavior
+    {
+        public static BarbershopModSystem BarbershopModSystem;
+
+        public BarberProperties barberProperties = new BarberProperties();
+
+        public BlockBehaviorBarberLiquidContainer(Block block) : base(block)
+        {
+        }
+
+        public override void Initialize(Vintagestory.API.Datastructures.JsonObject properties)
+        {
+            base.Initialize(properties);
+
+            barberProperties = properties.AsObject<BarberProperties>();
+        }
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+
+            BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
+        }
+
+        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
+        {
+            if (entitySel != null && byEntity is EntityPlayer && TryApplyHairDye(byEntity as EntityPlayer, slot.Itemstack))
+            {
+                handHandling = EnumHandHandling.PreventDefaultAction;
+            }
+            else
+            {
+                base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
+            }
+        }
+
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
+        {
+            if (TryApplyHairDye(byEntity as EntityPlayer, slot.Itemstack))
+            {
+                handHandling = EnumHandHandling.PreventDefaultAction;
+                handling = EnumHandling.PreventSubsequent;
+            }
+            else
+            {
+                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
+            }
+        }
+
+        public bool TryApplyHairDye(EntityPlayer targetPlayer, ItemStack itemStack)
+        {
+            var code = (block as BlockLiquidContainerTopOpened)?.GetContent(itemStack)?.Item?.Code?.ToString();
+            if (code == null)
+                return false;
+
+            BarbershopModSystem.Channel.SendPacket(new BarberPacket
+            {
+                targetUid = targetPlayer.PlayerUID,
+                code = code
+            });
+            return true;
+        }
+    }
+}
