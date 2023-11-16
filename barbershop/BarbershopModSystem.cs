@@ -105,6 +105,24 @@ namespace Barbershop
 
             switch (args.Parsers[0].GetValue() as string)
             {
+                case "show2":
+                    return new TextCommandResult
+                    {
+                        Status = EnumCommandStatus.Success,
+                        StatusMessage =
+                            Lang.Get("barbershop:description",
+                            Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)),
+                            saveData.timeSinceEdited[HairColor],
+                            Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase)),
+                            saveData.timeSinceEdited[HairBase],
+                            Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra)),
+                            saveData.timeSinceEdited[HairExtra],
+                            Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache)),
+                            saveData.timeSinceEdited[Mustache],
+                            Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard)),
+                            saveData.timeSinceEdited[Beard])
+                    };
+
                 case "show":
                     var cangrowhair = saveData.CanGrowHair ? Lang.Get("barbershop:cangrowhairscalp") : Lang.Get("barbershop:cantgrowhairscalp");
                     var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("barbershop:cangrowhairface") : Lang.Get("barbershop:cantgrowhairface");

@@ -1,9 +1,16 @@
 {
   "game:tabname-barbershop": "Barbershop",
+
   "barbershop:cangrowhairscalp": "You can grow hair on your scalp.",
-  "barbershop:cantgrowhairscalp": "You can't grow hair on your scalp.",
+  "barbershop:cantgrowhairscalp": "You cannot grow hair on your scalp.",
   "barbershop:cangrowhairface": "You can grow hair on your face.",
-  "barbershop:cantgrowhairface": "You can't grow hair on your face.",
+  "barbershop:cantgrowhairface": "You cannot grow hair on your face.",
+
+  "barbershop:description": "{0}{1}{2}{3}",
+
+  "barbershop:hairbase_bald": "",
+
+  "barbershop:hairextra_none": "no extra hair.",
 
   "barbershop:item-afrocomb": "Afro comb",
   "barbershop:item-beardtrimmer": "Beard trimmer",

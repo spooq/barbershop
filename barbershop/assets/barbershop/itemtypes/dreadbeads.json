@@ -1,10 +1,10 @@
-{
+t{
   "code": "dreadbeads",
   "creativeinventory": {
     "general": [ "*" ],
     "barbershop": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/comb" },
+  "shape": { "base": "barbershop:item/dreadbeads" },
   "textures": {
     "wood": { "base": "game:block/wood/debarked/larch" }
   },
