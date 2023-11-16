@@ -6,7 +6,9 @@
   },
   "shape": { "base": "barbershop:item/hairband" },
   "textures": {
-    "wood": { "base": "game:block/wood/debarked/larch" }
+    "col1": { "base": "game:block/cloth/linen/blue" },
+    "col2": { "base": "game:block/cloth/linen/orange" },
+    "col3": { "base": "game:block/cloth/linen/pink" }
   },
   "behaviors": [
     {

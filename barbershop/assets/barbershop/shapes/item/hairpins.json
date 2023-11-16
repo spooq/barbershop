@@ -7,9 +7,6 @@
 	"textureHeight": 32,
 	"textureSizes": {
 	},
-	"textures": {
-		"wood": "game:block/wood/debarked/larch"
-	},
 	"elements": [
 		{
 			"name": "bone2",
