@@ -20,7 +20,7 @@ namespace Barbershop
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
         {
-            if (entitySel != null && byEntity is EntityPlayer && TryApplyHairDye(byEntity as EntityPlayer, slot.Itemstack))
+            if (entitySel != null && entitySel != null && entitySel.Entity is EntityPlayer && TryApplyHairDye(entitySel.Entity as EntityPlayer, slot.Itemstack))
             {
                 handHandling = EnumHandHandling.PreventDefaultAction;
             }

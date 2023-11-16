@@ -1,4 +1,5 @@
 ﻿using Vintagestory.API.Common;
+using Vintagestory.API.Server;
 
 namespace Barbershop
 {
@@ -19,20 +20,21 @@ namespace Barbershop
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
+        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
+        {
+            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
+        }
+
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            if (BarbershopModSystem.sapi != null)
+            if (BarbershopModSystem.sapi != null && byEntity is EntityPlayer)
             {
+                IServerPlayer player = (IServerPlayer)(byEntity as EntityPlayer).Player;
+                if (player == null)
+                    return;
+            //    BarbershopModSystem.sapi.ChatCommands.Execute("");
                 //BarbershopModSystem.sapi.SendMessage(byEntity as EntityPlayer, worldconst)
             }
-
-            /*
-            BarbershopModSystem.Channel.SendPacket(new BarberPacket
-            {
-                targetUid = (byEntity as EntityPlayer).PlayerUID,
-                code = collObj.Code.ToString()
-            });
-            */
 
             handHandling = EnumHandHandling.PreventDefaultAction;
             handling = EnumHandling.Handled;

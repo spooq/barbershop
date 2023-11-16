@@ -47,6 +47,7 @@ namespace Barbershop
     {
         public IClientNetworkChannel ItemChannel;
         public const string ItemChannelName = "barbershop_item";
+
         public IClientNetworkChannel DyeChannel;
         public const string DyeChannelName = "barbershop_dye";
 
@@ -74,8 +75,9 @@ namespace Barbershop
             base.Start(api);
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
+            api.RegisterCollectibleBehaviorClass("BarbershopMirror", typeof(CollectibleBehaviorBarberMirror));
+
             api.RegisterBlockBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
-            api.RegisterBlockBehaviorClass("BarbershopMirror", typeof(CollectibleBehaviorBarberMirror));
 
             api.Network
                 .RegisterChannel(ItemChannelName)
@@ -173,19 +175,6 @@ namespace Barbershop
                         saveData.timeSinceEdited[Mustache],
                         saveData.timeSinceEdited[Beard]))*/
                     };
-
-                case "show2":
-                    var cangrowhair = saveData.CanGrowHair ? Lang.Get("barbershop:cangrowhairscalp") : Lang.Get("barbershop:cantgrowhairscalp");
-                    var cangrowfacial = saveData.CanGrowFacialHair ? Lang.Get("barbershop:cangrowhairface") : Lang.Get("barbershop:cantgrowhairface");
-
-                    var message = cangrowhair + Environment.NewLine
-                                + cangrowfacial + Environment.NewLine
-                                + $"{HairBase} {GetCurrentStyle(skinnable, HairBase)} {saveData.timeSinceEdited[HairBase]}" + Environment.NewLine
-                                + $"{HairExtra} {GetCurrentStyle(skinnable, HairExtra)} {saveData.timeSinceEdited[HairExtra]}" + Environment.NewLine
-                                + $"{HairColor} {GetCurrentStyle(skinnable, HairColor)} {saveData.timeSinceEdited[HairColor]}" + Environment.NewLine
-                                + $"{Mustache} {GetCurrentStyle(skinnable, Mustache)} {saveData.timeSinceEdited[Mustache]}" + Environment.NewLine
-                                + $"{Beard} {GetCurrentStyle(skinnable, Beard)} {saveData.timeSinceEdited[Beard]}" + Environment.NewLine;
-                    return new TextCommandResult { Status = EnumCommandStatus.Success, StatusMessage = message };
 
                 case "hair":
                     saveData.CanGrowHair = true;
@@ -333,7 +322,6 @@ namespace Barbershop
             var playerBehaviour = targetPlayer.Entity.GetBehavior<EntityBehaviorExtraSkinnable>();
             if (playerBehaviour == null)
                 return;
-
 
             bool dirty = false;
             dirty |= ApplyFirstMatchingTransform(playerBehaviour, HairBase, barberProperties.hairbase, ref saveData);
