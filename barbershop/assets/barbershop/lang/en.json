@@ -1,11 +1,6 @@
 {
   "game:tabname-barbershop": "Barbershop",
 
-  "barbershop:cangrowhairscalp": "You can grow hair on your scalp.",
-  "barbershop:cantgrowhairscalp": "You cannot grow hair on your scalp.",
-  "barbershop:cangrowhairface": "You can grow hair on your face.",
-  "barbershop:cantgrowhairface": "You cannot grow hair on your face.",
-
   "barbershop:item-afrocomb": "Afro comb",
   "barbershop:item-beardtrimmer": "Beard trimmer",
   "barbershop:item-comb": "Comb",
@@ -21,7 +16,30 @@
 
   "barbershop:description": "{0}{1}{2}{3}",
 
-  "barbershop:hairbase_bald": "You are bald",
+  "barbershop:haircolour_lightgray": "light gray",
+  "barbershop:haircolour_silverchalice": "silver",
+  "barbershop:haircolour_slategray": "slate gray",
+  "barbershop:haircolour_eerieblack": "eerie black",
+  "barbershop:haircolour_mossgreen": "moss green",
+  "barbershop:haircolour_seagreen": "sea-green",
+  "barbershop:haircolour_wintergreendream": "winter-green",
+  "barbershop:haircolour_steelblue": "steel blue",
+  "barbershop:haircolour_queenblue": "queen blue",
+  "barbershop:haircolour_indigodye": "indigo",
+  "barbershop:haircolour_heliotropegray": "heliotrope gray",
+  "barbershop:haircolour_palatinatepurple": "palatinate purple",
+  "barbershop:haircolour_darkpurple": "dark purple",
+  "barbershop:haircolour_wheat": "wheat",
+  "barbershop:haircolour_ecru": "ecru",
+  "barbershop:haircolour_sanddune": "sanddune",
+  "barbershop:haircolour_harvestgold": "harvest gold",
+  "barbershop:haircolour_cordovan": "cordovan",
+  "barbershop:haircolour_rosewood": "rosewood",
+  "barbershop:haircolour_russet": "russet",
+  "barbershop:haircolour_liver": "liver",
+  "barbershop:haircolour_oldburgundy": "burgundy",
+
+  "barbershop:hairbase_bald": "You are have a shaved head",
   "barbershop:hairbase_balding": "Your {0} hair is balding",
   "barbershop:hairbase_afro": "You have a {0} afro",
   "barbershop:hairbase_combed": "Your {0} hair is combed",

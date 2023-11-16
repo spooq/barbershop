@@ -106,21 +106,27 @@ namespace Barbershop
             switch (args.Parsers[0].GetValue() as string)
             {
                 case "show":
+                    var hairStr = Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)));
+                    var hairExtra = Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra));
+                    if (!saveData.CanGrowHair)
+                        hairStr = hairExtra = "";
+
                     return new TextCommandResult
                     {
+                        
                         Status = EnumCommandStatus.Success,
                         StatusMessage =
                             Lang.Get("barbershop:description",
-                            "test",
-                            Lang.Get("barbershop:hairbase_" + GetCurrentStyle(skinnable, HairBase), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor)),
-                            Lang.Get("barbershop:hairextra_" + GetCurrentStyle(skinnable, HairExtra), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor))),
-                            Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache)),
-                            Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard)),
+                            hairStr,
+                            hairExtra,
+                            Lang.Get("barbershop:mustache_" + GetCurrentStyle(skinnable, Mustache), Lang.Get("barbershop:haircolour_" + GetCurrentStyle(skinnable, HairColor))),
+                            Lang.Get("barbershop:beard_" + GetCurrentStyle(skinnable, Beard)))
 
+                            /*
                             saveData.timeSinceEdited[HairBase],
                             saveData.timeSinceEdited[HairExtra],
                             saveData.timeSinceEdited[Mustache],
-                            saveData.timeSinceEdited[Beard]))
+                            saveData.timeSinceEdited[Beard]))*/
                     };
 
                 case "show2":
