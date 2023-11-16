@@ -81,7 +81,7 @@
 
 <ItemGroup>
   <Content Update="assets\barbershop\patches\bowl.json">
-    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
   <Content Update="assets\barbershop\patches\dye.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

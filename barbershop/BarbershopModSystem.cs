@@ -70,7 +70,7 @@ namespace Barbershop
             base.Start(api);
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
-            api.RegisterCollectibleBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
+            api.RegisterBlockBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
 
             api.Network
                 .RegisterChannel(Mod.Info.ModID)

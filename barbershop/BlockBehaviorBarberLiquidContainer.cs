@@ -7,17 +7,8 @@ namespace Barbershop
     {
         public static BarbershopModSystem BarbershopModSystem;
 
-        public BarberProperties barberProperties = new BarberProperties();
-
         public BlockBehaviorBarberLiquidContainer(Block block) : base(block)
         {
-        }
-
-        public override void Initialize(Vintagestory.API.Datastructures.JsonObject properties)
-        {
-            base.Initialize(properties);
-
-            barberProperties = properties.AsObject<BarberProperties>();
         }
 
         public override void OnLoaded(ICoreAPI api)
