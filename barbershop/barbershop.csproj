@@ -80,6 +80,12 @@
 </ItemGroup>
 
 <ItemGroup>
+  <Content Update="assets\barbershop\patches\bowl.json">
+    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+  </Content>
+  <Content Update="assets\barbershop\patches\dye.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
   <Content Update="assets\barbershop\patches\fat.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
