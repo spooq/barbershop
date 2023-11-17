@@ -45,7 +45,15 @@ namespace Barbershop
 
         public bool TryApplyHairDye(EntityPlayer targetPlayer, ItemStack itemStack)
         {
-            var item = (block as BlockLiquidContainerTopOpened)?.GetContent(itemStack)?.Item;
+            var containerBlock = block as BlockLiquidContainerTopOpened;
+            if (containerBlock == null)
+                return false;
+
+            var itemStackContents = containerBlock.GetContent(itemStack);
+            if (itemStackContents == null)
+                return false;
+
+            var item = itemStackContents.Item;
             if (item == null || item.FirstCodePart() != "dye")
                 return false;
 
