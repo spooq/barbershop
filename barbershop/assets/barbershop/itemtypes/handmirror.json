@@ -4,10 +4,10 @@
     "general": [ "*" ],
     "barbershop": [ "*" ]
   },
-  "shape": { "base": "barbershop:item/razor" },
+  "shape": { "base": "barbershop:item/handmirror_reflect" },
   "textures": {
     "wood": { "base": "game:block/wood/debarked/larch" },
-    "metal": { "base": "game:block/metal/ingot/stainlesssteel" }
+    "mirror": { "base": "game:item/resource/plate/silver" }
   },
   "behaviors": [
     {

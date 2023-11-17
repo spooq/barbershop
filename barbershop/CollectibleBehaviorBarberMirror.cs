@@ -32,8 +32,6 @@ namespace Barbershop
                 IServerPlayer player = (IServerPlayer)(byEntity as EntityPlayer).Player;
                 if (player == null)
                     return;
-            //    BarbershopModSystem.sapi.ChatCommands.Execute("");
-                //BarbershopModSystem.sapi.SendMessage(byEntity as EntityPlayer, worldconst)
             }
 
             handHandling = EnumHandHandling.PreventDefaultAction;
