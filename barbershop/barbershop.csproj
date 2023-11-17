@@ -71,6 +71,7 @@
   <None Remove="assets\barbershop\recipes\grid\razor.json" />
   <None Remove="assets\barbershop\recipes\scissors.json" />
   <None Remove="assets\barbershop\shapes\comb.json" />
+  <None Remove="assets\barbershop\shapes\item\hairbraider.json" />
   <None Remove="assets\barbershop\shapes\razor.json" />
   <None Remove="assets\barbershop\textures\magicwand.png" />
   <Content Include="modinfo.json">
