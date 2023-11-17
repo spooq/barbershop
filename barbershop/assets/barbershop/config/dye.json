@@ -22,8 +22,20 @@
   "yellow": {
     "haircolor": [
       {
+        "from": "harvestgold",
+        "to": "sanddune"
+      },
+      {
         "from": "*",
         "to": "harvestgold"
+      }
+    ]
+  },
+  "green": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "seagreen"
       }
     ]
   },
@@ -36,6 +48,22 @@
       {
         "from": "*",
         "to": "palatinatepurple"
+      }
+    ]
+  },
+  "black": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "eerieblack"
+      }
+    ]
+  },
+  "white": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "lightgray"
       }
     ]
   }

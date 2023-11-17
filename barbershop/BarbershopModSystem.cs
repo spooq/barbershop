@@ -12,7 +12,14 @@ using Vintagestory.GameContent;
 namespace Barbershop
 {
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
-    public class BarberPacket
+    public class BarberItemPacket
+    {
+        public string targetUid;
+        public string code;
+    }
+
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
+    public class BarberDyePacket
     {
         public string targetUid;
         public string code;
@@ -80,11 +87,11 @@ namespace Barbershop
 
             api.Network
                 .RegisterChannel(ItemChannelName)
-                .RegisterMessageType<BarberPacket>();
+                .RegisterMessageType<BarberItemPacket>();
 
             api.Network
                 .RegisterChannel(DyeChannelName)
-                .RegisterMessageType<BarberPacket>();
+                .RegisterMessageType<BarberDyePacket>();
         }
 
         public override void StartClientSide(ICoreClientAPI api)
@@ -110,10 +117,10 @@ namespace Barbershop
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
             sapi.Network.GetChannel(ItemChannelName)
-                .SetMessageHandler<BarberPacket>(ApplyBarberItemToPlayer);
+                .SetMessageHandler<BarberItemPacket>(ApplyBarberItemToPlayer);
 
             sapi.Network.GetChannel(DyeChannelName)
-                .SetMessageHandler<BarberPacket>(ApplyBarberDyeToPlayer);
+                .SetMessageHandler<BarberDyePacket>(ApplyBarberDyeToPlayer);
 
             sapi.ChatCommands.Create("barber")
                 .WithDescription("Barbershop main command")
@@ -287,7 +294,7 @@ namespace Barbershop
             return false;
         }
 
-        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
+        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberDyePacket packet)
         {
             if (!dyes.ContainsKey(packet.code))
                 return;
@@ -295,7 +302,7 @@ namespace Barbershop
             ApplyBarberPropertiesToPlayer(fromPlayer, packet.targetUid, dyes[packet.code]);
         }
 
-        public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberPacket packet)
+        public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberItemPacket packet)
         {
             var item = sapi.World?.GetItem(new AssetLocation(packet.code));
             if (item == null)

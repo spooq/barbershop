@@ -61,7 +61,7 @@ namespace Barbershop
             if (variant == null)
                 return false;
 
-            BarbershopModSystem.DyeChannel.SendPacket(new BarberPacket
+            BarbershopModSystem.DyeChannel.SendPacket(new BarberDyePacket
             {
                 targetUid = targetPlayer.PlayerUID,
                 code = variant
