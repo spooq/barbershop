@@ -8,7 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"mirror": "C:/Users/Maverick/Desktop/mirror",
+		"mirror": "barbershop:item/mirror",
 		"burned": "game:block/clay/vessel/sides/burned"
 	},
 	"elements": [
