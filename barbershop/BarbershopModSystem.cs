@@ -19,13 +19,6 @@ namespace Barbershop
     }
 
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
-    public class BarberDyePacket
-    {
-        public string targetUid;
-        public string code;
-    }
-
-    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class PlayerBarbershopData
     {
         public bool CanGrowHair = false;
@@ -53,9 +46,6 @@ namespace Barbershop
     {
         public IClientNetworkChannel ItemChannel;
         public const string ItemChannelName = "barbershop_item";
-
-        public IClientNetworkChannel DyeChannel;
-        public const string DyeChannelName = "barbershop_dye";
 
         public ICoreServerAPI sapi;
 
@@ -88,10 +78,6 @@ namespace Barbershop
             api.Network
                 .RegisterChannel(ItemChannelName)
                 .RegisterMessageType<BarberItemPacket>();
-
-            api.Network
-                .RegisterChannel(DyeChannelName)
-                .RegisterMessageType<BarberDyePacket>();
         }
 
         public override void StartClientSide(ICoreClientAPI api)
@@ -99,7 +85,6 @@ namespace Barbershop
             base.StartClientSide(api);
 
             ItemChannel = api.Network.GetChannel(ItemChannelName);
-            DyeChannel = api.Network.GetChannel(DyeChannelName);
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -118,9 +103,6 @@ namespace Barbershop
 
             sapi.Network.GetChannel(ItemChannelName)
                 .SetMessageHandler<BarberItemPacket>(ApplyBarberItemToPlayer);
-
-            sapi.Network.GetChannel(DyeChannelName)
-                .SetMessageHandler<BarberDyePacket>(ApplyBarberDyeToPlayer);
 
             sapi.ChatCommands.Create("barber")
                 .WithDescription("Barbershop main command")
@@ -294,7 +276,7 @@ namespace Barbershop
             return false;
         }
 
-        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberDyePacket packet)
+        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberItemPacket packet)
         {
             if (!dyes.ContainsKey(packet.code))
                 return;

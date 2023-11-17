@@ -1,4 +1,5 @@
 ﻿using Vintagestory.API.Common;
+using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace Barbershop
@@ -61,11 +62,20 @@ namespace Barbershop
             if (variant == null)
                 return false;
 
-            BarbershopModSystem.DyeChannel.SendPacket(new BarberDyePacket
+            if (!(targetPlayer is EntityPlayer))
+                return false;
+
+            // Server-side
+            if (BarbershopModSystem.sapi != null)
             {
-                targetUid = targetPlayer.PlayerUID,
-                code = variant
-            });
+                var serverPlayer = ((EntityPlayer)targetPlayer).Player as IServerPlayer;
+                BarbershopModSystem.ApplyBarberDyeToPlayer(serverPlayer, new BarberItemPacket
+                {
+                    targetUid = targetPlayer.PlayerUID,
+                    code = variant
+                });
+            }
+
             return true;
         }
     }
