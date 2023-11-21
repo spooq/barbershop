@@ -19,6 +19,13 @@ namespace Barbershop
     }
 
     [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
+    public class BarberDyePacket
+    {
+        public string targetUid;
+        public string dyeVariant;
+    }
+
+    [ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
     public class PlayerBarbershopData
     {
         public bool CanGrowHair = false;
@@ -44,8 +51,8 @@ namespace Barbershop
 
     public class BarbershopModSystem : ModSystem
     {
-        public IClientNetworkChannel ItemChannel;
-        public const string ItemChannelName = "barbershop_item";
+        public IClientNetworkChannel BarberChannel;
+        public const string BarberChannelName = "barbershop";
 
         public ICoreServerAPI sapi;
 
@@ -72,19 +79,19 @@ namespace Barbershop
 
             api.RegisterCollectibleBehaviorClass("Barbershop", typeof(CollectibleBehaviorBarber));
             api.RegisterCollectibleBehaviorClass("BarbershopMirror", typeof(CollectibleBehaviorBarberMirror));
-
             api.RegisterBlockBehaviorClass("BarbershopContainer", typeof(BlockBehaviorBarberLiquidContainer));
-
+            
             api.Network
-                .RegisterChannel(ItemChannelName)
-                .RegisterMessageType<BarberItemPacket>();
+                .RegisterChannel(BarberChannelName)
+                .RegisterMessageType<BarberItemPacket>()
+                .RegisterMessageType<BarberDyePacket>();
         }
 
         public override void StartClientSide(ICoreClientAPI api)
         {
             base.StartClientSide(api);
 
-            ItemChannel = api.Network.GetChannel(ItemChannelName);
+            BarberChannel = api.Network.GetChannel(BarberChannelName);
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -101,8 +108,9 @@ namespace Barbershop
 
             sapi.Event.ServerRunPhase(EnumServerRunPhase.RunGame, OnServerRunGame);
 
-            sapi.Network.GetChannel(ItemChannelName)
-                .SetMessageHandler<BarberItemPacket>(ApplyBarberItemToPlayer);
+            sapi.Network.GetChannel(BarberChannelName)
+                .SetMessageHandler<BarberItemPacket>(ApplyBarberItemToPlayer)
+                .SetMessageHandler<BarberDyePacket>(ApplyBarberDyeToPlayer);
 
             sapi.ChatCommands.Create("barber")
                 .WithDescription("Barbershop main command")
@@ -276,12 +284,12 @@ namespace Barbershop
             return false;
         }
 
-        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberItemPacket packet)
+        public void ApplyBarberDyeToPlayer(IServerPlayer fromPlayer, BarberDyePacket packet)
         {
-            if (!dyes.ContainsKey(packet.code))
+            if (!dyes.ContainsKey(packet.dyeVariant))
                 return;
 
-            ApplyBarberPropertiesToPlayer(fromPlayer, packet.targetUid, dyes[packet.code]);
+            ApplyBarberPropertiesToPlayer(fromPlayer, packet.targetUid, dyes[packet.dyeVariant]);
         }
 
         public void ApplyBarberItemToPlayer(IServerPlayer fromPlayer, BarberItemPacket packet)

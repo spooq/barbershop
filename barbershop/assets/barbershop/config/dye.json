@@ -2,16 +2,12 @@
   "blue": {
     "haircolor": [
       {
-        "from": "steelblue",
-        "to": "queenblue"
-      },
-      {
         "from": "*",
         "to": "steelblue"
       }
     ]
   },
-  "red": {
+  "brown": {
     "haircolor": [
       {
         "from": "*",
@@ -19,15 +15,11 @@
       }
     ]
   },
-  "yellow": {
+  "gray": {
     "haircolor": [
       {
-        "from": "harvestgold",
-        "to": "sanddune"
-      },
-      {
         "from": "*",
-        "to": "harvestgold"
+        "to": "slategray"
       }
     ]
   },
@@ -39,22 +31,135 @@
       }
     ]
   },
-  "purple": {
+  "orange": {
     "haircolor": [
       {
-        "from": "palatinatepurple",
-        "to": "darkpurple"
-      },
+        "from": "*",
+        "to": "harvestgold"
+      }
+    ]
+  },
+  "pink": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "heliotropegray"
+      }
+    ]
+  },
+  "purple": {
+    "haircolor": [
       {
         "from": "*",
         "to": "palatinatepurple"
       }
     ]
   },
-  "black": {
+  "red": {
     "haircolor": [
       {
         "from": "*",
+        "to": "cordovan"
+      }
+    ]
+  },
+  "woad": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "queenblue"
+      }
+    ]
+  },
+  "yellow": {
+    "haircolor": [
+      {
+        "from": "*",
+        "to": "sanddune"
+      }
+    ]
+  },
+  "black": {
+    "haircolor": [
+      {
+        "from": "mossgreen",
+        "to": "wintergreendream"
+      },
+      {
+        "from": "wintergreendream",
+        "to": "seagreen"
+      },
+      {
+        "from": "seagreen",
+        "to": "steelblue"
+      },
+      {
+        "from": "steelblue",
+        "to": "queenblue"
+      },
+      {
+        "from": "queenblue",
+        "to": "indigodye"
+      },
+      {
+        "from": "indigodye",
+        "to": "palatinatepurple"
+      },
+      {
+        "from": "palatinatepurple",
+        "to": "eerieblack"
+      },
+
+
+      {
+        "from": "ecru",
+        "to": "wheat"
+      },
+      {
+        "from": "wheat",
+        "to": "sanddune"
+      },
+      {
+        "from": "sanddune",
+        "to": "harvestgold"
+      },
+      {
+        "from": "harvestgold",
+        "to": "cordovan"
+      },
+      {
+        "from": "cordovan",
+        "to": "rosewood"
+      },
+      {
+        "from": "rosewood",
+        "to": "russet"
+      },
+      {
+        "from": "russet",
+        "to": "liver"
+      },
+      {
+        "from": "liver",
+        "to": "oldburgundy"
+      },
+      {
+        "from": "oldburgundy",
+        "to": "eerieblack"
+      },
+
+
+
+      {
+        "from": "lightgray",
+        "to": "silverchalice"
+      },
+      {
+        "from": "silverchalice",
+        "to": "slategray"
+      },
+      {
+        "from": "slategray",
         "to": "eerieblack"
       }
     ]
@@ -62,7 +167,87 @@
   "white": {
     "haircolor": [
       {
-        "from": "*",
+        "from": "eerieblack",
+        "to": "slategray"
+      },
+      {
+        "from": "slategray",
+        "to": "silverchalice"
+      },
+      {
+        "from": "silverchalice",
+        "to": "lightgray"
+      },
+
+
+      {
+        "from": "eerieblack",
+        "to": "oldburgundy"
+      },
+      {
+        "from": "oldburgundy",
+        "to": "liver"
+      },
+      {
+        "from": "liver",
+        "to": "russet"
+      },
+      {
+        "from": "russet",
+        "to": "rosewood"
+      },
+      {
+        "from": "rosewood",
+        "to": "cordovan"
+      },
+      {
+        "from": "cordovan",
+        "to": "harvestgold"
+      },
+      {
+        "from": "harvestgold",
+        "to": "sanddune"
+      },
+      {
+        "from": "sanddune",
+        "to": "wheat"
+      },
+      {
+        "from": "wheat",
+        "to": "ecru"
+      },
+      {
+        "from": "ecru",
+        "to": "lightgray"
+      },
+
+
+      {
+        "from": "palatinatepurple",
+        "to": "indigodye"
+      },
+      {
+        "from": "indigodye",
+        "to": "queenblue"
+      },
+      {
+        "from": "queenblue",
+        "to": "steelblue"
+      },
+      {
+        "from": "steelblue",
+        "to": "seagreen"
+      },
+      {
+        "from": "seagreen",
+        "to": "wintergreendream"
+      },
+      {
+        "from": "wintergreendream",
+        "to": "mossgreen"
+      },
+      {
+        "from": "mossgreen",
         "to": "lightgray"
       }
     ]

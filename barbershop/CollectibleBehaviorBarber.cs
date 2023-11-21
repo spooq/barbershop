@@ -30,7 +30,7 @@ namespace Barbershop
         {
             if (entitySel != null && entitySel != null && entitySel.Entity is EntityPlayer)
             {
-                BarbershopModSystem.ItemChannel.SendPacket(new BarberItemPacket
+                BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket
                 {
                     targetUid = (byEntity as EntityPlayer).PlayerUID,
                     code = collObj.Code.ToString()
@@ -46,7 +46,7 @@ namespace Barbershop
         {
             if (byEntity != null && byEntity is EntityPlayer)
             {
-                BarbershopModSystem.ItemChannel.SendPacket(new BarberItemPacket
+                BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket
                 {
                     targetUid = (byEntity as EntityPlayer).PlayerUID,
                     code = collObj.Code.ToString()

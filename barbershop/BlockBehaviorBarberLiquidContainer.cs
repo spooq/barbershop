@@ -1,5 +1,4 @@
 ﻿using Vintagestory.API.Common;
-using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace Barbershop
@@ -21,7 +20,7 @@ namespace Barbershop
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
         {
-            if (entitySel != null && entitySel != null && entitySel.Entity is EntityPlayer && TryApplyHairDye(entitySel.Entity as EntityPlayer, slot.Itemstack))
+            if (entitySel != null && entitySel.Entity is EntityPlayer && TryApplyHairDye(entitySel.Entity as EntityPlayer, slot.Itemstack))
             {
                 handHandling = EnumHandHandling.PreventDefaultAction;
             }
@@ -65,17 +64,11 @@ namespace Barbershop
             if (!(targetPlayer is EntityPlayer))
                 return false;
 
-            // Server-side
-            if (BarbershopModSystem.sapi != null)
+            BarbershopModSystem.BarberChannel.SendPacket(new BarberDyePacket
             {
-                var serverPlayer = ((EntityPlayer)targetPlayer).Player as IServerPlayer;
-                BarbershopModSystem.ApplyBarberDyeToPlayer(serverPlayer, new BarberItemPacket
-                {
-                    targetUid = targetPlayer.PlayerUID,
-                    code = variant
-                });
-            }
-
+                targetUid = targetPlayer.Player.Entity.PlayerUID,
+                dyeVariant = variant
+            });
             return true;
         }
     }
