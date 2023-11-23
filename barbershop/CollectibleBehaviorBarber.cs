@@ -60,6 +60,8 @@ namespace Barbershop
                     targetUid = (byEntity as EntityPlayer).PlayerUID,
                     code = collObj.Code.ToString()
                 });
+
+                handHandling = EnumHandHandling.PreventDefaultAction;
             }
             else
             {

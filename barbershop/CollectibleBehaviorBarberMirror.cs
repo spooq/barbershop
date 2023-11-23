@@ -40,8 +40,7 @@ namespace Barbershop
                     return;
             }
 
-            handHandling = EnumHandHandling.PreventDefaultAction;
-            handling = EnumHandling.Handled;
+            handling = EnumHandling.PreventDefault;
         }
     }
 }
