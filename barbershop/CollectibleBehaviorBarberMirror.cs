@@ -22,12 +22,18 @@ namespace Barbershop
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
         {
+            if (BarbershopModSystem.sapi != null)
+                return;
+
             base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            if (BarbershopModSystem.sapi != null && byEntity is EntityPlayer)
+            if (BarbershopModSystem.sapi != null)
+                return;
+
+            if (byEntity is EntityPlayer)
             {
                 IServerPlayer player = (IServerPlayer)(byEntity as EntityPlayer).Player;
                 if (player == null)

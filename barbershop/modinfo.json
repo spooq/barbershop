@@ -5,8 +5,8 @@
   "authors": [
     "Crabb", "Sheepon", "Anyanana"
   ],
-  "description": "Cut hair and beards",
-  "version": "0.3.4",
+  "description": "Grow, cut and dye hair and beards",
+  "version": "0.3.5",
   "dependencies": {
     "game": ""
   },

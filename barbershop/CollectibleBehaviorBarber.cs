@@ -28,13 +28,19 @@ namespace Barbershop
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
         {
-            if (entitySel != null && entitySel != null && entitySel.Entity is EntityPlayer)
+            if (BarbershopModSystem.sapi != null)
+                return;
+
+            if (entitySel != null && entitySel.Entity is EntityPlayer)
             {
                 BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket
                 {
                     targetUid = (byEntity as EntityPlayer).PlayerUID,
                     code = collObj.Code.ToString()
                 });
+
+                handHandling = EnumHandHandling.PreventDefaultAction;
+                handling = EnumHandHandling.PreventDefault;
             }
             else
             {
@@ -44,6 +50,9 @@ namespace Barbershop
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
+            if (BarbershopModSystem.sapi != null)
+                return;
+
             if (byEntity != null && byEntity is EntityPlayer)
             {
                 BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket

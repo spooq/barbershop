@@ -45,6 +45,9 @@ namespace Barbershop
 
         public bool TryApplyHairDye(EntityPlayer targetPlayer, ItemStack itemStack)
         {
+            if (BarbershopModSystem.sapi != null)
+                return false;
+
             var containerBlock = block as BlockLiquidContainerTopOpened;
             if (containerBlock == null)
                 return false;
