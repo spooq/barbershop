@@ -1,11 +1,12 @@
 ﻿using Vintagestory.API.Common;
 using Vintagestory.GameContent;
+using Vintagestory.Server;
 
 namespace Barbershop
 {
     public class BlockBehaviorBarberLiquidContainer : BlockBehavior
     {
-        public static BarbershopModSystem BarbershopModSystem;
+        public BarbershopModSystem BarbershopModSystem;
 
         public BlockBehaviorBarberLiquidContainer(Block block) : base(block)
         {
@@ -18,61 +19,62 @@ namespace Barbershop
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
-        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
+        public string GetHairDyeColourCode(ItemStack itemStack)
         {
-            if (entitySel != null && entitySel.Entity is EntityPlayer && TryApplyHairDye(entitySel.Entity as EntityPlayer, slot.Itemstack))
+            var containerBlock = block as BlockLiquidContainerTopOpened;
+            if (containerBlock == null)
+                return null;
+
+            var itemStackContents = containerBlock.GetContent(itemStack);
+            if (itemStackContents == null)
+                return null;
+
+            var item = itemStackContents.Item;
+            if (item == null || item.FirstCodePart() != "dye")
+                return null;
+
+            return item.Variant["color"];
+        }
+
+        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandling handling)
+        {
+            if (entitySel != null && entitySel.Entity is EntityPlayer)
             {
-                handHandling = EnumHandHandling.PreventDefaultAction;
+                var variantCode = GetHairDyeColourCode(slot.Itemstack);
+                if (!string.IsNullOrEmpty(variantCode))
+                {
+                    if (byEntity.Api.Side == EnumAppSide.Server)
+                    {
+
+                        var ep = (EntityPlayer)entitySel.Entity;
+                        BarbershopModSystem.ApplyBarberPropertiesToPlayer(ep.Player as ServerPlayer, BarbershopModSystem.DyeProperties[variantCode]);
+                    }
+
+                    handHandling = EnumHandHandling.PreventDefaultAction;
+                    handling = EnumHandling.PreventSubsequent;
+                    return;
+                }
             }
-            else
-            {
-                base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
-            }
+            
+            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            if (TryApplyHairDye(byEntity as EntityPlayer, slot.Itemstack))
+            var variantCode = GetHairDyeColourCode(slot.Itemstack);
+            if (!string.IsNullOrEmpty(variantCode))
             {
+                if (byEntity.Api.Side == EnumAppSide.Server)
+                {
+                    var ep = (EntityPlayer)byEntity;
+                    BarbershopModSystem.ApplyBarberPropertiesToPlayer(ep.Player as ServerPlayer, BarbershopModSystem.DyeProperties[variantCode]);
+                }
+
                 handHandling = EnumHandHandling.PreventDefaultAction;
-                handling = EnumHandling.PreventSubsequent;
+                handling = EnumHandling.PreventDefault;
             }
-            else
-            {
-                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
-            }
-        }
 
-        public bool TryApplyHairDye(EntityPlayer targetPlayer, ItemStack itemStack)
-        {
-            if (BarbershopModSystem.sapi != null)
-                return false;
-
-            var containerBlock = block as BlockLiquidContainerTopOpened;
-            if (containerBlock == null)
-                return false;
-
-            var itemStackContents = containerBlock.GetContent(itemStack);
-            if (itemStackContents == null)
-                return false;
-
-            var item = itemStackContents.Item;
-            if (item == null || item.FirstCodePart() != "dye")
-                return false;
-
-            var variant = item.Variant["color"];
-            if (variant == null)
-                return false;
-
-            if (!(targetPlayer is EntityPlayer))
-                return false;
-
-            BarbershopModSystem.BarberChannel.SendPacket(new BarberDyePacket
-            {
-                targetUid = targetPlayer.Player.Entity.PlayerUID,
-                dyeVariant = variant
-            });
-            return true;
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
         }
     }
 }

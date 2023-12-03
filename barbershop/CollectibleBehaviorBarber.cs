@@ -1,22 +1,16 @@
 ﻿using Vintagestory.API.Common;
+using Vintagestory.Server;
 
 namespace Barbershop
 {
     public class CollectibleBehaviorBarber : CollectibleBehavior
     {
-        public static BarbershopModSystem BarbershopModSystem;
+        public BarbershopModSystem BarbershopModSystem;
 
         public BarberProperties barberProperties = new BarberProperties();
 
         public CollectibleBehaviorBarber(CollectibleObject collObj) : base(collObj)
         {
-        }
-
-        public override void Initialize(Vintagestory.API.Datastructures.JsonObject properties)
-        {
-            base.Initialize(properties);
-
-            barberProperties = properties.AsObject<BarberProperties>();
         }
 
         public override void OnLoaded(ICoreAPI api)
@@ -26,47 +20,41 @@ namespace Barbershop
             BarbershopModSystem = api.ModLoader.GetModSystem<BarbershopModSystem>();
         }
 
-        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandHandling handling)
+        public override void Initialize(Vintagestory.API.Datastructures.JsonObject properties)
         {
-            if (BarbershopModSystem.sapi != null)
-                return;
+            base.Initialize(properties);
 
-            if (entitySel != null && entitySel.Entity is EntityPlayer)
+            barberProperties = properties.AsObject<BarberProperties>();
+        }
+
+        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handHandling, ref EnumHandling handling)
+        {
+            if (entitySel is not null && entitySel.Entity is EntityPlayer)
             {
-                BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket
+                if (byEntity.Api.Side == EnumAppSide.Server)
                 {
-                    targetUid = (byEntity as EntityPlayer).PlayerUID,
-                    code = collObj.Code.ToString()
-                });
+                    var ep = (EntityPlayer)entitySel.Entity;
+                    BarbershopModSystem.ApplyBarberPropertiesToPlayer(ep.Player as ServerPlayer, barberProperties);
+                }
 
                 handHandling = EnumHandHandling.PreventDefaultAction;
-                handling = EnumHandHandling.PreventDefault;
+                handling = EnumHandling.PreventDefault;
+                return;
             }
-            else
-            {
-                base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
-            }
+
+            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handHandling, ref handling);
         }
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
         {
-            if (BarbershopModSystem.sapi != null)
-                return;
-
-            if (byEntity != null && byEntity is EntityPlayer)
+            if (byEntity.Api.Side == EnumAppSide.Server)
             {
-                BarbershopModSystem.BarberChannel.SendPacket(new BarberItemPacket
-                {
-                    targetUid = (byEntity as EntityPlayer).PlayerUID,
-                    code = collObj.Code.ToString()
-                });
+                var ep = (EntityPlayer)byEntity;
+                BarbershopModSystem.ApplyBarberPropertiesToPlayer(ep.Player as ServerPlayer, barberProperties);
+            }
 
-                handHandling = EnumHandHandling.PreventDefaultAction;
-            }
-            else
-            {
-                base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
-            }
+            handHandling = EnumHandHandling.PreventDefaultAction;
+            handling = EnumHandling.PreventDefault;
         }
     }
 }

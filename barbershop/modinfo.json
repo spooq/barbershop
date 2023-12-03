@@ -6,9 +6,9 @@
     "Crabb", "Sheepon", "Anyanana"
   ],
   "description": "Grow, cut and dye hair and beards",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "dependencies": {
-    "game": ""
+    "game": "1.19.0-pre"
   },
   "side": "Universal"
 }

@@ -14,7 +14,9 @@
   "barbershop:item-razor": "Cut-throat razor",
   "barbershop:item-scissors": "Barbers scissors",
 
-  "barbershop:description": "{0}{1}{2}{3}",
+  "barbershop:description": "{0}{1}",
+  "barbershop:notify": "You now receive notifications when your style changes.",
+  "barbershop:nonotify": "You no longer receive notifications when your style changes.",
 
   "barbershop:hairbase_bald": "You have a shaved head",
   "barbershop:hairbase_balding": "Your {0} hair is balding",
