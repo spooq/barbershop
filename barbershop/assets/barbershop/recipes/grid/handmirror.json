@@ -1,11 +1,15 @@
 {
-  "ingredientPattern": "G,S",
+  "ingredientPattern": "G,P,S",
   "width": 1,
-  "height": 2,
+  "height": 3,
   "ingredients": {
     "G": {
       "type": "block",
       "code": "game:glass-plain"
+    },
+    "P": {
+      "type": "item",
+      "code": "game:metalplate-silver"
     },
     "S": {
       "type": "item",

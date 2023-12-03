@@ -72,6 +72,7 @@ namespace Barbershop
 
                 handHandling = EnumHandHandling.PreventDefaultAction;
                 handling = EnumHandling.PreventDefault;
+                return;
             }
 
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);

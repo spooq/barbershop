@@ -102,7 +102,7 @@ namespace Barbershop
                 .WithDescription("Barbershop main command")
                 .RequiresPlayer()
                 .RequiresPrivilege(Privilege.chat)
-                .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string> { "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
+                .WithArgs(sapi.ChatCommands.Parsers.WordRange("arg", new List<string> { "notify", "hair", "nohair", "facialhair", "nofacialhair" }.ToArray()))
                 .HandleWith(onBarberCommand);
         }
 
