@@ -11,6 +11,13 @@ using Vintagestory.GameContent;
 namespace Barbershop
 {
     [ProtoContract]
+    public class BarberUserConfig
+    {
+        [ProtoMember(1)]
+        public double DaysForHairToGrow = 4.5;
+    }
+
+    [ProtoContract]
     public class PlayerBarbershopData
     {
         [ProtoMember(1)]
@@ -46,6 +53,8 @@ namespace Barbershop
     {
         public ICoreServerAPI sapi;
 
+        public BarberUserConfig UserConfig { get; set; }
+
         public const string HairBase = "hairbase";
         public const string HairExtra = "hairextra";
         public const string HairColor = "haircolor";
@@ -76,6 +85,10 @@ namespace Barbershop
             base.StartServerSide(api);
 
             sapi = api;
+
+            UserConfig = sapi.LoadModConfig<BarberUserConfig>($"{Mod.Info.ModID}.json");
+            UserConfig ??= new BarberUserConfig();
+            sapi.StoreModConfig(UserConfig, $"{Mod.Info.ModID}.json");
 
             var hairgrowAsset = sapi.Assets.Get("barbershop:config/growth.json");
             HairGrowthProperties = JsonConvert.DeserializeObject<BarberProperties>(hairgrowAsset.ToText());
@@ -229,7 +242,7 @@ namespace Barbershop
             saveData.timeSinceEdited[part] += diff;
 
             // TODO: Should handle fast-forward of more than one day.
-            if (saveData.timeSinceEdited[part] > 1)
+            if (saveData.timeSinceEdited[part] > UserConfig.DaysForHairToGrow)
                 return ApplyFirstMatchingTransform(targetPlayer, skinnable, part, barberProps, ref saveData);
 
             return false;
